@@ -3,39 +3,6 @@ log (){
 }
 export -f log
 
-bootstrap(){
-	local BOOTSTRAP_DIR=$1
-	local IMG_URL=$2
-
-	log "Downloading base image"
-	wget -t 3 -O "${STAGE_WORK_DIR}"/base.img.xz "${IMG_URL}"
-
-	log "Uncompressing the image"
-	unxz -v "${STAGE_WORK_DIR}"/base.img.xz
-
-	log "Unpacking the filesystem"	
-
-	LOOP_DEV=$(losetup --show -f -P "${STAGE_WORK_DIR}"/base.img)
-	BOOT_DEV="${LOOP_DEV}p1"
-	ROOT_DEV="${LOOP_DEV}p2"
-
-	mkdir -p "${BOOTSTRAP_DIR}"
-	mkdir -p "${STAGE_WORK_DIR}"/mp/boot "${STAGE_WORK_DIR}"/mp/root
-
-	mount -o ro "${BOOT_DEV}" "${STAGE_WORK_DIR}"/mp/boot
-	mount -o ro "${ROOT_DEV}" "${STAGE_WORK_DIR}"/mp/root
-
-	rsync -aHAXx "${STAGE_WORK_DIR}"/mp/root/ "${BOOTSTRAP_DIR}"/
-	rm "${BOOTSTRAP_DIR}"/boot/firmware/*
-	rsync -aHAXx "${STAGE_WORK_DIR}"/mp/boot/ "${BOOTSTRAP_DIR}"/boot/firmware/
-
-	umount "${STAGE_WORK_DIR}"/mp/boot
-	umount "${STAGE_WORK_DIR}"/mp/root
-	rm -rf "${STAGE_WORK_DIR}"/mp
-	losetup -d "${LOOP_DEV}"
-}
-export -f bootstrap
-
 copy_previous(){
 	if [ ! -d "${PREV_ROOTFS_DIR}" ]; then
 		echo "Previous stage rootfs not found"

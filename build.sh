@@ -168,8 +168,8 @@ source "${BASE_DIR}/config"
 
 export IMG_FILENAME="${IMG_NAME}-${IMG_VERSION}-${IMG_DATE}"
 
-source "${SCRIPT_DIR}/common"
-source "${SCRIPT_DIR}/dependencies_check"
+source "${SCRIPT_DIR}/common.sh"
+source "${SCRIPT_DIR}/dependencies_check.sh"
 
 STAGE_FIRST=0
 STAGE_LAST=99
@@ -213,6 +213,13 @@ for i in $(seq ${STAGE_FIRST} ${STAGE_LAST}); do
 		STAGE_DIR="${BASE_DIR}/stage${i}"
 		run_stage
 	fi
+done
+
+for EXPORT_DIR in ${EXPORT_DIRS}; do
+	STAGE_DIR=${BASE_DIR}/export-image
+	source "${EXPORT_DIR}/EXPORT_IMAGE"
+	EXPORT_ROOTFS_DIR=${WORK_DIR}/$(basename "${EXPORT_DIR}")/rootfs
+	run_stage
 done
 
 log "End ${BASE_DIR}"
