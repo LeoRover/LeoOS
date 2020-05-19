@@ -4,26 +4,35 @@ log (){
 export -f log
 
 bootstrap(){
-	local BOOTSTRAP_CMD=debootstrap
-	local BOOTSTRAP_ARGS=()
+	local BOOTSTRAP_DIR=$1
+	local IMG_URL=$2
 
-	export http_proxy=${APT_PROXY}
+	log "Downloading base image"
+	wget -t 3 -O "${STAGE_WORK_DIR}"/base.img.xz "${IMG_URL}"
 
-	if [ "$(dpkg --print-architecture)" !=  "armhf" ] && [ "$(dpkg --print-architecture)" !=  "aarch64" ]; then
-		BOOTSTRAP_CMD=qemu-debootstrap
-	fi
+	log "Uncompressing the image"
+	unxz -v "${STAGE_WORK_DIR}"/base.img.xz
 
-	BOOTSTRAP_ARGS+=(--arch armhf)
-	BOOTSTRAP_ARGS+=(--components "main,contrib,non-free")
-	BOOTSTRAP_ARGS+=(--keyring "${STAGE_DIR}/files/raspberrypi.gpg")
-	BOOTSTRAP_ARGS+=("$@")
-	printf -v BOOTSTRAP_STR '%q ' "${BOOTSTRAP_ARGS[@]}"
+	log "Unpacking the filesystem"	
 
-	setarch linux32 capsh --drop=cap_setfcap -- -c "'${BOOTSTRAP_CMD}' $BOOTSTRAP_STR" || true
+	LOOP_DEV=$(losetup --show -f -P "${STAGE_WORK_DIR}"/base.img)
+	BOOT_DEV="${LOOP_DEV}p1"
+	ROOT_DEV="${LOOP_DEV}p2"
 
-	if [ -d "$2/debootstrap" ]; then
-		rmdir "$2/debootstrap"
-	fi
+	mkdir -p "${BOOTSTRAP_DIR}"
+	mkdir -p "${STAGE_WORK_DIR}"/mp/boot "${STAGE_WORK_DIR}"/mp/root
+
+	mount -o ro "${BOOT_DEV}" "${STAGE_WORK_DIR}"/mp/boot
+	mount -o ro "${ROOT_DEV}" "${STAGE_WORK_DIR}"/mp/root
+
+	rsync -aHAXx "${STAGE_WORK_DIR}"/mp/root/ "${BOOTSTRAP_DIR}"/
+	rm "${BOOTSTRAP_DIR}"/boot/firmware/*
+	rsync -aHAXx "${STAGE_WORK_DIR}"/mp/boot/ "${BOOTSTRAP_DIR}"/boot/firmware/
+
+	umount "${STAGE_WORK_DIR}"/mp/boot
+	umount "${STAGE_WORK_DIR}"/mp/root
+	rm -rf "${STAGE_WORK_DIR}"/mp
+	losetup -d "${LOOP_DEV}"
 }
 export -f bootstrap
 
@@ -93,8 +102,3 @@ on_chroot() {
 	setarch linux32 capsh --drop=cap_setfcap "--chroot=${ROOTFS_DIR}/" -- -e "$@"
 }
 export -f on_chroot
-
-update_issue() {
-	echo -e "Raspberry Pi reference ${IMG_DATE}\nGenerated using ${PI_GEN}, ${PI_GEN_REPO}, ${GIT_HASH}, ${1}" > "${ROOTFS_DIR}/etc/rpi-issue"
-}
-export -f update_issue

@@ -1,1 +1,2 @@
 qemu-arm-static:qemu-user-static
+rsync
