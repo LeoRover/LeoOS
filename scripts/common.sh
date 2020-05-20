@@ -4,8 +4,9 @@ log (){
 export -f log
 
 copy_previous(){
+	log "Copying root filesystem from previous stage"
 	if [ ! -d "${PREV_ROOTFS_DIR}" ]; then
-		echo "Previous stage rootfs not found"
+		log "Previous stage rootfs not found"
 		false
 	fi
 	mkdir -p "${ROOTFS_DIR}"

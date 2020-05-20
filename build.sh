@@ -2,10 +2,10 @@
 
 usage()
 {
-	echo "Usage: $0 [ -f FIRST ] [ -l LAST ] [ -c ]" 1>&2 
+	echo "Usage: $0 [ -f FIRST ] [ -l LAST ] [ -c ]" 1>&2
 }
 
-exit_abnormal() 
+exit_abnormal()
 {
 	usage
 	exit 1
@@ -101,11 +101,9 @@ run_stage(){
 	pushd "${STAGE_DIR}" > /dev/null
 
 	STAGE_WORK_DIR="${WORK_DIR}/${STAGE}"
-	ROOTFS_DIR="${STAGE_WORK_DIR}"/rootfs
+	ROOTFS_DIR="${STAGE_WORK_DIR}/rootfs"
 
 	unmount "${STAGE_WORK_DIR}"
-	rm -rf "${STAGE_WORK_DIR}"
-	mkdir -p "${STAGE_WORK_DIR}"
 
 	if [ ! -f SKIP_IMAGES ]; then
 		if [ -f "${STAGE_DIR}/EXPORT_IMAGE" ]; then
@@ -113,12 +111,13 @@ run_stage(){
 		fi
 	fi
 
-	if [ ! -f SKIP ]; then
-		if [ "${CLEAN}" = "1" ]; then
-			if [ -d "${ROOTFS_DIR}" ]; then
-				rm -rf "${ROOTFS_DIR}"
-			fi
+	if [ ${STAGE} = "export-image" ] ||
+		 [ ${STAGE_NR} -ge ${STAGE_FIRST} ] && [ ! -f SKIP ]; then
+		if [ -d "${STAGE_WORK_DIR}" ]; then
+			rm -rf "${STAGE_WORK_DIR}"
 		fi
+		mkdir -p "${STAGE_WORK_DIR}"
+		
 		if [ -x prerun.sh ]; then
 			log "Begin ${STAGE_DIR}/prerun.sh"
 			./prerun.sh
@@ -130,6 +129,8 @@ run_stage(){
 				run_sub_stage
 			fi
 		done
+	else
+		log "Skipping ${STAGE}"
 	fi
 
 	unmount "${STAGE_WORK_DIR}"
@@ -163,10 +164,12 @@ export PREV_STAGE
 export PREV_STAGE_DIR
 export ROOTFS_DIR
 export PREV_ROOTFS_DIR
+export EXPORT_ROOTFS_DIR
 
-source "${BASE_DIR}/config"
+source "${BASE_DIR}/config.sh"
 
 export IMG_FILENAME="${IMG_NAME}-${IMG_VERSION}-${IMG_DATE}"
+export IMG_SUFFIX
 
 source "${SCRIPT_DIR}/common.sh"
 source "${SCRIPT_DIR}/dependencies_check.sh"
@@ -208,8 +211,9 @@ dependencies_check "${BASE_DIR}/depends"
 mkdir -p "${WORK_DIR}"
 log "Begin ${BASE_DIR}"
 
-for i in $(seq ${STAGE_FIRST} ${STAGE_LAST}); do
+for i in $(seq 0 ${STAGE_LAST}); do
 	if [ -d "${BASE_DIR}/stage${i}" ]; then
+		STAGE_NR="${i}"
 		STAGE_DIR="${BASE_DIR}/stage${i}"
 		run_stage
 	fi
