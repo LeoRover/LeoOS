@@ -181,10 +181,6 @@ while getopts ":f:l:c" options; do
 	case "${options}" in
 		f)
 			STAGE_FIRST=${OPTARG}
-			let STAGE_PREV=${STAGE_FIRST}-1 || true
-			PREV_STAGE="stage${STAGE_PREV}"
-			PREV_STAGE_DIR="${BASE_DIR}/${PREV_STAGE}"
-			PREV_ROOTFS_DIR="${WORK_DIR}/${PREV_STAGE}"/rootfs
 			;;
 		l)
 			STAGE_LAST=${OPTARG}

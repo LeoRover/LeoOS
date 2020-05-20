@@ -9,5 +9,3 @@ fi
 echo "${FIRST_USER_NAME}:${FIRST_USER_PASS}" | chpasswd
 echo "root:root" | chpasswd
 EOF
-
-
