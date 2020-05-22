@@ -21,7 +21,7 @@ run_sub_stage()
 			log "Begin ${SUB_STAGE_DIR}/${i}-debconf"
 			on_chroot << EOF
 debconf-set-selections <<SELEOF
-$(cat "${i}-debconf")
+$(envsubst < "${i}-debconf")
 SELEOF
 EOF
 			log "End ${SUB_STAGE_DIR}/${i}-debconf"
