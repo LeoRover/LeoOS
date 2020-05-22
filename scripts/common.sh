@@ -67,6 +67,6 @@ on_chroot() {
 		mount --bind /sys "${ROOTFS_DIR}/sys"
 	fi
 
-	setarch linux32 capsh --drop=cap_setfcap "--chroot=${ROOTFS_DIR}/" -- -e "$@"
+	setarch linux32 env -i /sbin/capsh --drop=cap_setfcap "--chroot=${ROOTFS_DIR}/" -- -e -l "$@"
 }
 export -f on_chroot
