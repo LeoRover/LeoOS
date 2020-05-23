@@ -10,7 +10,7 @@ copy_previous(){
 		false
 	fi
 	mkdir -p "${ROOTFS_DIR}"
-	rsync -aHAXx --exclude var/cache/apt/archives "${PREV_ROOTFS_DIR}/" "${ROOTFS_DIR}/"
+	rsync --info=progress2 --no-i-r -h -aHAXx --exclude var/cache/apt/archives "${PREV_ROOTFS_DIR}/" "${ROOTFS_DIR}/"
 }
 export -f copy_previous
 

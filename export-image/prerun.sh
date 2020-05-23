@@ -57,5 +57,5 @@ mount -v "$ROOT_DEV" "${ROOTFS_DIR}" -t ext4
 mkdir -p "${ROOTFS_DIR}/boot/firmware"
 mount -v "$BOOT_DEV" "${ROOTFS_DIR}/boot/firmware" -t vfat
 
-rsync -aHAXx --exclude /var/cache/apt/archives --exclude /boot/firmware "${EXPORT_ROOTFS_DIR}/" "${ROOTFS_DIR}/"
-rsync -rtx "${EXPORT_ROOTFS_DIR}/boot/firmware/" "${ROOTFS_DIR}/boot/firmware/"
+rsync --info=progress2 --no-i-r -h -rtx "${EXPORT_ROOTFS_DIR}/boot/firmware/" "${ROOTFS_DIR}/boot/firmware/"
+rsync --info=progress2 --no-i-r -h -aHAXx --exclude /var/cache/apt/archives --exclude /boot/firmware "${EXPORT_ROOTFS_DIR}/" "${ROOTFS_DIR}/"
