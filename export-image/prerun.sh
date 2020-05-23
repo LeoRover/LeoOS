@@ -41,8 +41,8 @@ ROOT_LENGTH=$(echo "$PARTED_OUT" | grep -e '^2:' | cut -d':' -f 4 | tr -d B)
 
 BOOT_DEV=$(losetup --show -f -o "${BOOT_OFFSET}" --sizelimit "${BOOT_LENGTH}" "${IMG_FILE}")
 ROOT_DEV=$(losetup --show -f -o "${ROOT_OFFSET}" --sizelimit "${ROOT_LENGTH}" "${IMG_FILE}")
-log "/boot: offset $BOOT_OFFSET, length $BOOT_LENGTH"
-log "/:     offset $ROOT_OFFSET, length $ROOT_LENGTH"
+log "/boot/firmware: offset $BOOT_OFFSET, length $BOOT_LENGTH"
+log "/:              offset $ROOT_OFFSET, length $ROOT_LENGTH"
 
 ROOT_FEATURES="^huge_file"
 for FEATURE in metadata_csum 64bit; do
