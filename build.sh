@@ -52,11 +52,8 @@ EOF
 		if [ -d "${i}-patches" ]; then
 			log "Begin ${SUB_STAGE_DIR}/${i}-patches"
 			pushd "${STAGE_WORK_DIR}" > /dev/null
-			if [ "${CLEAN}" = "1" ]; then
-				rm -rf .pc
-				rm -rf ./*-pc
-			fi
-			QUILT_PATCHES="${SUB_STAGE_DIR}/${i}-patches"
+
+			export QUILT_PATCHES="${SUB_STAGE_DIR}/${i}-patches"
 			SUB_STAGE_QUILT_PATCH_DIR="$(basename "$SUB_STAGE_DIR")-pc"
 			mkdir -p "$SUB_STAGE_QUILT_PATCH_DIR"
 			ln -snf "$SUB_STAGE_QUILT_PATCH_DIR" .pc
@@ -74,6 +71,7 @@ EOF
 					false
 					;;
 			esac
+
 			popd > /dev/null
 			log "End ${SUB_STAGE_DIR}/${i}-patches"
 		fi

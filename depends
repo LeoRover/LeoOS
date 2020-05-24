@@ -5,3 +5,4 @@ parted
 mkdosfs:dosfstools
 mkfs.ext4:e2fsprogs
 quilt
+xz:xz-utils

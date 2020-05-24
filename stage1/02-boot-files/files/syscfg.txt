@@ -6,4 +6,6 @@
 dtparam=i2c_arm=on
 dtparam=spi=on
 
-include nobtcfg.txt
+enable_uart=1
+cmdline=cmdline.txt
+#dtoverlay=pi3-disable-bt
