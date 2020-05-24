@@ -1,0 +1,13 @@
+#!/bin/sh
+
+mount /boot/firmware
+mount / -o remount,rw
+
+/sbin/expand-rootfs
+
+sed -i 's| init=/sbin/init_expand||' /boot/firmware/cmdline.txt
+
+umount /boot/firmware
+mount / -o remount,ro
+
+exec /sbin/init
