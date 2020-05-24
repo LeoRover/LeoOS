@@ -4,7 +4,7 @@ log "Downloading base image"
 wget -t 3 -O "${STAGE_WORK_DIR}/base.img.xz" "${BASE_IMG_URL}"
 
 log "Uncompressing the image"
-unxz -v "${STAGE_WORK_DIR}/base.img.xz"
+unxz -v -T0 "${STAGE_WORK_DIR}/base.img.xz"
 
 log "Unpacking the filesystem"	
 
@@ -18,13 +18,13 @@ mkdir -p "${STAGE_WORK_DIR}/mp/boot" "${STAGE_WORK_DIR}/mp/root"
 mount -o ro "${BOOT_DEV}" "${STAGE_WORK_DIR}/mp/boot"
 mount -o ro "${ROOT_DEV}" "${STAGE_WORK_DIR}/mp/root"
 
-rsync -aHAXx "${STAGE_WORK_DIR}/mp/root/" "${ROOTFS_DIR}/"
-rm -rf "${ROOTFS_DIR}/boot/firmware"
-rsync -aHAXx "${STAGE_WORK_DIR}/mp/boot/" "${ROOTFS_DIR}/boot/firmware/"
+rsync --info=progress2 --no-i-r -h -aHAXx "${STAGE_WORK_DIR}/mp/root/" "${ROOTFS_DIR}/"
+rm -v -rf "${ROOTFS_DIR}/boot/firmware"
+rsync --info=progress2 --no-i-r -h -aHAXx "${STAGE_WORK_DIR}/mp/boot/" "${ROOTFS_DIR}/boot/firmware/"
 
 umount "${STAGE_WORK_DIR}/mp/boot"
 umount "${STAGE_WORK_DIR}/mp/root"
 rm -rf "${STAGE_WORK_DIR}/mp"
 losetup -d "${LOOP_DEV}"
 
-cp /usr/bin/qemu-arm-static "${ROOTFS_DIR}/usr/bin/"
+cp -v /usr/bin/qemu-arm-static "${ROOTFS_DIR}/usr/bin/"
