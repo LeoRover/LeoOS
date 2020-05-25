@@ -14,8 +14,13 @@ rm -v -f "${ROOTFS_DIR}/etc/gshadow-"
 rm -v -f "${ROOTFS_DIR}/etc/subuid-"
 rm -v -f "${ROOTFS_DIR}/etc/subgid-"
 
-rm -v -f "${ROOTFS_DIR}"/var/cache/debconf/*-old
-rm -v -f "${ROOTFS_DIR}"/var/lib/dpkg/*-old
+rm -v -f "${ROOTFS_DIR}/var/cache/debconf/"*-old
+rm -v -f "${ROOTFS_DIR}/var/lib/dpkg/"*-old
+
+rm -v -rf "${ROOTFS_DIR}/boot/"dtb*
+rm -v -f "${ROOTFS_DIR}/boot/"*.old
+
+find "${ROOTFS_DIR}/boot/firmware" -type f -name "*.bak" -exec rm -v {} \;
 
 find "${ROOTFS_DIR}/var/log/" -type f -exec cp /dev/null {} \;
 
