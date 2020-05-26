@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+if [ -d "${ROOTFS_DIR}" ]; then
+    exit 0
+fi
+
 log "Downloading base image"
 wget -t 3 -O "${STAGE_WORK_DIR}/base.img.xz" "${BASE_IMG_URL}"
 
