@@ -2,7 +2,7 @@
 
 usage()
 {
-	echo "Usage: $0 [ -f FIRST ] [ -l LAST ] [ -c ]" 1>&2
+	echo "Usage: $0 [ -f FIRST ] [ -l LAST ] [ -c ] [ -d ]" 1>&2
 }
 
 exit_abnormal()
@@ -111,8 +111,11 @@ run_stage(){
 
 	if [ ${STAGE} = "export-image" ] ||
 		 [ ${STAGE_NR} -ge ${STAGE_FIRST} ] && [ ! -f SKIP ]; then
-		if [ -d "${STAGE_WORK_DIR}" ]; then
-			rm -rf "${STAGE_WORK_DIR}"
+
+		if [ "${CLEAN}" = "1" ]; then
+			if [ -d "${STAGE_WORK_DIR}" ]; then
+				rm -rf "${STAGE_WORK_DIR}"
+			fi
 		fi
 		mkdir -p "${STAGE_WORK_DIR}"
 		
@@ -146,12 +149,56 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
+export BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export SCRIPT_DIR="${BASE_DIR}/scripts"
+
+source "${SCRIPT_DIR}/common.sh"
+source "${SCRIPT_DIR}/dependencies_check.sh"
+
+dependencies_check "${BASE_DIR}/depends"
+
+STAGE_FIRST=0
+STAGE_LAST=99
+CONTINUE=0
+CLEAN=1
+
+while getopts ":f:l:cn" options; do
+	case "${options}" in
+		f)
+			STAGE_FIRST=${OPTARG}
+			;;
+		l)
+			STAGE_LAST=${OPTARG}
+			;;
+		c)
+			CONTINUE=1
+			;;
+		d)
+			CLEAN=0
+			;;
+		:)
+			echo "Error: -${OPTARG} requires an argument."
+			exit_abnormal
+			;;
+		*)
+			exit_abnormal
+			;;
+	esac
+done
+
 export IMG_DATE="$(date +%Y-%m-%d)"
 export IMG_TIME="$(date +%H-%M-%S)"
 
-export BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export SCRIPT_DIR="${BASE_DIR}/scripts"
-export WORK_DIR="${BASE_DIR}/work/${IMG_DATE}-${IMG_TIME}"
+if [ "${CONTINUE}" = "1" ]; then
+	PREV_WORK=$(ls -1 ${BASE_DIR}/work 2>/dev/null | tail -n 1)
+fi
+
+if [ ! -z "${PREV_WORK}" ]; then
+	export WORK_DIR="${BASE_DIR}/work/${PREV_WORK}"
+else
+	export WORK_DIR="${BASE_DIR}/work/${IMG_DATE}-${IMG_TIME}"
+fi
+
 export DEPLOY_DIR="${BASE_DIR}/deploy"
 export LOG_FILE="${WORK_DIR}/build.log"
 
@@ -166,41 +213,19 @@ export EXPORT_ROOTFS_DIR
 
 source "${BASE_DIR}/config.sh"
 
+export IMG_NAME
+export IMG_VERSION
+export BASE_IMG_URL
+export TARGET_HOSTNAME
+export FIRST_USER_NAME
+export FIRST_USER_PASS
+export LOCALE_DEFAULT
+export KEYBOARD_KEYMAP
+export KEYBOARD_LAYOUT
+export TIMEZONE_DEFAULT
+
 export IMG_FILENAME="${IMG_NAME}-${IMG_VERSION}-${IMG_DATE}"
 export IMG_SUFFIX
-
-source "${SCRIPT_DIR}/common.sh"
-source "${SCRIPT_DIR}/dependencies_check.sh"
-
-STAGE_FIRST=0
-STAGE_LAST=99
-
-while getopts ":f:l:c" options; do
-	case "${options}" in
-		f)
-			STAGE_FIRST=${OPTARG}
-			;;
-		l)
-			STAGE_LAST=${OPTARG}
-			;;
-		c)
-			PREV_WORK=$(ls -1 ${BASE_DIR}/work 2>/dev/null | tail -n 1)
-			if [ ! -z "${PREV_WORK}" ]; then
-				WORK_DIR="${BASE_DIR}/work/${PREV_WORK}"
-				LOG_FILE="${WORK_DIR}/build.log"
-			fi
-			;;
-		:)
-			echo "Error: -${OPTARG} requires an argument."
-			exit_abnormal
-			;;
-		*)
-			exit_abnormal
-			;;
-	esac
-done
-
-dependencies_check "${BASE_DIR}/depends"
 
 mkdir -p "${WORK_DIR}"
 log "Begin ${BASE_DIR}"
@@ -213,6 +238,7 @@ for i in $(seq 0 ${STAGE_LAST}); do
 	fi
 done
 
+CLEAN=1
 for EXPORT_DIR in ${EXPORT_DIRS}; do
 	STAGE_DIR=${BASE_DIR}/export-image
 	source "${EXPORT_DIR}/EXPORT_IMAGE"
