@@ -162,7 +162,7 @@ STAGE_LAST=99
 CONTINUE=0
 CLEAN=1
 
-while getopts ":f:l:cn" options; do
+while getopts ":f:l:cd" options; do
 	case "${options}" in
 		f)
 			STAGE_FIRST=${OPTARG}
