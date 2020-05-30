@@ -3,9 +3,6 @@
 # README file for a description of the various configuration files on the boot
 # partition.
 
-dtparam=i2c_arm=on
-dtparam=spi=on
-
 enable_uart=1
 cmdline=cmdline.txt
-#dtoverlay=pi3-disable-bt
+dtoverlay=disable-bt

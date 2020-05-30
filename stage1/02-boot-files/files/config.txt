@@ -23,6 +23,13 @@ kernel=uboot_rpi_3_32b.bin
 [all]
 device_tree_address=0x03000000
 
+# The following settings are used by bootcode.bin (on Pi 3 and earlier) and by 
+# the SPI EEPROM (Pi 4) which do not support the "include" directive so they 
+# must be placed in this file.
+
+start_x=1
+gpu_mem=128
+
 # The following settings are "defaults" expected to be overridden by the
 # included configuration. The only reason they are included is, again, to
 # support old firmwares which don't understand the "include" command.
