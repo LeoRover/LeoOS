@@ -13,6 +13,5 @@ rm -f "${ROOTFS_DIR}/boot/firmware/network-config"
 rm -f "${ROOTFS_DIR}/boot/firmware/user-data"
 
 on_chroot << EOF
-systemctl disable hciuart
 apt-get purge cloud-init -y
 EOF
