@@ -1,0 +1,11 @@
+<launch>
+
+  <param name="robot_description"
+         command="xacro --inorder /etc/ros/urdf/robot.urdf.xacro"/>
+  <param name="tf_prefix" value="$(optenv ROS_NAMESPACE)"/>
+
+  <include file="$(find leo_bringup)/launch/leo_bringup.launch">
+    <arg name="upload_description" value="false"/>
+  </include>
+
+</launch>

@@ -1,0 +1,10 @@
+[Unit]
+Description="leo bringup service"
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/leo-start
+
+[Install]
+WantedBy=multi-user.target

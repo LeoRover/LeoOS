@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="leo">
+
+  <xacro:include filename="$(find leo_description)/urdf/leo.urdf.xacro"/>
+
+</robot>
