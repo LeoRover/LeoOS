@@ -128,6 +128,8 @@ run_stage(){
 			if [ -d "${SUB_STAGE_DIR}" ] &&
 			   [ ! -f "${SUB_STAGE_DIR}/SKIP" ]; then
 				run_sub_stage
+			else
+				log "Skipping ${STAGE}/$(basename ${SUB_STAGE_DIR})"
 			fi
 		done
 	else
@@ -161,8 +163,9 @@ STAGE_FIRST=0
 STAGE_LAST=99
 CONTINUE=0
 CLEAN=1
+EXPORT_IMAGES=1
 
-while getopts ":f:l:cd" options; do
+while getopts ":f:l:cde" options; do
 	case "${options}" in
 		f)
 			STAGE_FIRST=${OPTARG}
@@ -175,6 +178,9 @@ while getopts ":f:l:cd" options; do
 			;;
 		d)
 			CLEAN=0
+			;;
+		e)
+			EXPORT_IMAGES=0
 			;;
 		:)
 			echo "Error: -${OPTARG} requires an argument."
@@ -238,12 +244,14 @@ for i in $(seq 0 ${STAGE_LAST}); do
 	fi
 done
 
-CLEAN=1
-for EXPORT_DIR in ${EXPORT_DIRS}; do
-	STAGE_DIR=${BASE_DIR}/export-image
-	source "${EXPORT_DIR}/EXPORT_IMAGE"
-	EXPORT_ROOTFS_DIR=${WORK_DIR}/$(basename "${EXPORT_DIR}")/rootfs
-	run_stage
-done
+if [ "${EXPORT_IMAGES}" = "1" ]; then
+	CLEAN=1
+	for EXPORT_DIR in ${EXPORT_DIRS}; do
+		STAGE_DIR=${BASE_DIR}/export-image
+		source "${EXPORT_DIR}/EXPORT_IMAGE"
+		EXPORT_ROOTFS_DIR=${WORK_DIR}/$(basename "${EXPORT_DIR}")/rootfs
+		run_stage
+	done
+fi
 
 log "End ${BASE_DIR}"
