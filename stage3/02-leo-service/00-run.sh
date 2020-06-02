@@ -13,3 +13,7 @@ install -v -m 644 files/leo.service "${ROOTFS_DIR}/etc/systemd/system/"
 on_chroot << EOF
 systemctl enable leo
 EOF
+
+if ! grep -q "source /etc/ros/setup.bash" "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/.bashrc"; then
+    echo -e "\nsource /etc/ros/setup.bash" >> "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/.bashrc"
+fi
