@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-install -v -m 774 files/expand-rootfs "${ROOTFS_DIR}/sbin/"
-install -v -m 774 files/init_expand "${ROOTFS_DIR}/sbin/"
+install -v -m 755 files/expand-rootfs "${ROOTFS_DIR}/sbin/"
+install -v -m 755 files/init_expand "${ROOTFS_DIR}/sbin/"
 
 install -v -m 644 files/fstab "${ROOTFS_DIR}/etc/fstab"
 
