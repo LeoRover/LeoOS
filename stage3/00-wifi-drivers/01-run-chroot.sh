@@ -11,6 +11,6 @@ sed -i 's/CONFIG_PLATFORM_ARM_RPI = n/CONFIG_PLATFORM_ARM_RPI = y/g' Makefile
 
 cp -r $(pwd) /usr/src/${DRIVER_NAME}-${DRIVER_VERSION}
 
-dkms add -m ${DRIVER_NAME} -v ${DRIVER_VERSION} -k ${KERNEL_VERSION}
+dkms add -m ${DRIVER_NAME} -v ${DRIVER_VERSION} -k ${KERNEL_VERSION} || true
 dkms build -m ${DRIVER_NAME} -v ${DRIVER_VERSION} -k ${KERNEL_VERSION}
 dkms install -m ${DRIVER_NAME} -v ${DRIVER_VERSION} -k ${KERNEL_VERSION}
