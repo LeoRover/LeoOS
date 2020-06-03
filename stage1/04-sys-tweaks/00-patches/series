@@ -1,1 +1,2 @@
-00-bashrc.diff
+00-bashrc-color-prompt.diff
+01-apt-disable-auto-upgrades.diff
