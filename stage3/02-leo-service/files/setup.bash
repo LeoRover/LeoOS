@@ -3,7 +3,7 @@ source /opt/ros/melodic/setup.bash
 ## leo service variables
 
 # Path to the launch file to start
-export LAUNCH_FILE=/etc/ros/robot.launch
+export LAUNCH_FILE="/etc/ros/robot.launch"
 
 ## leo_bringup variables
 
