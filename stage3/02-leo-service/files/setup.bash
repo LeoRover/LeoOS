@@ -16,5 +16,5 @@ export LAUNCH_FILE=/etc/ros/robot.launch
 export ROS_LOG_DIR=/var/log/ros
 export ROS_HOSTNAME=leo
 # export ROS_IP=10.0.0.1
-export ROS_MASTER_URI=http://leo:11311
+export ROS_MASTER_URI=http://localhost:11311
 # export ROS_NAMESPACE=leo1
