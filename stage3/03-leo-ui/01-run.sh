@@ -7,5 +7,5 @@ fi
 EOF
 
 install -v -m 644 files/leo_ui "${ROOTFS_DIR}/etc/nginx/sites-available/"
-
-ln -fs "${ROOTFS_DIR}/etc/nginx/sites-available/leo_ui" "${ROOTFS_DIR}/etc/nginx/sites-enabled/leo_ui"
+rm -v -f "${ROOTFS_DIR}/etc/nginx/sites-enabled/default"
+ln -fs "/etc/nginx/sites-available/leo_ui" "${ROOTFS_DIR}/etc/nginx/sites-enabled/leo_ui"
