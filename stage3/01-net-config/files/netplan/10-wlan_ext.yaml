@@ -1,8 +1,17 @@
 network:
   version: 2
   ethernets:
-    wlan_ext:
+    wlan_ext_rt2800usb:
+      match:
+        driver: rt2800usb
       renderer: networkd
-      addresses:
-        - 10.0.0.1/24
+      addresses: [ 10.0.0.1/24 ]
       link-local: [ ]
+      set-name: wlan_ext
+    wlan_ext_88XXau:
+      match:
+        driver: 88XXau
+      renderer: networkd
+      addresses: [ 10.0.0.1/24 ]
+      link-local: [ ]
+      set-name: wlan_ext

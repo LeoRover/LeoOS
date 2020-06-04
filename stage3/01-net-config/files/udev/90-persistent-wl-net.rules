@@ -1,3 +1,0 @@
-KERNEL=="wlan*",ENV{ID_NET_DRIVER}=="brcmfmac",NAME="wlan0"
-KERNEL=="wlan*",ENV{ID_USB_DRIVER}=="rt2800usb",NAME="wlan_ext"
-KERNEL=="wlan*",ENV{ID_USB_DRIVER}=="88XXau",NAME="wlan_ext"
