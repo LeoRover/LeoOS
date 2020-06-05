@@ -33,4 +33,8 @@ unmount_image "${IMG_FILE}"
 
 mkdir -p "${DEPLOY_DIR}"
 
-cp -v "${IMG_FILE}" "${DEPLOY_DIR}"
+mv -v "${IMG_FILE}" "${DEPLOY_DIR}"
+
+if [ "${COMPRESS_IMAGES}" = "1" ]; then
+    xz -v -9 -T0 "${DEPLOY_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.img"
+fi

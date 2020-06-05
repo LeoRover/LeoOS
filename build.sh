@@ -2,7 +2,7 @@
 
 usage()
 {
-	echo "Usage: $0 [ -f FIRST ] [ -l LAST ] [ -c ] [ -d ]" 1>&2
+	echo "Usage: $0 [ -f FIRST ] [ -l LAST ] [ -c ] [ -d ] [ -e ] [ -x ]" 1>&2
 }
 
 exit_abnormal()
@@ -164,8 +164,9 @@ STAGE_LAST=99
 CONTINUE=0
 CLEAN=1
 EXPORT_IMAGES=1
+COMPRESS_IMAGES=0
 
-while getopts ":f:l:cde" options; do
+while getopts ":f:l:cdex" options; do
 	case "${options}" in
 		f)
 			STAGE_FIRST=${OPTARG}
@@ -181,6 +182,9 @@ while getopts ":f:l:cde" options; do
 			;;
 		e)
 			EXPORT_IMAGES=0
+			;;
+		x)
+			COMPRESS_IMAGES=1
 			;;
 		:)
 			echo "Error: -${OPTARG} requires an argument."
@@ -216,6 +220,7 @@ export PREV_STAGE_DIR
 export ROOTFS_DIR
 export PREV_ROOTFS_DIR
 export EXPORT_ROOTFS_DIR
+export COMPRESS_IMAGES
 
 source "${BASE_DIR}/config.sh"
 
