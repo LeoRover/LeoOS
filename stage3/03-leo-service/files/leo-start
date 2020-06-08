@@ -2,10 +2,10 @@
 
 source /etc/ros/setup.bash
 
-LAUNCH_FILE=${LAUNCH_FILE:=/etc/ros/robot.launch}
+LAUNCH_FILE=${LAUNCH_FILE:="/etc/ros/robot.launch"}
 
-roslaunch $LAUNCH_FILE &
+roslaunch $LAUNCH_FILE $ROSLAUNCH_ARGS &
 
 PID=$!
-echo "$PID" > ${ROS_LOG_DIR}/leo.pid
+echo "$PID" > "/run/leo.pid"
 wait "$PID"

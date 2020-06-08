@@ -1,9 +1,5 @@
 #!/bin/bash
 
-source /etc/ros/setup.bash
-
-ROS_LOG_DIR=${ROS_LOG_DIR:=/var/log/ros}
-
-PID=$(cat ${ROS_LOG_DIR}/leo.pid)
+PID=$(cat /run/leo.pid)
 
 kill $PID
