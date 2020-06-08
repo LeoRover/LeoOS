@@ -9,8 +9,5 @@ rm -v -f "${ROOTFS_DIR}/etc/localtime"
 
 on_chroot << EOF
 export FK_MACHINE="Raspberry Pi 4 Model B"
-dpkg-reconfigure -f noninteractive locales
-dpkg-reconfigure -f noninteractive tzdata
-dpkg-reconfigure -f noninteractive console-setup
-dpkg-reconfigure -f noninteractive keyboard-configuration
+dpkg-reconfigure -f noninteractive locales tzdata keyboard-configuration
 EOF

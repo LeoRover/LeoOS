@@ -1,8 +1,5 @@
 locales	locales/locales_to_be_generated	multiselect	${LOCALE_DEFAULT} UTF-8
 locales	locales/default_environment_locale	select	${LOCALE_DEFAULT}
-console-setup   console-setup/charmap47 select  UTF-8
-console-setup   console-setup/codeset47 select  Guess optimal character set
-console-setup   console-setup/fontface47        select  Do not change the boot/kernel font
 keyboard-configuration	keyboard-configuration/altgr	select	The default for the keyboard layout
 keyboard-configuration	keyboard-configuration/model	select	Generic 105-key (Intl) PC
 keyboard-configuration	keyboard-configuration/xkb-keymap	select	${KEYBOARD_KEYMAP}
