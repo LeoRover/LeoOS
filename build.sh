@@ -125,11 +125,12 @@ run_stage(){
 			log "End ${STAGE_DIR}/prerun.sh"
 		fi
 		for SUB_STAGE_DIR in "${STAGE_DIR}"/*; do
-			if [ -d "${SUB_STAGE_DIR}" ] &&
-			   [ ! -f "${SUB_STAGE_DIR}/SKIP" ]; then
-				run_sub_stage
-			else
-				log "Skipping ${STAGE}/$(basename ${SUB_STAGE_DIR})"
+			if [ -d "${SUB_STAGE_DIR}" ]; then
+				if [ ! -f "${SUB_STAGE_DIR}/SKIP" ]; then
+					run_sub_stage
+				else
+					log "Skipping ${STAGE}/$(basename ${SUB_STAGE_DIR})"
+				fi
 			fi
 		done
 	else
