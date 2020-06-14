@@ -21,6 +21,7 @@ rm -v -rf "${ROOTFS_DIR}/boot/"dtb*
 rm -v -f "${ROOTFS_DIR}/boot/"*.old
 
 find "${ROOTFS_DIR}/boot/firmware" -type f -name "*.bak" -exec rm -v {} \;
+find "${ROOTFS_DIR}/etc/apt" -type f -name "*.save" -exec rm -v {} \;
 
 find "${ROOTFS_DIR}/var/log/" -type f -exec cp /dev/null {} \;
 
