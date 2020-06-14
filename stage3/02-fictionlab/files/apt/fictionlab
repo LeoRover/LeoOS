@@ -1,0 +1,4 @@
+# Prefer packages from the fictionlab repository
+Package: *
+Pin: release o=fictionlab
+Pin-Priority: 990
