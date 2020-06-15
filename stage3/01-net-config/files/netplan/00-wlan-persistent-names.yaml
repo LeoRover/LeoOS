@@ -1,0 +1,15 @@
+network:
+  version: 2
+  ethernets:
+    wlan_int:
+      match:
+        driver: brcmfmac
+      set-name: wlan_int
+    wlan_ext_rt2800usb:
+      match:
+        driver: rt2800usb
+      set-name: wlan_ext
+    wlan_ext_88XXau:
+      match:
+        driver: 88XXau
+      set-name: wlan_ext
