@@ -7,6 +7,7 @@ install -v -m 644 files/dnsmasq.service.d/*.conf "${ROOTFS_DIR}/etc/systemd/syst
 mkdir -p -m 755 "${ROOTFS_DIR}/etc/systemd/system/hostapd.service.d"
 install -v -m 644 files/hostapd.service.d/*.conf "${ROOTFS_DIR}/etc/systemd/system/hostapd.service.d/"
 install -v -m 755 files/firstboot.d/* "${ROOTFS_DIR}/etc/firstboot.d/"
+install -v -m 755 files/scripts/* "${ROOTFS_DIR}/usr/sbin/"
 
 install -v -m 644 files/iptables.ipv4.nat "${ROOTFS_DIR}/etc/iptables.ipv4.nat"
 install -v -m 755 files/rc.local "${ROOTFS_DIR}/etc/rc.local"

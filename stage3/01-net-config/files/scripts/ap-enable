@@ -1,0 +1,14 @@
+#!/bin/bash 
+
+if [[ ! $EUID -eq 0 ]]; then
+    echo "Please run this script as root."
+    exit 1
+fi
+
+mv -v /etc/netplan/10-wlan_ext-ap.yaml.ignore /etc/netplan/10-wlan_ext-ap.yaml
+netplan apply
+
+sed -i 's|^# \(.*localnet.*$\)|\1|' /etc/hosts
+
+systemctl enable --now hostapd
+systemctl enable --now dnsmasq
