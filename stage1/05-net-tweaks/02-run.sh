@@ -5,8 +5,8 @@ install -v -m 644 files/polkit/*.pkla "${ROOTFS_DIR}/etc/polkit-1/localauthority
 
 echo "${TARGET_HOSTNAME}" > "${ROOTFS_DIR}/etc/hostname"
 
-if ! grep -q "127.0.0.1 ${TARGET_HOSTNAME}" "${ROOTFS_DIR}/etc/hosts"; then
-    printf "\n127.0.0.1 ${TARGET_HOSTNAME}\n" >> "${ROOTFS_DIR}/etc/hosts"
+if ! grep -q "127.0.1.1 ${TARGET_HOSTNAME}" "${ROOTFS_DIR}/etc/hosts"; then
+    printf "\n127.0.1.1 ${TARGET_HOSTNAME}\n" >> "${ROOTFS_DIR}/etc/hosts"
 fi
 
 install -v -m 644 files/regenerate_ssh_host_keys.service "${ROOTFS_DIR}/etc/systemd/system/"
