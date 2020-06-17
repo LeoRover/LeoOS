@@ -22,6 +22,7 @@ rm -v -f "${ROOTFS_DIR}/boot/"*.old
 
 find "${ROOTFS_DIR}/boot/firmware" -type f -name "*.bak" -exec rm -v {} \;
 find "${ROOTFS_DIR}/etc/apt" -type f -name "*.save" -exec rm -v {} \;
+find "${ROOTFS_DIR}/etc" -type f -name "*.dpkg-old" -exec rm -v {} \;
 
 find "${ROOTFS_DIR}/var/log/" -type f -exec cp /dev/null {} \;
 
