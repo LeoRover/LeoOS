@@ -105,7 +105,7 @@ run_stage(){
 
 	if [ ! -f SKIP_IMAGES ]; then
 		if [ -f "${STAGE_DIR}/EXPORT_IMAGE" ]; then
-			EXPORT_DIRS="${EXPORT_DIRS} ${STAGE_DIR}"
+			EXPORT_STAGES="${EXPORT_STAGES} ${STAGE}"
 		fi
 	fi
 
@@ -197,6 +197,9 @@ while getopts ":f:l:cdex" options; do
 	esac
 done
 
+export GIT_REPO="https://github.com/LeoRover/leo_os"
+export GIT_HASH="$(git rev-parse HEAD)"
+
 export IMG_DATE="$(date +%Y-%m-%d)"
 export IMG_TIME="$(date +%H-%M-%S)"
 
@@ -220,6 +223,7 @@ export PREV_STAGE
 export PREV_STAGE_DIR
 export ROOTFS_DIR
 export PREV_ROOTFS_DIR
+export EXPORT_STAGE
 export EXPORT_ROOTFS_DIR
 export COMPRESS_IMAGES
 
@@ -252,10 +256,10 @@ done
 
 if [ "${EXPORT_IMAGES}" = "1" ]; then
 	CLEAN=1
-	for EXPORT_DIR in ${EXPORT_DIRS}; do
+	for EXPORT_STAGE in ${EXPORT_STAGES}; do
 		STAGE_DIR=${BASE_DIR}/export-image
-		source "${EXPORT_DIR}/EXPORT_IMAGE"
-		EXPORT_ROOTFS_DIR=${WORK_DIR}/$(basename "${EXPORT_DIR}")/rootfs
+		source "${BASE_DIR}/${EXPORT_STAGE}/EXPORT_IMAGE"
+		EXPORT_ROOTFS_DIR="${WORK_DIR}/${EXPORT_STAGE}/rootfs"
 		run_stage
 	done
 fi
