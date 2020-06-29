@@ -1,0 +1,9 @@
+--- a/rootfs/etc/xrdp/startwm.sh
++++ b/rootfs/etc/xrdp/startwm.sh
+@@ -30,5 +30,4 @@ if test -r /etc/profile; then
+ 	. /etc/profile
+ fi
+ 
+-test -x /etc/X11/Xsession && exec /etc/X11/Xsession
+-exec /bin/sh /etc/X11/Xsession
++lxsession -s Lubuntu -e LXDE
