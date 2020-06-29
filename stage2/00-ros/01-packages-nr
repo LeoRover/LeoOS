@@ -1,1 +1,2 @@
-python-rosdep python-catkin-tools ros-melodic-ros-base ros-melodic-compressed-image-transport ros-melodic-camera-info-manager
+python-rosdep python-catkin-tools
+ros-melodic-ros-base ros-melodic-compressed-image-transport ros-melodic-camera-info-manager
