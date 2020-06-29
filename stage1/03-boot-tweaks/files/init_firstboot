@@ -3,7 +3,7 @@
 mount /boot/firmware
 mount / -o remount,rw
 
-run-parts /etc/firstboot.d
+run-parts -v /etc/firstboot.d
 
 umount /boot/firmware
 mount / -o remount,ro
