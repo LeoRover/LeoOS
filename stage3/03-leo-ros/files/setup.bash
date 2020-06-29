@@ -15,7 +15,7 @@ export LAUNCH_FILE="/etc/ros/robot.launch"
 ### ROS Environment Variables
 ### http://wiki.ros.org/ROS/EnvironmentVariables
 
-export ROS_LOG_DIR="/var/log/ros"
+export ROS_HOME="/var/ros"
 export ROS_HOSTNAME="master.localnet"
 export ROS_MASTER_URI="http://master.localnet:11311"
 #export ROS_IP="10.0.0.1"

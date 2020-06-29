@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 mkdir -p -m 775 "${ROOTFS_DIR}/etc/ros/urdf"
-mkdir -p -m 775 "${ROOTFS_DIR}/var/log/ros/"
+mkdir -p -m 775 "${ROOTFS_DIR}/var/ros/"
 
 install -v -m 664 files/setup.bash "${ROOTFS_DIR}/etc/ros/"
 install -v -m 664 files/robot.launch "${ROOTFS_DIR}/etc/ros/"
@@ -14,7 +14,7 @@ on_chroot << EOF
 groupadd -f -r ros
 adduser $FIRST_USER_NAME ros
 chown root:ros -R "/etc/ros"
-chown root:ros "/var/log/ros"
+chown root:ros "/var/ros"
 systemctl enable leo
 EOF
 
