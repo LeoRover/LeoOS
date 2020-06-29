@@ -1,5 +1,5 @@
 IMG_NAME="LeoOS"
-IMG_VERSION="0.0"
+IMG_VERSION="0.1"
 
 BASE_IMG_URL=http://cdimage.ubuntu.com/releases/18.04.4/release/ubuntu-18.04.4-preinstalled-server-armhf+raspi3.img.xz
 
