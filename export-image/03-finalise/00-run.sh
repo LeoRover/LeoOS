@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-IMG_FILE="${STAGE_WORK_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.img"
+IMG_FILE="${STAGE_WORK_DIR}/${IMG_FILENAME}"
 
 rm -v -f "${ROOTFS_DIR}/usr/bin/qemu-arm-static"
 
@@ -42,7 +42,3 @@ unmount_image "${IMG_FILE}"
 mkdir -p "${DEPLOY_DIR}"
 
 mv -v "${IMG_FILE}" "${DEPLOY_DIR}"
-
-if [ "${COMPRESS_IMAGES}" = "1" ]; then
-    xz -v -9 -T0 "${DEPLOY_DIR}/${IMG_FILENAME}${IMG_SUFFIX}.img"
-fi
