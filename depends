@@ -6,3 +6,4 @@ mkdosfs:dosfstools
 mkfs.ext4:e2fsprogs
 wget
 xz:xz-utils
+bc
