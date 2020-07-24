@@ -8,6 +8,5 @@ echo "${TIMEZONE_DEFAULT}" > "${ROOTFS_DIR}/etc/timezone"
 rm -v -f "${ROOTFS_DIR}/etc/localtime"
 
 on_chroot << EOF
-export FK_MACHINE="Raspberry Pi 4 Model B"
 dpkg-reconfigure -f noninteractive locales tzdata keyboard-configuration
 EOF
