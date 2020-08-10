@@ -16,6 +16,5 @@ install -v -m 644 files/hostapd.conf "${ROOTFS_DIR}/etc/hostapd/hostapd.conf"
 
 on_chroot << EOF
 systemctl unmask hostapd
-systemctl enable hostapd
-systemctl enable dnsmasq
+echo y | ap-disable
 EOF
