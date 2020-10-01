@@ -3,9 +3,20 @@
 source /etc/ros/setup.bash
 
 LAUNCH_FILE=${LAUNCH_FILE:="/etc/ros/robot.launch"}
+START_ROSCORE=${START_ROSCORE:=true}
 
-roslaunch $LAUNCH_FILE $ROSLAUNCH_ARGS &
+# Kill an already running tmux session if exists
+leo-stop
 
-PID=$!
-echo "$PID" > "/run/leo.pid"
-wait "$PID"
+# Start rosmon in new tmux session
+COMMAND="source /etc/ros/setup.bash && mon launch --name=rosmon ${LAUNCH_FILE} ; tmux wait-for -S rosmon-done"
+tmux new -x 130 -s ros -n rosmon -d bash -c "$COMMAND"
+
+if [ "$START_ROSCORE" = true ]; then
+    tmux new-window -t ros -ad -n roscore "source /etc/ros/setup.bash && roscore"
+else
+    tmux set-option -t ros status off
+fi
+
+tmux wait-for rosmon-done
+leo-stop
