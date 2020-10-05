@@ -14,6 +14,7 @@ sed -i "s|USER|${FIRST_USER_NAME}|" "${ROOTFS_DIR}/etc/systemd/system/leo.servic
 
 on_chroot << EOF
 chown ${FIRST_USER_NAME}:${FIRST_USER_NAME} -R "/etc/ros"
+chown root:root -R "/etc/ros/rosdep"
 chown ${FIRST_USER_NAME}:${FIRST_USER_NAME} "/var/ros"
 systemctl enable leo
 EOF
