@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if tmux has-session -t ros 2> /dev/null; then
+    exec tmux attach -t ros
+else
+    echo "ERROR: The tmux session is not running"
+fi

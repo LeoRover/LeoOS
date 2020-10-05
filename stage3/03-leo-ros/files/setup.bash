@@ -6,6 +6,8 @@ source /opt/ros/melodic/setup.bash
 export LAUNCH_FILE="/etc/ros/robot.launch"
 # Set to false if you run roscore somewhere else 
 export START_ROSCORE=true
+# Set additional arguments for rosmon
+export ROSMON_ARGS=""
 
 ### leo_bringup variables
 

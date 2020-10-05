@@ -8,15 +8,23 @@ START_ROSCORE=${START_ROSCORE:=true}
 # Kill an already running tmux session if exists
 leo-stop
 
-# Start rosmon in new tmux session
-COMMAND="source /etc/ros/setup.bash && mon launch --name=rosmon ${LAUNCH_FILE} ; tmux wait-for -S rosmon-done"
+# Start rosmon in a new tmux session
+COMMAND="source /etc/ros/setup.bash && \
+mon launch --name=rosmon ${ROSMON_ARGS} ${LAUNCH_FILE} ; \
+tmux wait-for -S rosmon-done"
 tmux new -x 130 -s ros -n rosmon -d bash -c "$COMMAND"
 
 if [ "$START_ROSCORE" = true ]; then
+    # Start roscore in a new window of the tmux session
     tmux new-window -t ros -ad -n roscore "source /etc/ros/setup.bash && roscore"
 else
+    # Disable the status bar as there's only one window
     tmux set-option -t ros status off
 fi
 
-tmux wait-for rosmon-done
-leo-stop
+echo "Started the tmux session"
+
+trap leo-stop EXIT
+
+tmux wait-for rosmon-done &
+wait $!

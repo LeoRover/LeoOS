@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if tmux has-session -t ros 2> /dev/null; then
+    tmux kill-session -t ros
+fi
