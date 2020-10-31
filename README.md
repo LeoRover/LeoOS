@@ -7,8 +7,8 @@ The configuration consists of 5 stages, each one creates a valid root filesystem
 
 Here's a short description and list of changes for each stage:
 
-* `stage0` - A bare Ubuntu Server 18.04 32-bit system for Raspberry Pi.
-* `stage1` - A minimal working system that is a base for LeoOS but does not contain anything specific to Leo Rover.
+* **stage0** - A bare Ubuntu Server 18.04 32-bit system for Raspberry Pi.
+* **stage1** - A minimal working system that is a base for LeoOS but does not contain anything specific to Leo Rover.
     * Sets regional configuration (locales, timezone, etc.).
     * Adds [Raspberry Pi 2 Ubuntu] and [Ubuntu Pi Flavour Maker PPA] PPA repositories.
     * Upgrades all packages.
@@ -23,12 +23,12 @@ Here's a short description and list of changes for each stage:
     * Enable SSH Password Authentication.
     * Installs `network-manager` and configures `netplan` to use it as a default renderer.
     * Sets the hostname.
-* `stage2` - A "ROS-ready" minimal system.
+* **stage2** - A "ROS-ready" minimal system.
     * Adds ROS apt repository.
     * Installs some base ROS packages.
     * Installs `rosdep` and `catkin-tools` python packages.
     * Initializes `rosdep`.
-* `stage3` - The headless (without graphical interface) version of LeoOS. It is exported to the `lite` image.
+* **stage3** - The headless (without graphical interface) version of LeoOS. It is exported to the `lite` image.
     * Installs drivers for Realtek 88XXau WiFi network USB cards.
     * Installs `hostapd` and `dnsmasq` packages.
     * Configures the network to use the USB WiFi as an Access Point.
@@ -42,7 +42,7 @@ Here's a short description and list of changes for each stage:
     * Installs [leo_ui] and configures a HTTP server to host the Web interface.
     * Installs `core2-flasher` utility.
     * Configures [update-motd].
-* `stage4` - The full version of LeoOS. It is exported to the `full` image.
+* **stage4** - The full version of LeoOS. It is exported to the `full` image.
     * Installs lubuntu core desktop environment, a web browser and a GUI text editor.
     * Configures `lightdm` to automatically login to the system.
     * Installs ROS desktop packages.
