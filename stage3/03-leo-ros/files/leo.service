@@ -4,6 +4,7 @@ After=network-online.target
 
 [Service]
 Type=simple
+User=USER
 ExecStart=/usr/bin/leo-start
 
 [Install]

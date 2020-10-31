@@ -1,5 +1,0 @@
-#!/bin/bash
-
-PID=$(cat /run/leo.pid)
-
-kill $PID

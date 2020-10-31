@@ -1,2 +1,3 @@
-ros-melodic-leo-bringup
-ros-melodic-xacro
+ros-melodic-leo-robot
+ros-melodic-raspicam-node
+ros-melodic-rosmon-core

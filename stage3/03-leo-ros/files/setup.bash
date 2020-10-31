@@ -4,8 +4,10 @@ source /opt/ros/melodic/setup.bash
 
 # Path to the launch file to start
 export LAUNCH_FILE="/etc/ros/robot.launch"
-# Additional command-line arguments passed to roslaunch
-#export ROSLAUNCH_ARGS="--wait"
+# Set to false if you run roscore somewhere else 
+export START_ROSCORE=true
+# Set additional arguments for rosmon
+export ROSMON_ARGS=""
 
 ### leo_bringup variables
 
