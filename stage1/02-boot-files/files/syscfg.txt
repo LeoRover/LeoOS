@@ -5,4 +5,4 @@
 
 enable_uart=1
 cmdline=cmdline.txt
-dtoverlay=disable-bt
+dtoverlay=miniuart-bt
