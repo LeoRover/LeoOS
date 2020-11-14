@@ -10,7 +10,7 @@ echo "${FIRST_USER_NAME}:${FIRST_USER_PASS}" | chpasswd
 for GRP in input spi i2c gpio; do
 	groupadd -f -r "\${GRP}"
 done
-for GRP in adm dialout audio sudo video plugdev input gpio spi i2c netdev; do
+for GRP in adm dialout audio sudo video plugdev input gpio spi i2c netdev bluetooth; do
   adduser $FIRST_USER_NAME "\${GRP}"
 done
 EOF
