@@ -18,9 +18,13 @@ EOF
 echo "${FIRST_USER_NAME} ALL=(ALL) NOPASSWD: ALL" > "${ROOTFS_DIR}/etc/sudoers.d/010_${FIRST_USER_NAME}-nopasswd"
 chmod -v 440 "${ROOTFS_DIR}/etc/sudoers.d/010_${FIRST_USER_NAME}-nopasswd"
 
-on_chroot << EOF
-systemctl disable ModemManager
-EOF
+on_chroot "systemctl disable ModemManager"
 
 install -v -m 644 files/udev.d/99-com.rules "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -v -m 644 files/sysctl.d/99-rpi.conf "${ROOTFS_DIR}/etc/sysctl.d/"
+
+install -v -m 644 files/apt/fictionlab.list "${ROOTFS_DIR}/etc/apt/sources.list.d/"
+install -v -m 644 files/apt/fictionlab "${ROOTFS_DIR}/etc/apt/preferences.d/"
+
+on_chroot "apt-key add -" <files/apt/fictionlab.key
+on_chroot "apt-get update"
