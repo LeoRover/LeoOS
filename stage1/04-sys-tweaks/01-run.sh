@@ -7,7 +7,7 @@ if ! id -u ${FIRST_USER_NAME} >/dev/null 2>&1; then
 	adduser --disabled-password --gecos "" ${FIRST_USER_NAME}
 fi
 echo "${FIRST_USER_NAME}:${FIRST_USER_PASS}" | chpasswd
-for GRP in input spi i2c gpio; do
+for GRP in input spi i2c gpio bluetooth; do
 	groupadd -f -r "\${GRP}"
 done
 for GRP in adm dialout audio sudo video plugdev input gpio spi i2c netdev bluetooth; do
