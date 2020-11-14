@@ -1,1 +1,0 @@
-adduser xrdp ssl-cert
