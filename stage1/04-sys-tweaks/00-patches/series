@@ -1,3 +1,4 @@
 00-bashrc-color-prompt.diff
 01-apt-disable-auto-upgrades.diff
 02-xdg-disable-user-dirs.diff
+03-disable-release-upgrade-prompt.diff
