@@ -1,4 +1,0 @@
-[Full acccess to NetworkManager]
-Identity=unix-group:netdev;unix-group:sudo
-Action=org.freedesktop.NetworkManager.*
-ResultAny=yes
