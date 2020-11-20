@@ -10,21 +10,22 @@ Here's a short description and list of changes for each stage:
 * **stage0** - A bare Ubuntu Server 18.04 32-bit system for Raspberry Pi.
 * **stage1** - A minimal working system that is a base for LeoOS but does not contain anything specific to Leo Rover.
     * Set regional configuration (locales, timezone, etc.).
-    * Add [Raspberry Pi 2 Ubuntu] and [Ubuntu Pi Flavour Maker PPA] PPA repositories.
+    * Add [Raspberry Pi 2 Ubuntu] PPA repository.
     * Upgrade all packages.
     * Purge some redundant packages.
     * Replace `config.txt` and `cmdline.txt` boot configuration files for RPi.
     * Add `init_firstboot` script that is called upon first boot of the system, which runs scripts from the `/etc/firstboot.d` directory.
     * Add a script to `firtboot` config, which extends the filesystem to fill the SD card.
+    * Enable SSH Password Authentication.
+    * Install `network-manager` and configure `netplan` to use it as a default renderer.
+    * Set the hostname to `leo`.
     * Perform some minor system tweaks: enable bash color prompt, disable auto upgrades, disable creation of xdg user directories.
     * Create a default user and add him to different groups.
     * Add [Fictionlab apt repository].
-    * Install `pi-bluetooth` package to enable the onboard bluetooth module.
-    * Install `rng-tools` package to use RPi Hardware TRNG to feed kernel entropy pool.
     * Add a service which generates SSH host keys upon first boot.
-    * Enable SSH Password Authentication.
-    * Install `network-manager` and configure `netplan` to use it as a default renderer.
-    * Set the hostname.
+    * Install `rng-tools` package to use RPi Hardware TRNG to feed kernel entropy pool.
+    * Install `pi-bluetooth` package to enable the onboard bluetooth module.
+    * Install VideoCore utilities for RaspberryPi.
 * **stage2** - A "ROS-ready" minimal system.
     * Add ROS apt repository.
     * Install some base ROS packages.
@@ -53,7 +54,6 @@ Here's a short description and list of changes for each stage:
 
 [image-builder]: https://github.com/fictionlab/image-builder
 [Raspberry Pi 2 Ubuntu]: https://launchpad.net/~ubuntu-raspi2/+archive/ubuntu/ppa
-[Ubuntu Pi Flavour Maker PPA]: https://launchpad.net/~ubuntu-pi-flavour-makers/+archive/ubuntu/ppa
 [config.sh]: ./config.sh
 [Fictionlab apt repository]: http://files.fictionlab.pl/repo/
 [leo_ui]: https://github.com/LeoRover/leo_ui
