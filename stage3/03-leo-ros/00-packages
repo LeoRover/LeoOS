@@ -1,3 +1,4 @@
 ros-melodic-leo-robot
 ros-melodic-raspicam-node
 ros-melodic-rosmon-core
+python3-stm32loader
