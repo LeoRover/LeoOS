@@ -2,17 +2,31 @@ source /opt/ros/melodic/setup.bash
 
 ### leo service variables
 
-# Path to the launch file to start
+# Path to the launch file to start.
 export LAUNCH_FILE="/etc/ros/robot.launch"
-# Set to false if you run roscore somewhere else 
+
+# Set to false if you run roscore somewhere else.
 export START_ROSCORE=true
-# Set additional arguments for rosmon
+
+# Control whether to use rosmon or roslaunch for starting and managing nodes.
+# In case of problems with rosmon, set this to false.
+export USE_ROSMON=true
+
+# Set additional arguments for rosmon or roslaunch
 export ROSMON_ARGS=""
+export ROSLAUCH_ARGS=""
+
+# If set to true, starts rosmon (with ui) and roscore in a tmux session 
+# to which you can connect (using leo-attach script) and control the state
+# of the nodes. This feature is experimental.
+export INTERACTIVE=false
+
 
 ### leo_bringup variables
 
 # Uncomment this line if you use the Pololu motors
 #export LEO_MOTORS=pololu
+
 
 ### ROS Environment Variables
 ### http://wiki.ros.org/ROS/EnvironmentVariables
