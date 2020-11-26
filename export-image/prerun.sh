@@ -52,6 +52,7 @@ for FEATURE in metadata_csum 64bit; do
 done
 mkdosfs -n boot -F 32 -v "$BOOT_DEV" > /dev/null
 mkfs.ext4 -L rootfs -O "$ROOT_FEATURES" "$ROOT_DEV" > /dev/null
+tune2fs -c 10 -C 10 "$ROOT_DEV"
 
 mount -v "$ROOT_DEV" "${ROOTFS_DIR}" -t ext4
 mkdir -p "${ROOTFS_DIR}/boot/firmware"
