@@ -1,5 +1,0 @@
---- a/rootfs/boot/firmware/cmdline.txt
-+++ b/rootfs/boot/firmware/cmdline.txt
-@@ -1 +1 @@
--net.ifnames=0 dwc_otg.lpm_enable=0 pty.legacy_count=6 console=tty1 root=LABEL=rootfs rootfstype=ext4 elevator=deadline rootwait fixrtc
-+net.ifnames=0 dwc_otg.lpm_enable=0 pty.legacy_count=6 console=tty1 root=LABEL=rootfs rootfstype=ext4 elevator=deadline rootwait fixrtc init=/sbin/init_firstboot

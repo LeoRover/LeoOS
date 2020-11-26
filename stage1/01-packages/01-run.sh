@@ -7,6 +7,7 @@ apt-get purge cloud-init cloud-guest-utils cloud-initramfs-copymods cloud-initra
 apt autoremove --purge -y
 EOF
 
+rm -v -rf "${ROOTFS_DIR}/etc/cloud"
 rm -v -rf "${ROOTFS_DIR}/etc/systemd/system/cloud-config.service.d"
 rm -v -rf "${ROOTFS_DIR}/etc/systemd/system/cloud-final.service.d"
 rm -v -rf "${ROOTFS_DIR}/etc/systemd/system/cloud-init-local.service.d"
