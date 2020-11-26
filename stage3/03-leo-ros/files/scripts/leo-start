@@ -36,6 +36,7 @@ if [ "$INTERACTIVE" = true ]; then
 else
 
     if [ "$USE_ROSMON" = true ]; then
+        mkdir -p "/var/ros/log"
         rosrun rosmon_core rosmon --name=rosmon \
             --disable-ui --flush-stdout \
             --log=/var/ros/log/rosmon.log --flush-log ${ROSMON_ARGS} ${LAUNCH_FILE} &
