@@ -1,5 +1,5 @@
 IMG_NAME="LeoOS"
-IMG_VERSION="0.1"
+IMG_VERSION="0.2"
 
 export GIT_REPO="https://github.com/LeoRover/leo_os"
 export GIT_HASH="$(git rev-parse HEAD)"
