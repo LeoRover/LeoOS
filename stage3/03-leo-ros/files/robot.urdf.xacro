@@ -2,11 +2,9 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"
        name="leo">
 
-  <xacro:include filename="$(find leo_description)/urdf/macros.xacro"/>
+  <xacro:include filename="$(find leo_erc_description)/urdf/leo_erc_macros.xacro"/>
 
-  <xacro:leo default_antenna="true"
-             rockers_fixed="true"
-             footprint_link="true"
+  <xacro:leo rockers_fixed="true"
              link_prefix=""
              joint_prefix=""/>
 

@@ -1,9 +1,9 @@
 repositories:
-  src/leo_bringup:
+  src/leo_erc_robot:
     type: git
-    url: https://github.com/LeoRover/leo_bringup.git
-    version: erc
-  src/leo_description:
+    url: https://github.com/LeoRover/leo_erc_robot.git
+    version: master
+  src/leo_erc_common:
     type: git
-    url: https://github.com/LeoRover/leo_description.git
-    version: erc
+    url: https://github.com/LeoRover/leo_erc_common.git
+    version: master
