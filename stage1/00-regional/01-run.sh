@@ -7,6 +7,4 @@ rm -v "${ROOTFS_DIR}/etc/locale.gen"
 echo "${TIMEZONE_DEFAULT}" > "${ROOTFS_DIR}/etc/timezone"
 rm -v -f "${ROOTFS_DIR}/etc/localtime"
 
-on_chroot << EOF
-dpkg-reconfigure -f noninteractive locales tzdata keyboard-configuration
-EOF
+on_chroot "dpkg-reconfigure -f noninteractive locales tzdata keyboard-configuration"

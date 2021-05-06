@@ -1,0 +1,57 @@
+#!/bin/bash
+
+source /etc/ros/setup.bash
+
+LAUNCH_FILE=${LAUNCH_FILE:="/etc/ros/robot.launch"}
+START_ROSCORE=${START_ROSCORE:=true}
+USE_ROSMON=${USE_ROSMON:=true}
+ROSMON_ARGS=${ROSMON_ARGS:=""}
+ROSLAUNCH_ARGS=${ROSLAUNCH_ARGS:=""}
+INTERACTIVE=${INTERACTIVE:=false}
+
+# Kill already running nodes if exist
+leo-stop 2>/dev/null
+
+if [ "$INTERACTIVE" = true ]; then
+
+    # Start rosmon in a new tmux session
+    COMMAND="source /etc/ros/setup.bash && \
+        rosrun rosmon_core rosmon --name=rosmon \
+        --log=/var/ros/log/rosmon.log --flush-log ${ROSMON_ARGS} ${LAUNCH_FILE} ; \
+        tmux wait-for -S rosmon-done"
+    tmux -S /var/ros/tmux.sock new -x 130 -s ros -n rosmon -d bash -c "$COMMAND"
+
+    if [ "$START_ROSCORE" = true ]; then
+        # Start roscore in a new window of the tmux session
+        tmux -S /var/ros/tmux.sock new-window -t ros -ad -n roscore "source /etc/ros/setup.bash && roscore"
+    fi
+
+    echo "Started the tmux session"
+
+    trap leo-stop EXIT
+
+    tmux -S /var/ros/tmux.sock wait-for rosmon-done &
+    wait $!
+
+else
+
+    if [ "$USE_ROSMON" = true ]; then
+        mkdir -p "/var/ros/log"
+        rosrun rosmon_core rosmon --name=rosmon \
+            --disable-ui --flush-stdout \
+            --log=/var/ros/log/rosmon.log --flush-log ${ROSMON_ARGS} ${LAUNCH_FILE} &
+    else 
+        roslaunch --wait ${ROSLAUNCH_ARGS} ${LAUNCH_FILE} &
+    fi
+    
+    PID=$!
+    echo "$PID" > "/var/ros/leo.pid"
+    
+    if [ "$START_ROSCORE" = true ]; then
+        roscore &
+        trap "kill $!" EXIT
+    fi
+
+    wait "$PID"
+
+fi

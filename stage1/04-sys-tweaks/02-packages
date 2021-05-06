@@ -1,2 +1,4 @@
-raspberrypi-sys-mods
 rng-tools
+i2c-tools
+libraspberrypi-bin
+pi-bluetooth

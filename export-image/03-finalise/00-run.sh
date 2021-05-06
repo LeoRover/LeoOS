@@ -32,6 +32,8 @@ find "${ROOTFS_DIR}/etc" -type f -name "*.dpkg-old" -exec rm -v {} \;
 
 find "${ROOTFS_DIR}/var/log/" -type f -exec cp /dev/null {} \;
 
+rm -v -rf "${ROOTFS_DIR}/run/"*
+
 ROOT_DEV="$(mount | grep "${ROOTFS_DIR} " | cut -f1 -d' ')"
 
 unmount "${ROOTFS_DIR}"

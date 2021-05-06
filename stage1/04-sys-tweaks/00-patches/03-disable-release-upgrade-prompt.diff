@@ -1,0 +1,8 @@
+--- a/rootfs/etc/update-manager/release-upgrades
++++ b/rootfs/etc/update-manager/release-upgrades
+@@ -13,4 +13,4 @@
+ #           the currently-running one.  Note that if this option is used and
+ #           the currently-running release is not itself an LTS release the
+ #           upgrader will assume prompt was meant to be normal.
+-Prompt=lts
++Prompt=never

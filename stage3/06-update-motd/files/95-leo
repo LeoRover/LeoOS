@@ -1,0 +1,4 @@
+#!/bin/sh
+
+printf "Docs: https://docs.leorover.tech\n"
+printf "GitHub: https://github.com/LeoRover\n\n"

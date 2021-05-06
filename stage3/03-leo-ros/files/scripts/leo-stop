@@ -1,0 +1,17 @@
+#!/bin/bash
+
+source /etc/ros/setup.bash
+INTERACTIVE=${INTERACTIVE:=false}
+
+if [ "$INTERACTIVE" = true ]; then
+    if tmux -S /var/ros/tmux.sock has-session -t ros 2> /dev/null; then
+        tmux -S /var/ros/tmux.sock kill-session -t ros
+        rm -f /var/ros/tmux.sock
+        echo "Killed the tmux session"
+    fi
+else
+    if [ -f "/var/ros/leo.pid" ]; then
+        PID=$(cat /var/ros/leo.pid)
+        kill $PID
+    fi
+fi

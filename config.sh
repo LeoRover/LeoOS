@@ -1,10 +1,10 @@
 IMG_NAME="LeoOS"
-IMG_VERSION="0.1-ERC"
+IMG_VERSION="0.2-ERC"
 
 export GIT_REPO="https://github.com/LeoRover/leo_os"
 export GIT_HASH="$(git rev-parse HEAD)"
 
-export BASE_IMG_URL=http://cdimage.ubuntu.com/releases/18.04.5/release/ubuntu-18.04.5-preinstalled-server-armhf+raspi3.img.xz
+export BASE_IMG_URL=https://cdimage.ubuntu.com/releases/18.04.5/release/ubuntu-18.04.5-preinstalled-server-armhf+raspi4.img.xz
  
 export TARGET_HOSTNAME="leo"
 export FIRST_USER_NAME="pi"
