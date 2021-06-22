@@ -25,9 +25,10 @@ log "Adding Fictionlab Apt repository"
 
 install -v -m 644 files/apt/fictionlab.list "${ROOTFS_DIR}/etc/apt/sources.list.d/"
 
-on_chroot "apt-key add -" <files/apt/fictionlab.key
-on_chroot "apt-get update"
-
+on_chroot << EOF
+curl -s https://files.fictionlab.pl/repo/repo.key | sudo apt-key add -
+apt-get update
+EOF
 
 log "Performing other system modifications"
 
