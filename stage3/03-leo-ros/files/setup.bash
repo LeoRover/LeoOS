@@ -1,4 +1,4 @@
-source /opt/ros/melodic/setup.bash
+source /opt/ros/noetic/setup.bash
 
 ### leo service variables
 

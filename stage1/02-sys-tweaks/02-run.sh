@@ -26,7 +26,7 @@ log "Adding Fictionlab Apt repository"
 install -v -m 644 files/apt/fictionlab.list "${ROOTFS_DIR}/etc/apt/sources.list.d/"
 
 on_chroot << EOF
-curl -s https://files.fictionlab.pl/repo/repo.key | sudo apt-key add -
+curl -s https://files.fictionlab.pl/repo/repo.key | apt-key add -
 apt-get update
 EOF
 

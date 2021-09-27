@@ -1,0 +1,17 @@
+#!/bin/sh
+
+START_SECTOR=$(fdisk -l | grep mmcblk0p2 | awk '{print $2}')
+
+(
+echo d # Delete a partition
+echo 2 # Partition number
+echo n # Add a new partition
+echo p # Primary partition
+echo 2 # Partition number
+echo ${START_SECTOR}  # First sector
+echo   # Last sector (Accept default)
+echo w # Write changes
+) | sudo fdisk /dev/mmcblk0
+
+partprobe /dev/mmcblk0
+resize2fs /dev/mmcblk0p2

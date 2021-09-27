@@ -9,7 +9,7 @@ cd rtl8812au/
 git checkout ${COMMIT_SHA}
 
 sed -i 's/CONFIG_PLATFORM_I386_PC = y/CONFIG_PLATFORM_I386_PC = n/g' Makefile
-sed -i 's/CONFIG_PLATFORM_ARM_RPI = n/CONFIG_PLATFORM_ARM_RPI = y/g' Makefile
+sed -i 's/CONFIG_PLATFORM_ARM64_RPI = n/CONFIG_PLATFORM_ARM64_RPI = y/g' Makefile
 
 cp -r $(pwd) /usr/src/${DRIVER_NAME}-${DRIVER_VERSION}
 

@@ -1,2 +1,4 @@
-python-rosdep python-catkin-tools
-ros-melodic-ros-base ros-melodic-compressed-image-transport ros-melodic-camera-info-manager
+python3-rosdep python3-catkin-tools
+ros-noetic-ros-base
+ros-noetic-compressed-image-transport
+ros-noetic-camera-info-manager

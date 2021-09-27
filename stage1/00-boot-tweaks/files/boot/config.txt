@@ -11,16 +11,17 @@
 # to support old firmwares.
 
 [pi4]
-kernel=uboot_rpi_4_32b.bin
+kernel=uboot_rpi_4.bin
 max_framebuffers=2
 
 [pi2]
 kernel=uboot_rpi_2.bin
 
 [pi3]
-kernel=uboot_rpi_3_32b.bin
+kernel=uboot_rpi_3.bin
 
 [all]
+arm_64bit=1
 device_tree_address=0x03000000
 
 # The following settings are used by bootcode.bin (on Pi 3 and earlier) and by 
