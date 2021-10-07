@@ -1,0 +1,4 @@
+lxqt oxygen-icon-theme xorg xinit xserver-xorg-video-fbdev
+firefox 
+nm-tray
+lightdm lightdm-gtk-greeter
