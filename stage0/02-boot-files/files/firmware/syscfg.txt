@@ -5,4 +5,6 @@
 
 enable_uart=1
 cmdline=cmdline.txt
+dtoverlay=vc4-fkms-v3d
 dtoverlay=miniuart-bt
+disable_overscan=1
