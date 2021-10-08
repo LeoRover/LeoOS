@@ -1,0 +1,11 @@
+--- a/rootfs/etc/xdg/pcmanfm-qt/lxqt/settings.conf
++++ b/rootfs/etc/xdg/pcmanfm-qt/lxqt/settings.conf
+@@ -1,6 +1,6 @@
+ [Desktop]
+-DesktopShortcuts=Home, Trash, Computer, Network
+-Wallpaper=/usr/share/lxqt/themes/debian/wallpaper.svg
++DesktopShortcuts=Home, Trash
++Wallpaper=/usr/share/themes/leo/leo-mars-wallpaper.jpg
+ WallpaperMode=zoom
+ WallpaperRandomize=false
+ 

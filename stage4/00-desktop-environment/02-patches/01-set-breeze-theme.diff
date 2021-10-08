@@ -1,0 +1,47 @@
+--- a/rootfs/etc/xdg/lxqt/panel.conf
++++ b/rootfs/etc/xdg/lxqt/panel.conf
+@@ -1,5 +1,5 @@
+ [General]
+-iconTheme=Papirus-Dark
++iconTheme=breeze-dark
+ 
+ [kbindicator]
+ alignment=Right
+--- a/rootfs/etc/xdg/lxqt/lxqt-config-appearance.conf
++++ b/rootfs/etc/xdg/lxqt/lxqt-config-appearance.conf
+@@ -1,2 +1,2 @@
+ [General]
+-ControlGTKThemeEnabled=false
++ControlGTKThemeEnabled=true
+--- a/rootfs/etc/xdg/lxqt/lxqt.conf
++++ b/rootfs/etc/xdg/lxqt/lxqt.conf
+@@ -1,7 +1,7 @@
+ [General]
+-icon_theme=Papirus
++icon_theme=breeze
+ icon_follow_color_scheme=false
+-theme=debian
++theme=frost
+ 
+ [Qt]
+-style=Fusion
++style=Breeze
+--- a/rootfs/etc/xdg/lxqt/session.conf
++++ b/rootfs/etc/xdg/lxqt/session.conf
+@@ -1,3 +1,6 @@
+ [Environment]
+ BROWSER=firefox
+ TERM=qterminal
++
++[Mouse]
++cursor_theme=breeze_cursors
+--- a/rootfs/etc/gtk-3.0/settings.ini
++++ b/rootfs/etc/gtk-3.0/settings.ini
+@@ -1,5 +1,5 @@
+ [Settings]
+-gtk-theme-name = Yaru
+-gtk-icon-theme-name = Yaru
++gtk-theme-name = Breeze
++gtk-icon-theme-name = breeze
+ gtk-sound-theme-name = Yaru
+ gtk-icon-sizes = panel-menu-bar=24,24

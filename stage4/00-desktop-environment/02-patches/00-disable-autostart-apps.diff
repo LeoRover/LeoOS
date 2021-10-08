@@ -1,0 +1,10 @@
+--- a/rootfs/etc/xdg/autostart/lxqt-powermanagement.desktop
++++ b/rootfs/etc/xdg/autostart/lxqt-powermanagement.desktop
+@@ -7,6 +7,7 @@ Exec=lxqt-powermanagement
+ OnlyShowIn=LXQt;
+ X-LXQt-Need-Tray=true
+ X-LXQt-Module=true
++Hidden=true
+ 
+ Name[da]=Strømstyring
+ Name[de]=LXQt-Energieverwaltung
