@@ -8,3 +8,4 @@ git
 tmux
 bash-completion
 htop
+zram-config
