@@ -39,4 +39,8 @@ install -v -m 644 files/polkit/*.pkla "${ROOTFS_DIR}/etc/polkit-1/localauthority
 
 install -v -m 644 files/regenerate_ssh_host_keys.service "${ROOTFS_DIR}/etc/systemd/system/"
 
-on_chroot "systemctl enable regenerate_ssh_host_keys"
+on_chroot << EOF
+systemctl enable regenerate_ssh_host_keys
+systemctl disable motd-news.timer
+systemctl disable apt-daily-upgrade.timer
+EOF
