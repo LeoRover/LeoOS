@@ -13,5 +13,4 @@ echo   # Last sector (Accept default)
 echo w # Write changes
 ) | fdisk /dev/mmcblk0
 
-partprobe /dev/mmcblk0
 resize2fs /dev/mmcblk0p2
