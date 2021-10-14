@@ -1,7 +1,7 @@
 IMG_NAME="LeoOS"
-IMG_VERSION="1.0.0"
+IMG_VERSION="$(git describe --tags)"
 
-export GIT_REPO="https://github.com/LeoRover/leo_os"
+export GIT_REPO="https://github.com/LeoRover/LeoOS"
 export GIT_HASH="$(git rev-parse HEAD)"
  
 export TARGET_HOSTNAME="leo"
