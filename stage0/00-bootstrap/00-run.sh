@@ -1,3 +1,5 @@
 #!/bin/bash -e
 
-multistrap -d "${ROOTFS_DIR}" -f files/focal.conf
+if [ ! -d "${ROOTFS_DIR}" ]; then
+    multistrap -d "${ROOTFS_DIR}" -f multistrap.conf
+fi
