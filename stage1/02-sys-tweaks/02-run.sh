@@ -20,16 +20,6 @@ chmod -v 440 "${ROOTFS_DIR}/etc/sudoers.d/010_${FIRST_USER_NAME}-nopasswd"
 
 on_chroot "systemctl disable ModemManager"
 
-
-log "Adding Fictionlab Apt repository"
-
-install -v -m 644 files/apt/fictionlab.list "${ROOTFS_DIR}/etc/apt/sources.list.d/"
-
-on_chroot << EOF
-curl -s https://files.fictionlab.pl/repo/repo.key | apt-key add -
-apt-get update
-EOF
-
 log "Performing other system modifications"
 
 install -v -m 644 files/apt/fictionlab "${ROOTFS_DIR}/etc/apt/preferences.d/"
