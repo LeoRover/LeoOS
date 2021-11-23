@@ -27,10 +27,7 @@ install -v -m 644 files/udev.d/99-com.rules "${ROOTFS_DIR}/etc/udev/rules.d/"
 install -v -m 644 files/sysctl.d/99-rpi.conf "${ROOTFS_DIR}/etc/sysctl.d/"
 install -v -m 644 files/polkit/*.pkla "${ROOTFS_DIR}/etc/polkit-1/localauthority/50-local.d/"
 
-install -v -m 644 files/regenerate_ssh_host_keys.service "${ROOTFS_DIR}/etc/systemd/system/"
-
 on_chroot << EOF
-systemctl enable regenerate_ssh_host_keys
 systemctl disable motd-news.timer
 systemctl disable apt-daily-upgrade.timer
 EOF
