@@ -13,3 +13,7 @@ network:
       match:
         driver: 88XXau
       set-name: wlan_ext
+    wlan_ext_rtl88XXau:
+      match:
+        driver: rtl88XXau
+      set-name: wlan_ext
