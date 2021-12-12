@@ -10,3 +10,4 @@ bash-completion
 htop
 zram-config
 usbutils
+man-db
