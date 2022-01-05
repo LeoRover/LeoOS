@@ -1,1 +1,1 @@
-dnsmasq hostapd
+dnsmasq hostapd iptables-persistent
