@@ -32,7 +32,7 @@ export INTERACTIVE=false
 ### http://wiki.ros.org/ROS/EnvironmentVariables
 
 export ROS_HOME="/var/ros"
-export ROS_HOSTNAME="master.localnet"
-export ROS_MASTER_URI="http://master.localnet:11311"
+export ROS_HOSTNAME="master.lan"
+export ROS_MASTER_URI="http://localhost:11311"
 #export ROS_IP="10.0.0.1"
 #export ROS_NAMESPACE="leo1"
