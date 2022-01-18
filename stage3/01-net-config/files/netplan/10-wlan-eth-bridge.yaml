@@ -1,0 +1,15 @@
+network:
+  version: 2
+  ethernets:
+    wlan_ext:
+      renderer: networkd
+      link-local: []
+    eth0:
+      renderer: networkd
+      optional: true
+  bridges:
+    br0:
+      renderer: networkd
+      interfaces: [ eth0 ]
+      addresses: [ 10.0.0.1/24 ]
+      link-local: []

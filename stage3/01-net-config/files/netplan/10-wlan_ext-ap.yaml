@@ -1,7 +1,0 @@
-network:
-  version: 2
-  ethernets:
-    wlan_ext:
-      renderer: networkd
-      addresses: [ 10.0.0.1/24 ]
-      link-local: [ ]

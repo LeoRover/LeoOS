@@ -16,5 +16,5 @@ systemctl disable --now hostapd
 
 sed -i 's|\(^.*localnet.*$\)|# \1|' /etc/hosts
 
-mv -v /etc/netplan/10-wlan_ext-ap.yaml /etc/netplan/10-wlan_ext-ap.yaml.ignore
+mv -v /etc/netplan/10-wlan-eth-bridge.yaml /etc/netplan/10-wlan-eth-bridge.yaml.ignore
 netplan apply
