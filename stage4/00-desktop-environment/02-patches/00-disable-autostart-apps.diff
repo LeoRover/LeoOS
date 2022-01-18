@@ -8,3 +8,13 @@
  
  Name[da]=Strømstyring
  Name[de]=LXQt-Energieverwaltung
+--- a/rootfs/etc/xdg/autostart/nm-applet.desktop
++++ b/rootfs/etc/xdg/autostart/nm-applet.desktop
+@@ -3,6 +3,7 @@ Name=Network
+ Comment=Manage your network connections
+ Icon=nm-device-wireless
+ Exec=nm-applet
++Hidden=true
+ Terminal=false
+ Type=Application
+ NoDisplay=true
