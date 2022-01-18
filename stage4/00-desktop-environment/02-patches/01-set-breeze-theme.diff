@@ -45,3 +45,14 @@
 +gtk-icon-theme-name = breeze
  gtk-sound-theme-name = Yaru
  gtk-icon-sizes = panel-menu-bar=24,24
+--- a/rootfs/etc/xdg/openbox/lxqt-rc.xml
++++ b/rootfs/etc/xdg/openbox/lxqt-rc.xml
+@@ -49,7 +49,7 @@
+ </placement>
+ 
+ <theme>
+-  <name>Onyx</name>
++  <name>Breeze-ob</name>
+   <titleLayout>NLIMC</titleLayout>
+   <!--
+       available characters are NDSLIMC, each can occur at most once.
