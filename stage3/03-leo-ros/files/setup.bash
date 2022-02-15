@@ -18,21 +18,15 @@ export ROSLAUCH_ARGS=""
 
 # If set to true, starts rosmon (with ui) and roscore in a tmux session 
 # to which you can connect (using leo-attach script) and control the state
-# of the nodes. This feature is experimental.
+# of the nodes.
 export INTERACTIVE=false
-
-
-### leo_bringup variables
-
-# Uncomment this line if you use the Pololu motors
-#export LEO_MOTORS=pololu
 
 
 ### ROS Environment Variables
 ### http://wiki.ros.org/ROS/EnvironmentVariables
 
 export ROS_HOME="/var/ros"
-export ROS_HOSTNAME="master.lan"
 export ROS_MASTER_URI="http://localhost:11311"
-#export ROS_IP="10.0.0.1"
+export ROS_IP="10.0.0.1"
+#export ROS_HOSTNAME="master.lan"
 #export ROS_NAMESPACE="leo1"
