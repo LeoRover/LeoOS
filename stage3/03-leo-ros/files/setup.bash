@@ -3,23 +3,23 @@ source /opt/ros/noetic/setup.bash
 ### leo service variables
 
 # Path to the launch file to start.
-export LAUNCH_FILE="/etc/ros/robot.launch"
+LAUNCH_FILE="/etc/ros/robot.launch"
 
 # Set to false if you run roscore somewhere else.
-export START_ROSCORE=true
+START_ROSCORE=true
 
 # Control whether to use rosmon or roslaunch for starting and managing nodes.
 # In case of problems with rosmon, set this to false.
-export USE_ROSMON=true
+USE_ROSMON=true
 
 # Set additional arguments for rosmon or roslaunch
-export ROSMON_ARGS=""
-export ROSLAUCH_ARGS=""
+ROSMON_ARGS=""
+ROSLAUCH_ARGS=""
 
 # If set to true, starts rosmon (with ui) and roscore in a tmux session 
 # to which you can connect (using leo-attach script) and control the state
 # of the nodes.
-export INTERACTIVE=false
+INTERACTIVE=false
 
 
 ### ROS Environment Variables
