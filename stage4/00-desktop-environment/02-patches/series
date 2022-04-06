@@ -1,3 +1,4 @@
 00-disable-autostart-apps.diff
 01-set-breeze-theme.diff
 02-pcmanfm-change-wallpaper.diff
+03-set-default-window-manager.diff

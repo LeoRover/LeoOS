@@ -1,0 +1,10 @@
+--- a/rootfs/etc/xdg/lxqt/session.conf
++++ b/rootfs/etc/xdg/lxqt/session.conf
+@@ -4,3 +4,7 @@ TERM=qterminal
+ 
+ [Mouse]
+ cursor_theme=breeze_cursors
++
++[General]
++window_manager=openbox
++
