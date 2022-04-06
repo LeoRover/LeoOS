@@ -5,12 +5,14 @@
   <arg if="$(eval robot_ns != '')" name="tf_frame_prefix" value="$(arg robot_ns)/" />
 
   <param name="robot_description"
-    command="xacro /etc/ros/robot.urdf.xacro 
+    command="xacro /etc/ros/urdf/robot.urdf.xacro 
     link_prefix:='$(arg tf_frame_prefix)'" />
 
   <include file="$(find leo_bringup)/launch/leo_bringup.launch">
     <arg name="upload_description" value="false" />
     <arg name="tf_frame_prefix" value="$(arg tf_frame_prefix)" />
   </include>
+
+  <rosparam command="load" file="/etc/ros/params.yaml" />
 
 </launch>
