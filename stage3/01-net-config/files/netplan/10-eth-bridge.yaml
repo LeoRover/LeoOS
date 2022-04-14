@@ -1,9 +1,7 @@
+# Creates a bridge interface and adds ethernet interface to it.
 network:
   version: 2
   ethernets:
-    wlan_ext:
-      renderer: networkd
-      link-local: []
     eth0:
       renderer: networkd
       optional: true
