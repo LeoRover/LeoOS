@@ -1,8 +1,15 @@
-# leo_os
-This repository contains an [image-builder] configuration for building LeoOS images (OS images for Raspberry Pi computer running inside Leo Rover). \
-For the built, compressed images, visit the [Releases page](https://github.com/LeoRover/leo_os/releases).
+# LeoOS
+LeoOS is a Debian-based Operating System distribution for the single-board computer running inside Leo Rover (currently Raspberry Pi 4B). It uses Ubuntu and Fictionlab package archives, comes with a ROS distribution, preconfigured network, a desktop environment, a service for starting base functionalities at boot, and many more.
 
-# Build stages
+This repository contains an [image-builder] configuration for building LeoOS images (OS images for Raspberry Pi computer running inside Leo Rover). \
+For the built, compressed images, visit the [Releases page](https://github.com/LeoRover/LeoOS/releases).
+
+## Versions
+The major version (the first part in the three-part version number) is tied to the Ubuntu and ROS distributions the OS is based on. For now, the version semantics look as follows:
+* 1.0.0 and up - Ubuntu 20.04 Focal Fossa and ROS Noetic
+* Before 1.0.0 - Ubuntu 18.04 Bionic Beaver and ROS Melodic
+
+## Build stages
 The configuration consists of 5 stages, each one creates a valid root filesystem for Raspberry Pi 3/4. The last two stages are exported to bootable SD card images.
 
 Here's a short description and list of changes for each stage:
@@ -40,14 +47,15 @@ Here's a short description and list of changes for each stage:
     * Install [leo_ui] and configure a HTTP server to host the Web interface.
     * Configure [update-motd].
 * **stage4** (`full` image) - The full version of LeoOS.
-    * Install lxqt desktop environment, a web browser and a GUI text editor.
+    * Install LXQt desktop environment, a web browser and a GUI text editor.
     * Change the default wallpaper.
-    * Configure `lightdm` to automatically login to the system.
     * Install ROS desktop packages.
-    * Install and configure `xrdp` server (remote desktop).
+    * Install [xrdp] and [TigerVNC] servers for remote desktop.
     * Add a script to `firstboot` configuration, which generates keys for `xrdp`. 
 
 [image-builder]: https://github.com/fictionlab/image-builder
 [multistrap]: https://wiki.debian.org/Multistrap
 [leo_ui]: https://github.com/LeoRover/leo_ui
 [update-motd]: http://manpages.ubuntu.com/manpages/xenial/man5/update-motd.5.html
+[TigerVNC]: https://tigervnc.org
+[xrdp]: http://xrdp.org
