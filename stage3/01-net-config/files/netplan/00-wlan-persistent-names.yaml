@@ -1,4 +1,3 @@
-# Assigns persistent names to internal and external Wlan interfaces
 network:
   version: 2
   ethernets:
@@ -6,7 +5,15 @@ network:
       match:
         driver: brcmfmac
       set-name: wlan_int
-    wlan_ext:
+    wlan_ext_rt2800usb:
       match:
-        driver: rt2800usb 88XXau rtl88XXau
+        driver: rt2800usb
+      set-name: wlan_ext
+    wlan_ext_88XXau:
+      match:
+        driver: 88XXau
+      set-name: wlan_ext
+    wlan_ext_rtl88XXau:
+      match:
+        driver: rtl88XXau
       set-name: wlan_ext
