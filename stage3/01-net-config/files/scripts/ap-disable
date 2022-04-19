@@ -14,7 +14,5 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then exit 1; fi
 systemctl disable --now dnsmasq
 systemctl disable --now hostapd
 
-sed -i 's|\(^.*lan.*$\)|# \1|' /etc/hosts
-
 mv -v /etc/netplan/20-wlan-ap.yaml /etc/netplan/20-wlan-ap.yaml.ignore
 netplan apply

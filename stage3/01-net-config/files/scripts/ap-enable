@@ -8,7 +8,5 @@ fi
 mv -v /etc/netplan/20-wlan-ap.yaml.ignore /etc/netplan/20-wlan-ap.yaml
 netplan apply
 
-sed -i 's|^# \(.*lan.*$\)|\1|' /etc/hosts
-
 systemctl enable --now hostapd
 systemctl enable --now dnsmasq

@@ -1,6 +1,0 @@
---- a/rootfs/etc/hosts
-+++ b/rootfs/etc/hosts
-@@ -11,0 +12,3 @@ ff02::3 ip6-allhosts
-+
-+# Hostnames in the localnet domain are resolved by the local DNS server
-+10.0.0.1 master.localnet master.lan
