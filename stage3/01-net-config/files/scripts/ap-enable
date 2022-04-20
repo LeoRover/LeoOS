@@ -9,4 +9,3 @@ mv -v /etc/netplan/20-wlan-ap.yaml.ignore /etc/netplan/20-wlan-ap.yaml
 netplan apply
 
 systemctl enable --now hostapd
-systemctl enable --now dnsmasq
