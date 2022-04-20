@@ -25,9 +25,6 @@ rm -v -f "${ROOTFS_DIR}/etc/ssl/certs/ssl-cert-snakeoil.pem"
 rm -v -f "${ROOTFS_DIR}/etc/ssl/private/ssl-cert-snakeoil.key"
 rm -v -f "${ROOTFS_DIR}/etc/ssh/ssh_host_"*"_key"*
 
-# Remove resolver configuration
-rm -v -f "${ROOTFS_DIR}/etc/resolv.conf"
-
 ROOT_DEV="$(mount | grep "${ROOTFS_DIR} " | cut -f1 -d' ')"
 
 unmount "${ROOTFS_DIR}"
