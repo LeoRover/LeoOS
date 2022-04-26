@@ -5,6 +5,7 @@ mkdir -p -m 755 "${ROOTFS_DIR}/var/ros/"
 
 install -v -m 644 files/setup.bash "${ROOTFS_DIR}/etc/ros/"
 install -v -m 644 files/robot.launch "${ROOTFS_DIR}/etc/ros/"
+install -v -m 644 files/params.yaml "${ROOTFS_DIR}/etc/ros/"
 install -v -m 644 files/robot.urdf.xacro "${ROOTFS_DIR}/etc/ros/urdf/"
 install -v -m 644 files/leo.service "${ROOTFS_DIR}/etc/systemd/system/"
 install -v -m 755 files/scripts/* "${ROOTFS_DIR}/usr/bin/"

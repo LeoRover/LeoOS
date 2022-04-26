@@ -1,0 +1,13 @@
+[Unit]
+Description=Remote desktop service (VNC)
+After=network.target lightdm.service
+
+[Service]
+Type=simple
+User=lightdm
+ExecStart=/usr/bin/x0vncserver -SecurityTypes=None -AlwaysShared -rfbport=5900 -display=:0.0
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

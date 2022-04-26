@@ -1,0 +1,8 @@
+locales	locales/locales_to_be_generated	multiselect	${LOCALE_DEFAULT} UTF-8
+locales	locales/default_environment_locale	select	${LOCALE_DEFAULT}
+keyboard-configuration	keyboard-configuration/altgr	select	The default for the keyboard layout
+keyboard-configuration	keyboard-configuration/model	select	Generic 105-key (Intl) PC
+keyboard-configuration	keyboard-configuration/xkb-keymap	select	${KEYBOARD_KEYMAP}
+keyboard-configuration	keyboard-configuration/compose	select	No compose key
+keyboard-configuration	keyboard-configuration/ctrl_alt_bksp	boolean	true
+keyboard-configuration  keyboard-configuration/variant  select  ${KEYBOARD_LAYOUT}

@@ -1,0 +1,56 @@
+## You can use this file to override some of the ROS parameters.
+## Simply uncomment (delete the # character) the parameter you want to set or write the parameter name yourself.
+## To apply the new parameters, restart the `leo` service (`sudo systemctl restart leo`).
+
+## http://wiki.ros.org/leo_fw#Parameters
+firmware:
+  wheels:
+## Uncomment the following 2 lines if you have the Pololu motors
+    #encoder_resolution: 8256.0
+    #pid: {p: 0.0, i: 0.005, d: 0.0}
+
+    #torque_constant: 1.17647
+    #pwm_duty_limit: 100.0
+
+  diff_drive:
+    #wheel_radius: 0.0625
+    #wheel_separation: 0.33
+    #angular_velocity_multiplier: 1.91
+    #input_timeout: 500
+
+  #battery_min_voltage: 10.0
+
+## http://wiki.ros.org/leo_fw#Parameters-1
+firmware_message_converter:
+  #robot_frame_id: base_link
+  #odom_frame_id: odom
+  #imu_frame_id: imu_frame
+
+  #wheel_joint_names: [wheel_FL_joint, wheel_RL_joint, wheel_FR_joint, wheel_RR_joint]
+
+  #wheel_odom_twist_covariance_diagonal: [0.0001, 0.0, 0.0, 0.0, 0.0, 0.001]
+  #imu_angular_velocity_covariance_diagonal: [0.000001, 0.000001, 0.00001]
+  #imu_linear_acceleration_covariance_diagonal: [0.001, 0.001, 0.001]
+
+raspicam_node:
+  #width: 640
+  #height: 480
+  #quality: 15
+  #framerate: 30
+
+## The rest of the parameters are dynamically reconfigurable.
+## See: http://wiki.ros.org/rqt_reconfigure
+
+  #contrast: -4
+  #sharpness: 0
+  #brightness: 50
+  #saturation: 10
+  #ISO: 500
+  #exposure_compensation: 0
+  #video_stabilisation: false
+  #vFlip: false
+  #hFlip: false
+  #shutter_speed: 0
+  #zoom: 1.0
+  #exposure: "auto"
+  #awb_mode: "auto"

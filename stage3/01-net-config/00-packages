@@ -1,1 +1,2 @@
-dnsmasq hostapd
+dnsmasq hostapd resolvconf
+iptables-persistent

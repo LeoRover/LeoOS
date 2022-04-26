@@ -1,4 +1,5 @@
-qemu-arm-static:qemu-user-static
+multistrap
+qemu-aarch64-static:qemu-user-static
 rsync
 zerofree
 parted

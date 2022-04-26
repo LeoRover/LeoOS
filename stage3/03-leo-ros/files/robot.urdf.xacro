@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"
-       name="leo">
+       name="leo_erc">
 
-  <xacro:include filename="$(find leo_erc_description)/urdf/leo_erc_macros.xacro"/>
+  <xacro:arg name="link_prefix" default=""/>
 
-  <xacro:leo rockers_fixed="true"
-             link_prefix=""
-             joint_prefix=""/>
+  <xacro:include filename="$(find leo_erc_description)/urdf/leo_erc.xacro"/>
+
+  <xacro:leo_erc rockers_fixed="true"
+    link_prefix="$(arg link_prefix)"
+    joint_prefix=""/>
 
 </robot>

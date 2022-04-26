@@ -1,0 +1,6 @@
+openbox lxqt xorg xinit xserver-xorg-video-fbdev
+firefox 
+nm-tray network-manager-gnome
+lightdm lightdm-mini-greeter accountsservice
+lxqt-themes kde-style-breeze breeze-gtk-theme breeze-icon-theme breeze-cursor-theme
+blueman pulseaudio-module-bluetooth

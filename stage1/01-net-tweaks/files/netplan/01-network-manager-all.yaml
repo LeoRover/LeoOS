@@ -1,0 +1,4 @@
+# Sets the default renderer to NetworkManager
+network:
+  version: 2
+  renderer: NetworkManager

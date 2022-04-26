@@ -1,3 +1,4 @@
+# Assigns persistent names to internal and external Wlan interfaces
 network:
   version: 2
   ethernets:
@@ -12,4 +13,8 @@ network:
     wlan_ext_88XXau:
       match:
         driver: 88XXau
+      set-name: wlan_ext
+    wlan_ext_rtl88XXau:
+      match:
+        driver: rtl88XXau
       set-name: wlan_ext

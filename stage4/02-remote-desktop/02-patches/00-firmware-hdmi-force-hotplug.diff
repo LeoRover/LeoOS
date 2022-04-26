@@ -1,0 +1,13 @@
+--- a/rootfs/boot/firmware/config.txt
++++ b/rootfs/boot/firmware/config.txt
+@@ -21,6 +21,10 @@ dtoverlay=vc4-fkms-v3d
+ dtoverlay=miniuart-bt
+ disable_overscan=1
+ 
++hdmi_force_hotplug=1
++hdmi_group=2
++hdmi_mode=85
++
+ # dtparam=i2c_arm=on,i2c_arm_baudrate=400000
+ # dtparam=spi=on
+ # dtparam=i2s=on
