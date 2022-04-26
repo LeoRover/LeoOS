@@ -7,4 +7,4 @@ vcs import < leo-erc.repos
 rosdep update
 rosdep install --rosdistro noetic --from-paths src -iy
 catkin config --extend /opt/ros/noetic --install -i /opt/ros/leo
-catkin build --no-status
+sudo catkin build --no-status

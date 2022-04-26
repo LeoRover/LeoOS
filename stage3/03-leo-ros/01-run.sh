@@ -13,6 +13,10 @@ install -v -m 644 files/tmux.conf "${ROOTFS_DIR}/etc/"
 
 sed -i "s|USER|${FIRST_USER_NAME}|" "${ROOTFS_DIR}/etc/systemd/system/leo.service"
 
+mkdir -p "${ROOTFS_DIR}/etc/ros/catkin_ws"
+install -m 644 files/leo-erc.repos "${ROOTFS_DIR}/etc/ros/catkin_ws/"
+install -m 755 files/update.sh "${ROOTFS_DIR}/etc/ros/catkin_ws/"
+
 on_chroot << EOF
 chown ${FIRST_USER_NAME}:${FIRST_USER_NAME} -R "/etc/ros"
 chown root:root -R "/etc/ros/rosdep"
