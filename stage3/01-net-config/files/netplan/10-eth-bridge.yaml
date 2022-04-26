@@ -1,13 +1,13 @@
-# Creates a bridge interface and adds ethernet interface to it.
+# Creates a bridge interface and configures ethernet interface.
 network:
   version: 2
   ethernets:
     eth0:
       renderer: networkd
-      optional: true
+      dhcp4: true
   bridges:
     br0:
       renderer: networkd
-      interfaces: [ eth0 ]
+      interfaces: []
       addresses: [ 10.0.0.1/24 ]
       link-local: []
