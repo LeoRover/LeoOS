@@ -1,4 +1,7 @@
 ros-noetic-leo-robot
 ros-noetic-raspicam-node
 ros-noetic-rosmon-core
+ros-noetic-ar-track-alvar
+ros-noetic-leo-examples
 python3-stm32loader
+python3-pip
