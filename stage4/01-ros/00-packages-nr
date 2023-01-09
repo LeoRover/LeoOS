@@ -1,2 +1,5 @@
 ros-noetic-desktop
 ros-noetic-leo-desktop
+ros-noetic-leo-examples
+ros-noetic-ar-track-alvar
+python3-pip
