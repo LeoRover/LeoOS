@@ -30,4 +30,5 @@ install -v -m 644 files/polkit/*.pkla "${ROOTFS_DIR}/etc/polkit-1/localauthority
 on_chroot << EOF
 systemctl disable motd-news.timer
 systemctl disable apt-daily-upgrade.timer
+systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 EOF
