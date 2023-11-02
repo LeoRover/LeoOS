@@ -12,10 +12,17 @@ firmware:
     #torque_constant: 1.17647
     #pwm_duty_limit: 100.0
 
-  diff_drive:
+  #diff_drive:
     #wheel_radius: 0.0625
-    #wheel_separation: 0.33
-    #angular_velocity_multiplier: 1.91
+    #wheel_separation: 0.358
+    #angular_velocity_multiplier: 1.76
+    #input_timeout: 500
+
+  #mecanum_drive:
+    #wheel_radius: 0.0635
+    #wheel_separation: 0.37
+    #wheel_base: 0.3052
+    #angular_velocity_multiplier: 1.0
     #input_timeout: 500
 
   #battery_min_voltage: 10.0

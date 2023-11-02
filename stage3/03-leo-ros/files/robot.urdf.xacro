@@ -3,6 +3,7 @@
        name="leo">
 
   <xacro:arg name="link_prefix" default=""/>
+  <xacro:arg name="mecanum_wheels" default="false"/>
 
   <xacro:include filename="$(find leo_description)/urdf/macros.xacro"/>
 
@@ -10,6 +11,7 @@
              rockers_fixed="true"
              footprint_link="true"
              link_prefix="$(arg link_prefix)"
-             joint_prefix=""/>
+             joint_prefix=""
+             mecanum_wheels="$(arg mecanum_wheels)"/>
 
 </robot>

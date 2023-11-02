@@ -1,16 +1,20 @@
 <launch>
 
   <arg name="robot_ns" default="$(optenv ROS_NAMESPACE)" />
+  <arg name="mecanum_wheels" default="$(optenv MECANUM_WHEELS false)" />
+
   <arg if="$(eval robot_ns == '')" name="tf_frame_prefix" value="" />
   <arg if="$(eval robot_ns != '')" name="tf_frame_prefix" value="$(arg robot_ns)/" />
 
   <param name="robot_description"
     command="xacro /etc/ros/urdf/robot.urdf.xacro 
-    link_prefix:='$(arg tf_frame_prefix)'" />
+    link_prefix:='$(arg tf_frame_prefix)'
+    mecanum_wheels:='$(arg mecanum_wheels)'" />
 
   <include file="$(find leo_bringup)/launch/leo_bringup.launch">
     <arg name="upload_description" value="false" />
     <arg name="tf_frame_prefix" value="$(arg tf_frame_prefix)" />
+    <arg name="mecanum_wheels" value="$(arg mecanum_wheels)" />
   </include>
 
   <rosparam command="load" file="/etc/ros/params.yaml" />

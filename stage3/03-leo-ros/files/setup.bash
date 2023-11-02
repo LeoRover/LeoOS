@@ -1,5 +1,11 @@
 source /opt/ros/noetic/setup.bash
 
+### Robot Configuration
+
+# Set to true if the robot uses mecanum wheels
+export MECANUM_WHEELS=false
+
+
 ### leo service variables
 
 # Path to the launch file to start.
