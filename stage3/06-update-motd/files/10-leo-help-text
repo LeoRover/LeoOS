@@ -1,0 +1,6 @@
+#!/bin/sh
+
+printf "\n"
+printf " * Documentation: https://docs.leorover.tech\n"
+printf " * GitHub: https://github.com/LeoRover\n"
+printf " * Support: https://forum.fictionlab.pl\n"
