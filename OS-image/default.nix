@@ -1,6 +1,7 @@
-{ OSName, OSVersion, lib, pkgs, fetchurl, stdenv, vmTools, ... }:
+{ OSName, OSVersion, buildSystem, lib, pkgs, fetchurl, stdenv, vmTools, ... }:
 let
   imageSize = 8192;
+  memSize = 4096;
 
   tools = import ./tools.nix { inherit lib pkgs; };
 
@@ -159,7 +160,7 @@ let
       "linux-firmware-raspi" # Raspberry Pi GPU firmware and bootloaders
       "libraspberrypi-bin" # Raspberry Pi utilities
       "libraspberrypi-dev" # headers for Raspberry Pi VideoCore IV libraries
-      "rpi-eeprom" # Raspberry Pi EEPROM utilities 
+      "rpi-eeprom" # Raspberry Pi EEPROM utilities
 
       # # Networking stuff
       # "netplan.io" # network configuration utility
@@ -185,31 +186,68 @@ let
     echo "${toString (lib.intersperse "|" debs-install-closure)}" > $out
   '';
 
-in vmTools.runInLinuxVM (stdenv.mkDerivation {
-  inherit OSName debs_unpack debs_install;
-
-  pname = "${OSName}-image";
-  version = OSVersion;
-
-  memSize = 4096;
-
-  preVM = ''
-    mkdir -p $out
-    diskImage=$out/OS.img
-    ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create -f raw $diskImage "${
-      toString imageSize
-    }M"
-  '';
-
-  buildCommand = ''
+  vmPrepareCommand = if buildSystem != "aarch64-linux" then ''
     echo "Mounting binfmt_misc"
     ${pkgs.util-linux}/bin/mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
 
     echo "Registering aarch64 binfmt"
-    echo ":aarch64-linux:M::\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\xb7\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\x00\xff\xfe\xff\xff\xff:${pkgs.pkgsStatic.qemu-user}/bin/qemu-aarch64:PF" > /proc/sys/fs/binfmt_misc/register
+    magic="\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\xb7\x00"
+    mask="\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\x00\xff\xfe\xff\xff\xff"
+    echo ":aarch64:M::$magic:$mask:${pkgs.pkgsStatic.qemu-user}/bin/qemu-aarch64:PF" \
+      > /proc/sys/fs/binfmt_misc/register
+  '' else
+    "";
 
-    ${scripts}/build.sh
-    mkdir -p "$out/nix-support"
-    echo ${toString [ debs_unpack debs_install ]} > $out/nix-support/deb-inputs
-  '';
-})
+  OSStage1Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
+    inherit OSName memSize debs_unpack debs_install;
+
+    pname = "${OSName}-stage1-image";
+    version = OSVersion;
+
+    preVM = ''
+      mkdir -p $out
+      diskImage=$out/OS.img
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create -f raw $diskImage "${
+        toString imageSize
+      }M"
+    '';
+
+    buildCommand = ''
+      ${vmPrepareCommand}
+      ${scripts.stage1}/build.sh
+    '';
+  });
+
+  OSStage2Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
+    inherit OSName memSize;
+
+    pname = "${OSName}-stage2-image";
+    version = OSVersion;
+
+    preVM = ''
+      mkdir -p $out
+      diskImage=$out/OS.img
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
+        -o backing_file=${OSStage1Image}/OS.img,backing_fmt=raw \
+        -f qcow2 $diskImage
+    '';
+
+    buildCommand = ''
+      ${vmPrepareCommand}
+      ${scripts.stage2}/build.sh
+    '';
+  });
+
+  OSLiteImage = stdenv.mkDerivation {
+    pname = "${OSName}-lite-image";
+    version = OSVersion;
+
+    buildCommand = ''
+      mkdir -p $out
+      diskImage=$out/${OSName}-${OSVersion}-lite.img
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img convert -f qcow2 -O raw \
+        ${OSStage2Image}/OS.img $diskImage
+    '';
+  };
+
+in OSLiteImage
