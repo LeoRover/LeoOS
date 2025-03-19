@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source /etc/ros/setup.bash
+
+UROS_AGENT_ARGS=${UROS_AGENT_ARGS:="udp4 -d -p 8888"}
+
+export XRCE_DOMAIN_ID_OVERRIDE=${ROS_DOMAIN_ID:=0}
+
+exec ros2 run micro_ros_agent micro_ros_agent ${UROS_AGENT_ARGS}

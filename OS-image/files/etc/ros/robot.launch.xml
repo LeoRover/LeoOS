@@ -1,0 +1,25 @@
+<launch version="0.1.1">
+
+  <let name="mecanum_wheels" value="$(env MECANUM_WHEELS false)" />
+  <let name="robot_ns" value="$(env ROBOT_NAMESPACE '')" />
+
+  <let name="tf_frame_prefix"
+    value="$(eval '\'\' if \'$(var robot_ns)\' == \'\' else \'$(var robot_ns)\' + \'/\'')" />
+
+  <push_ros_namespace namespace="$(var robot_ns)" />
+
+  <node pkg="robot_state_publisher" exec="robot_state_publisher">
+    <param name="robot_description"
+      value="$(command 'xacro /etc/ros/urdf/robot.urdf.xacro
+      link_prefix:=$(var tf_frame_prefix)
+      mecanum_wheels:=$(var mecanum_wheels)')" />
+  </node>
+
+  <include file="$(find-pkg-share leo_bringup)/launch/leo_bringup.launch.xml">
+    <arg name="spawn_state_publisher" value="false" />
+    <arg name="mecanum_wheels" value="$(var mecanum_wheels)" />
+    <arg name="tf_frame_prefix" value="$(var tf_frame_prefix)" />
+    <arg name="firmware_override_params_file" value="/etc/ros/firmware_overrides.yaml" />
+  </include>
+
+</launch>

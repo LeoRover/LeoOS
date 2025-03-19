@@ -1,0 +1,13 @@
+[Unit]
+Description=Micro-ROS agent
+PartOf=ros.target
+
+[Service]
+Type=simple
+ExecStartPre=/usr/lib/systemd/systemd-networkd-wait-online
+ExecStart=/usr/lib/ros/uros-agent
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=ros.target

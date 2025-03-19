@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source /etc/ros/setup.bash
+
+LAUNCH_FILE=${LAUNCH_FILE:="/etc/ros/robot.launch"}
+LAUNCH_ARGS=${LAUNCH_ARGS:=""}
+
+exec ros2 launch ${LAUNCH_ARGS} ${LAUNCH_FILE}

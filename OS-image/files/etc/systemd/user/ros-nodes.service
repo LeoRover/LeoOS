@@ -1,0 +1,12 @@
+[Unit]
+Description=ROS nodes
+PartOf=ros.target
+
+[Service]
+Type=simple
+ExecStartPre=/usr/lib/systemd/systemd-networkd-wait-online
+ExecStart=/usr/lib/ros/ros-nodes
+KillSignal=SIGINT
+
+[Install]
+WantedBy=ros.target
