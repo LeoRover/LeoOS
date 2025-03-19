@@ -18,13 +18,15 @@
         OSName = "LeoOS";
         OSVersion = "0.0.0";
 
-        OSImage = pkgs.callPackage ./OS-image {
+        OSImageDerivations = pkgs.callPackage ./OS-image {
           inherit OSName OSVersion;
           buildSystem = system;
         };
 
       in {
-        packages = { default = OSImage; };
+        packages = OSImageDerivations // {
+          default = OSImageDerivations.OSLiteImage;
+        };
 
         formatter = pkgs.nixfmt-classic;
       });

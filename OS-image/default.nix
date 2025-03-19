@@ -197,7 +197,7 @@ let
       > /proc/sys/fs/binfmt_misc/register
   '' else
     "";
-
+in rec {
   OSStage1Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
     inherit OSName memSize debs_unpack debs_install;
 
@@ -215,6 +215,11 @@ let
     buildCommand = ''
       ${vmPrepareCommand}
       ${scripts.stage1}/build.sh
+
+      mkdir -p "$out/nix-support"
+      echo ${
+        toString [ debs_unpack debs_install ]
+      } > $out/nix-support/deb-inputs
     '';
   });
 
@@ -235,6 +240,9 @@ let
     buildCommand = ''
       ${vmPrepareCommand}
       ${scripts.stage2}/build.sh
+
+      mkdir -p $out/nix-support
+      echo ${OSStage1Image}/OS.img > $out/nix-support/backing_image
     '';
   });
 
@@ -247,7 +255,12 @@ let
       diskImage=$out/${OSName}-${OSVersion}-lite.img
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img convert -f qcow2 -O raw \
         ${OSStage2Image}/OS.img $diskImage
+
+      echo "Compressing the image"
+      ${pkgs.zstd}/bin/zstd -T0 --rm --ultra -20 $diskImage
+
+      mkdir -p $out/nix-support
+      echo ${OSStage2Image}/OS.img > $out/nix-support/source_image
     '';
   };
-
-in OSLiteImage
+}
