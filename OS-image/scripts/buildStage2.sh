@@ -61,9 +61,6 @@ for GRP in adm dialout audio sudo video plugdev input; do
     adduser $USER_NAME "\${GRP}"
 done
 
-# Allow nginx to serve files from the home directory
-# usermod -a -G ${USER_NAME} www-data
-
 # Enable user services
 systemctl --user enable ros-nodes
 systemctl --user enable uros-agent
@@ -77,19 +74,13 @@ touch "/mnt/var/lib/systemd/linger/${USER_NAME}"
 echo -e "\nsource /etc/ros/setup.bash" >> "/mnt/home/${USER_NAME}/.bashrc"
 
 my_chroot /mnt /bin/bash -exuo pipefail <<CHROOT
-
-export FK_MACHINE="Raspberry Pi 4 Model B" 
+export FK_MACHINE="Raspberry Pi 5 Model B Rev 1.0"
 export FK_IGNORE_EFI="yes"
+export FK_FORCE="yes"
 flash-kernel
-
-# Create initramfs
-# update-initramfs -c -k all
 
 # Enable Networkd
 # systemctl enable systemd-networkd
-
-# Enable tmpfs on /tmp
-# systemctl enable tmp.mount
 CHROOT
 
 # Unmount everything
