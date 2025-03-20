@@ -18,7 +18,7 @@ partx -u "$DISK"
 # Make a FAT filesystem for the Raspberry Pi boot partition 
 mkfs.vfat -F32 -n boot "$DISK"1
 # Make an ext4 filesystem for the system root
-mkfs.ext4 "$DISK"2 -L root
+mkfs.ext4 "$DISK"2 -L rootfs
 
 # Mount everything to /mnt and provide some directories needed later on
 mkdir /mnt
