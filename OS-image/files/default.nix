@@ -28,7 +28,6 @@ in stdenv.mkDerivation {
     cp -v ${fictionlab-archive-keyring} $out/usr/share/keyrings/fictionlab-archive-keyring.gpg
 
     # Copy the files
-    cp -vr etc $out
-    cp -vr usr $out
+    cp -vr boot etc usr $out
   '';
 }
