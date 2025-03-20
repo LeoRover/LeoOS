@@ -145,18 +145,17 @@ let
       "bash-completion"
       "htop"
 
-      # # Boot stuff
+      # Boot stuff
       "systemd" # init system
       "systemd-sysv" # provides systemd as /sbin/init
       "libpam-systemd" # makes systemd user sevices work
       "policykit-1" # authorization manager for systemd
-      "e2fsprogs" # initramfs wants fsck
-      "zstd" # compress kernel using zstd
-      "linux-raspi" # kernel
-      "initramfs-tools" # hooks for generating an initramfs
+      "e2fsprogs" # initramfs hook wants fsck
+      "zstd" # initramfs hook wants zstd (or gzip)
+      "initramfs-tools" # hook and tools for generating an initramfs
       "flash-kernel" # utilities for updating kernel
-      "u-boot-tools" # tools for working with u-boot
-      "u-boot-rpi" # u-boot for Raspberry Pi
+      "u-boot-tools" # needed for flash-kernel
+      "linux-raspi" # kernel for Raspberry Pi
       "linux-firmware-raspi" # Raspberry Pi GPU firmware and bootloaders
       "libraspberrypi-bin" # Raspberry Pi utilities
       "libraspberrypi-dev" # headers for Raspberry Pi VideoCore IV libraries
