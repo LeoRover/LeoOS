@@ -2,7 +2,7 @@
 
 source /etc/ros/setup.bash
 
-UROS_AGENT_ARGS=${UROS_AGENT_ARGS:="udp4 -d -p 8888"}
+UROS_AGENT_ARGS=${UROS_AGENT_ARGS:="serial -D /dev/serial0 -b 460800"}
 
 export XRCE_DOMAIN_ID_OVERRIDE=${ROS_DOMAIN_ID:=0}
 
