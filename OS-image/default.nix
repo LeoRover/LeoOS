@@ -230,9 +230,7 @@ in rec {
       ${scripts.stage1}/build.sh
 
       mkdir -p "$out/nix-support"
-      echo ${
-        toString [ debsStage0 debsStage1 ]
-      } > $out/nix-support/deb-inputs
+      echo ${toString [ debsStage0 debsStage1 ]} > $out/nix-support/deb-inputs
     '';
   });
 
@@ -256,6 +254,7 @@ in rec {
 
       mkdir -p $out/nix-support
       echo ${OSStage1Image}/OS.img > $out/nix-support/backing_image
+      echo ${debsStage2} > $out/nix-support/deb-inputs
     '';
   });
 
@@ -279,11 +278,12 @@ in rec {
 
       mkdir -p $out/nix-support
       echo ${OSStage2Image}/OS.img > $out/nix-support/backing_image
+      echo ${debsStage3} > $out/nix-support/deb-inputs
     '';
   });
 
   OSStage4Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
-    inherit OSName memSize debsStage3;
+    inherit OSName memSize;
 
     pname = "${OSName}-stage4-image";
     version = OSVersion;
