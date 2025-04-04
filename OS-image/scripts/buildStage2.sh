@@ -57,7 +57,7 @@ if ! id -u ${USER_NAME} >/dev/null 2>&1; then
 	adduser --disabled-password --gecos "" ${USER_NAME}
 fi
 echo "${USER_NAME}:${USER_PASS}" | chpasswd
-for GRP in adm dialout audio sudo video plugdev input; do
+for GRP in adm dialout audio sudo video plugdev input i2c spi gpio; do
     adduser $USER_NAME "\${GRP}"
 done
 
