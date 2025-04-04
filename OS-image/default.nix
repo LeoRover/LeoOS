@@ -128,6 +128,7 @@ let
       "ncurses-base" # terminfo to let applications talk to terminals better
       "bash-completion"
       "htop"
+      "fdisk"
 
       ## Boot stuff
       "systemd" # init system
@@ -151,9 +152,9 @@ let
       "iputils-ping" # ping utility
       "systemd-resolved" # DNS resolver
       "systemd-timesyncd" # SNTP client
+      "network-manager" # network management daemon (nmtui)
       "avahi-daemon" # mDNS support
       "openssh-server" # Remote login
-      "networkd-dispatcher" # Networkd hooks
       "nginx" # Web server
       "rtw88-dkms" # Realtek WiFi driver
 
