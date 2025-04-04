@@ -22,12 +22,12 @@ mount -t sysfs sysfs /mnt/sys
 mkdir -p /mnt/inst${NIX_STORE_DIR}
 mount -o bind ${NIX_STORE_DIR} /mnt/inst${NIX_STORE_DIR}
 
-DEBS_STAGE2_FILES=$(cat ${debsStage2})
+DEBS_STAGE3_FILES=$(cat ${debsStage3})
 echo "Installing Debs..."
 
 oldIFS="$IFS"
 IFS="|"
-for component in ${DEBS_STAGE2_FILES}; do
+for component in ${DEBS_STAGE3_FILES}; do
     IFS="$oldIFS"
     echo
     echo ">>> INSTALLING COMPONENT: $component"
