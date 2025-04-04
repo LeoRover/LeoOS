@@ -269,7 +269,7 @@ in rec {
       mkdir -p $out
       diskImage=$out/OS.img
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
-        -o backing_file=${OSStage2Image}/OS.img,backing_fmt=raw \
+        -o backing_file=${OSStage2Image}/OS.img,backing_fmt=qcow2 \
         -f qcow2 $diskImage
     '';
 
@@ -292,7 +292,7 @@ in rec {
       mkdir -p $out
       diskImage=$out/OS.img
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
-        -o backing_file=${OSStage3Image}/OS.img,backing_fmt=raw \
+        -o backing_file=${OSStage3Image}/OS.img,backing_fmt=qcow2 \
         -f qcow2 $diskImage
     '';
 
