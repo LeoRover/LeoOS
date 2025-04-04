@@ -155,6 +155,7 @@ let
       "openssh-server" # Remote login
       "networkd-dispatcher" # Networkd hooks
       "nginx" # Web server
+      "rtw88-dkms" # Realtek WiFi driver
 
       "\/"
 
