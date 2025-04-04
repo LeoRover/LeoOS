@@ -79,7 +79,7 @@ export FK_FORCE="yes"
 flash-kernel
 
 # Enable Networkd
-# systemctl enable systemd-networkd
+systemctl enable systemd-networkd
 CHROOT
 
 # Unmount everything
