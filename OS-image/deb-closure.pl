@@ -4,6 +4,8 @@ use Dpkg::Deps;
 use File::Basename;
 use Getopt::Long;
 
+use constant STAGE_SEPARATOR => "/";
+
 my %args = ();
 GetOptions(\%args, "package-list=s@");
 
@@ -77,7 +79,6 @@ foreach my $package (sort {$a->{cdata}->{Package} cmp $b->{cdata}->{Package}} (v
 
 # Determine the closure of a package.
 my %donePkgs;
-my %depsUsed;
 my %preDepsUsed;
 my @order = ();
 
@@ -132,10 +133,13 @@ sub closePackage {
 
     push @order, $pkgName;
     $preDepsUsed{$pkgName} = \@preDepNames;
-    $depsUsed{$pkgName} = \@depNames;
 }
 
 foreach my $pkgName (@toplevelPkgs) {
+    if ($pkgName eq STAGE_SEPARATOR) {
+        push @order, $pkgName;
+        next;
+    }
     closePackage $pkgName;
 }
 
@@ -145,12 +149,23 @@ print "# Following are the Debian packages constituting the closure of: @topleve
 print "{fetchurl}:\n\n";
 print "[\n\n";
 print "  [\n\n";
+print "    [\n\n";
 
 # Output the packages in strongly connected components.
 my %done;
 my %currentComponent;
 my $newComponent = 0;
 foreach my $pkgName (@order) {
+    if ($pkgName eq STAGE_SEPARATOR) {
+        print "    ]\n\n";
+        print "  ]\n\n";
+        print "  [\n\n";
+        print "    [\n\n";
+        @done{keys %currentComponent} = values %currentComponent;
+        %currentComponent = ();
+        next;
+    }
+
     my $package = $packages{$pkgName};
     my $cdata = $package->{cdata};
     my $urlPrefix = $package->{urlPrefix};
@@ -164,8 +179,8 @@ foreach my $pkgName (@order) {
     }
 
     if ($newComponent) {
-        print "  ]\n\n";
-        print "  [\n\n";
+        print "    ]\n\n";
+        print "    [\n\n";
         $newComponent = 0;
         @done{keys %currentComponent} = values %currentComponent;
         %currentComponent = ();
@@ -185,5 +200,6 @@ foreach my $pkgName (@order) {
     print "\n";
 }
 
+print "    ]\n\n";
 print "  ]\n\n";
 print "]\n";

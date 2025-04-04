@@ -41,22 +41,22 @@ ln -s /usr/sbin /mnt/sbin
 ln -s /usr/lib /mnt/lib
 ln -s /usr/lib64 /mnt/lib64
 
-echo "Unpacking Debs..."
+DEBS_STAGE0_FILES=$(cat ${debsStage0})
+DEBS_STAGE1_FILES=$(cat ${debsStage1})
 
-DEBS_UNPACK_FILES=$(cat ${debs_unpack})
+echo "Unpacking predependencies..."
 
-for deb in ${DEBS_UNPACK_FILES}; do
+for deb in ${DEBS_STAGE0_FILES}; do
+    [ "$deb" = "|" ] && continue
     echo "$deb..."
     dpkg-deb --extract "$deb" /mnt
 done
 
 echo "Installing Debs..."
 
-DEBS_INSTALL_FILES=$(cat ${debs_install})
-
 oldIFS="$IFS"
 IFS="|"
-for component in ${DEBS_INSTALL_FILES}; do
+for component in ${DEBS_STAGE0_FILES} ${DEBS_STAGE1_FILES}; do
     IFS="$oldIFS"
     echo
     echo ">>> INSTALLING COMPONENT: $component"

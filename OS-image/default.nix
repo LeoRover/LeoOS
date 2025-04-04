@@ -88,12 +88,14 @@ let
     }
   ];
 
-  # Packages that provide programs needed to install other packages
-  debs-unpack-closure = import (tools.debClosureGenerator {
-    name = "debs-unpack-closure";
+  debsClosure = import (tools.debClosureGenerator {
+    name = "debs-closure";
     inherit packageLists;
     packages = [
+      # STAGE 0 - predependencies
+      "base-passwd"
       "base-files"
+      "init-system-helpers"
       "dpkg"
       "libc-bin"
       "dash"
@@ -102,33 +104,15 @@ let
       "sed"
       "debconf"
       "perl"
-    ];
-  }) { inherit fetchurl; };
 
-  debs_unpack = pkgs.runCommand "debs-unpack" { } ''
-    echo "${toString debs-unpack-closure}" > $out
-  '';
+      "\/"
 
-  debs-install-closure = import (tools.debClosureGenerator {
-    name = "debs-install-closure";
-    inherit packageLists;
-    packages = [
-      "base-passwd"
-      "init-system-helpers"
+      # STAGE 1 - base packages
       "grep"
-      "base-files"
       "apt"
-      "dpkg"
-      "libc-bin"
       "bash"
-      "dash"
-      "coreutils"
-      "diffutils"
-      "sed"
       "login"
       "passwd"
-      "debconf"
-      "perl"
       "findutils"
       "curl"
       "patch"
@@ -145,7 +129,7 @@ let
       "bash-completion"
       "htop"
 
-      # Boot stuff
+      ## Boot stuff
       "systemd" # init system
       "systemd-sysv" # provides systemd as /sbin/init
       "libpam-systemd" # makes systemd user sevices work
@@ -161,7 +145,7 @@ let
       "libraspberrypi-dev" # headers for Raspberry Pi VideoCore IV libraries
       "rpi-eeprom" # Raspberry Pi EEPROM utilities
 
-      # # Networking stuff
+      ## Networking stuff
       "netplan.io" # network configuration utility
       "iproute2" # ip cli utilities
       "iputils-ping" # ping utility
@@ -172,23 +156,46 @@ let
       "networkd-dispatcher" # Networkd hooks
       "nginx" # Web server
 
-      # # ROS build tools
+      "\/"
+
+      # STAGE 2 - ROS base packages
       "ros-dev-tools"
       "python3-colcon-common-extensions"
-
-      # Leo-specific packages
-      "python3-stm32loader"
-
-      # # ROS packages
       "ros-jazzy-ros-base"
+
+      "\/"
+
+      # STAGE 3 - Leo-specific packages
+      "python3-stm32loader"
+      "leo-ui"
       "ros-jazzy-leo-robot"
       "ros-jazzy-leo-camera"
       "ros-jazzy-micro-ros-agent"
     ];
   }) { inherit fetchurl; };
 
-  debs_install = pkgs.runCommand "debs-install" { } ''
-    echo "${toString (lib.intersperse "|" debs-install-closure)}" > $out
+  debsStage0 = pkgs.runCommand "debs-stage0" { } ''
+    echo "${
+      toString (lib.intersperse "|" (builtins.elemAt debsClosure 0))
+    }" > $out
+  '';
+
+  debsStage1 = pkgs.runCommand "debs-stage1" { } ''
+    echo "${
+      toString (lib.intersperse "|" (builtins.elemAt debsClosure 1))
+    }" > $out
+  '';
+
+  debsStage2 = pkgs.runCommand "debs-stage2" { } ''
+    echo "${
+      toString (lib.intersperse "|" (builtins.elemAt debsClosure 2))
+    }" > $out
+  '';
+
+  debsStage3 = pkgs.runCommand "debs-stage3" { } ''
+    echo "${
+      toString (lib.intersperse "|" (builtins.elemAt debsClosure 3))
+    }" > $out
   '';
 
   vmPrepareCommand = if buildSystem != "aarch64-linux" then ''
@@ -204,7 +211,7 @@ let
     "";
 in rec {
   OSStage1Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
-    inherit OSName memSize debs_unpack debs_install;
+    inherit OSName memSize debsStage0 debsStage1;
 
     pname = "${OSName}-stage1-image";
     version = OSVersion;
@@ -223,7 +230,7 @@ in rec {
 
       mkdir -p "$out/nix-support"
       echo ${
-        toString [ debs_unpack debs_install ]
+        toString [ debsStage0 debsStage1 ]
       } > $out/nix-support/deb-inputs
     '';
   });
