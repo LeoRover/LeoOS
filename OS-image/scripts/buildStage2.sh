@@ -28,7 +28,6 @@ rm -rf /mnt/etc/update-motd.d/*
 
 # Install configuration files
 cp -vr --no-preserve=mode "${FILES_DIR}/"* /mnt/
-# cp -v /mnt/usr/share/systemd/tmp.mount /mnt/etc/systemd/system/
 
 # Fix file permissions
 chmod +x /mnt/usr/lib/ros/*
@@ -38,10 +37,10 @@ chmod +x /mnt/usr/lib/ros/*
 chmod +x /mnt/etc/update-motd.d/*
 
 # Symlink resolv.conf to systemd-resolved
-# ln -vsnf /lib/systemd/resolv.conf /mnt/etc/resolv.conf
+ln -vsnf /lib/systemd/resolv.conf /mnt/etc/resolv.conf
 
 # Remove SSH host keys
-# rm /mnt/etc/ssh/ssh_host_*
+rm /mnt/etc/ssh/ssh_host_*
 
 # Set hostname
 echo "${HOSTNAME}" > "/mnt/etc/hostname"
