@@ -162,22 +162,28 @@ let
       "rpi-eeprom" # Raspberry Pi EEPROM utilities
 
       # # Networking stuff
-      # "netplan.io" # network configuration utility
-      # "iproute2" # ip cli utilities
-      # "iputils-ping" # ping utility
-      # "systemd-resolved" # DNS resolver
-      # "systemd-timesyncd" # SNTP client
-      # "avahi-daemon" # mDNS support
-      # "openssh-server" # Remote login
-      # "networkd-dispatcher" # Networkd hooks
-      # "nginx" # Web server
+      "netplan.io" # network configuration utility
+      "iproute2" # ip cli utilities
+      "iputils-ping" # ping utility
+      "systemd-resolved" # DNS resolver
+      "systemd-timesyncd" # SNTP client
+      "avahi-daemon" # mDNS support
+      "openssh-server" # Remote login
+      "networkd-dispatcher" # Networkd hooks
+      "nginx" # Web server
 
       # # ROS build tools
-      # "ros-dev-tools"
-      # "python3-colcon-common-extensions"
+      "ros-dev-tools"
+      "python3-colcon-common-extensions"
 
-      # # ROS base packages
-      # "ros-jazzy-ros-base"
+      # Leo-specific packages
+      "python3-stm32loader"
+
+      # # ROS packages
+      "ros-jazzy-ros-base"
+      "ros-jazzy-leo-robot"
+      "ros-jazzy-leo-camera"
+      "ros-jazzy-micro-ros-agent"
     ];
   }) { inherit fetchurl; };
 
