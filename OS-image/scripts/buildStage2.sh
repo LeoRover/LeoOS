@@ -48,8 +48,8 @@ echo "${HOSTNAME}" > "/mnt/etc/hostname"
 printf "\n127.0.1.1 ${HOSTNAME}\n" >> "/mnt/etc/hosts"
 
 # Configure nginx
-# rm -vf /mnt/etc/nginx/sites-enabled/default
-# ln -vs /etc/nginx/sites-available/ibis_ui /mnt/etc/nginx/sites-enabled/ibis_ui
+rm -vf /mnt/etc/nginx/sites-enabled/default
+ln -vs /etc/nginx/sites-available/leo_ui /mnt/etc/nginx/sites-enabled/leo_ui
 
 my_chroot /mnt /bin/bash -exuo pipefail <<CHROOT
 # Create default user
