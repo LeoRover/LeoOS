@@ -236,7 +236,7 @@ in rec {
   });
 
   OSStage2Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
-    inherit OSName memSize;
+    inherit OSName memSize debsStage2;
 
     pname = "${OSName}-stage2-image";
     version = OSVersion;
@@ -258,6 +258,52 @@ in rec {
     '';
   });
 
+  OSStage3Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
+    inherit OSName memSize debsStage3;
+
+    pname = "${OSName}-stage3-image";
+    version = OSVersion;
+
+    preVM = ''
+      mkdir -p $out
+      diskImage=$out/OS.img
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
+        -o backing_file=${OSStage2Image}/OS.img,backing_fmt=raw \
+        -f qcow2 $diskImage
+    '';
+
+    buildCommand = ''
+      ${vmPrepareCommand}
+      ${scripts.stage3}/build.sh
+
+      mkdir -p $out/nix-support
+      echo ${OSStage2Image}/OS.img > $out/nix-support/backing_image
+    '';
+  });
+
+  OSStage4Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
+    inherit OSName memSize debsStage3;
+
+    pname = "${OSName}-stage4-image";
+    version = OSVersion;
+
+    preVM = ''
+      mkdir -p $out
+      diskImage=$out/OS.img
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
+        -o backing_file=${OSStage3Image}/OS.img,backing_fmt=raw \
+        -f qcow2 $diskImage
+    '';
+
+    buildCommand = ''
+      ${vmPrepareCommand}
+      ${scripts.stage4}/build.sh
+
+      mkdir -p $out/nix-support
+      echo ${OSStage3Image}/OS.img > $out/nix-support/backing_image
+    '';
+  });
+
   OSLiteImage = stdenv.mkDerivation {
     pname = "${OSName}-lite-image";
     version = OSVersion;
@@ -266,13 +312,13 @@ in rec {
       mkdir -p $out
       diskImage=$out/${OSName}-${OSVersion}-lite.img
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img convert -f qcow2 -O raw \
-        ${OSStage2Image}/OS.img $diskImage
+        ${OSStage4Image}/OS.img $diskImage
 
       echo "Compressing the image"
       ${pkgs.zstd}/bin/zstd -T0 --rm --ultra -20 $diskImage
 
       mkdir -p $out/nix-support
-      echo ${OSStage2Image}/OS.img > $out/nix-support/source_image
+      echo ${OSStage4Image}/OS.img > $out/nix-support/source_image
     '';
   };
 }
