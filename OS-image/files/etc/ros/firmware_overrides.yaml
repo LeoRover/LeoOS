@@ -1,0 +1,20 @@
+# You can use this file to override default firmware parameters
+# After editing this file you can apply the new parameters by running `ros-nodes-restart`
+
+# wheels:
+#   encoder_resolution: 878.4
+#   torque_constant: 1.17647
+#   pid:
+#     p: 0.0
+#     i: 0.005
+#     d: 0.0
+#   pwm_duty_limit: 100.0
+
+# controller:
+#   wheel_radius: 0.0625
+#   wheel_separation: 0.358
+#   wheel_base: 0.3052
+#   angular_velocity_multiplier: 1.76
+#   input_timeout: 500
+
+# battery_min_voltage: 10.0
