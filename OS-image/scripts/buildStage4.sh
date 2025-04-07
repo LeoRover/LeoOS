@@ -87,6 +87,9 @@ systemctl enable systemd-networkd
 # Enable Hostapd
 systemctl unmask hostapd
 systemctl enable hostapd
+
+# Enable nftables
+systemctl enable nftables
 CHROOT
 
 # Unmount everything
