@@ -1,0 +1,7 @@
+# Sets the renderer of AP Wlan interface to networkd
+network:
+  version: 2
+  ethernets:
+    wlan_ext:
+      renderer: networkd
+      link-local: []

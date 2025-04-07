@@ -1,0 +1,14 @@
+# Assigns persistent names to internal and external Wlan interfaces
+network:
+  version: 2
+  ethernets:
+    link_wlan_int:
+      match:
+        driver: brcmfmac
+      set-name: wlan_int
+    link_wlan_ext:
+      match:
+        driver:
+          - rt2800usb
+          - rtw_8821au
+      set-name: wlan_ext
