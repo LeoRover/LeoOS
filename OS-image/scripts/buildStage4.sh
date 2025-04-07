@@ -83,6 +83,10 @@ flash-kernel
 
 # Enable Networkd
 systemctl enable systemd-networkd
+
+# Enable Hostapd
+systemctl unmask hostapd
+systemctl enable hostapd
 CHROOT
 
 # Unmount everything

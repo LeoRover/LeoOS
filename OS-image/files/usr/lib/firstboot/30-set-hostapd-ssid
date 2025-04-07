@@ -1,0 +1,5 @@
+#!/bin/sh
+
+ID=$(cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 | tail -c 5)
+
+sed -i "s|XXYYY|${ID}|" /etc/hostapd/hostapd.conf
