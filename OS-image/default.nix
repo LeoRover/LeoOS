@@ -129,6 +129,13 @@ let
       "bash-completion"
       "htop"
       "fdisk"
+      "git"
+      "tmux" # terminal multiplexer
+      "rng-tools5" # daemon that feeds random data from hardware rng to kernel entropy pool
+      "i2c-tools" # tools for working with I2C devices
+      "zram-config" # kernel module and userspace tools for zram
+      "usbutils" # tools for working with USB devices
+      "man-db" # tools for reading manual pages
 
       ## Boot stuff
       "systemd" # init system
@@ -153,6 +160,10 @@ let
       "systemd-resolved" # DNS resolver
       "systemd-timesyncd" # SNTP client
       "network-manager" # network management daemon (nmtui)
+      "wpasupplicant" # supplicant for managing Wi-Fi connections
+      "hostapd" # Access Point daemon
+      "dnsmasq" # DHCP and DNS servers
+      "netfilter-persistent" # persistent firewall rules
       "avahi-daemon" # mDNS support
       "openssh-server" # Remote login
       "nginx" # Web server
@@ -168,37 +179,26 @@ let
       "---"
 
       # STAGE 3 - Leo-specific packages
-      "python3-stm32loader"
-      "leo-ui"
-      "ros-jazzy-leo-robot"
-      "ros-jazzy-leo-camera"
-      "ros-jazzy-micro-ros-agent"
+      "python3-stm32loader" # Tool for flashin LeoCore
+      "leo-ui" # Web UI for controlling Leo Rover
+      "ros-jazzy-leo-robot" # Leo Rover ROS packages
+      "ros-jazzy-leo-camera" # hidden dependency of leo_robot
+      "ros-jazzy-compressed-image-transport" # image transport plugin that provides compressed image streams
+      "ros-jazzy-micro-ros-agent" # For talking with LeoCore
     ];
   }) { inherit fetchurl; };
 
-  debsStage0 = pkgs.runCommand "debs-stage0" { } ''
-    echo "${
-      toString (lib.intersperse "|" (builtins.elemAt debsClosure 0))
-    }" > $out
-  '';
+  exportStage = stageNr:
+    pkgs.runCommand "debs-stage${toString stageNr}" { } ''
+      echo "${
+        toString (lib.intersperse "|" (builtins.elemAt debsClosure stageNr))
+      }" > $out
+    '';
 
-  debsStage1 = pkgs.runCommand "debs-stage1" { } ''
-    echo "${
-      toString (lib.intersperse "|" (builtins.elemAt debsClosure 1))
-    }" > $out
-  '';
-
-  debsStage2 = pkgs.runCommand "debs-stage2" { } ''
-    echo "${
-      toString (lib.intersperse "|" (builtins.elemAt debsClosure 2))
-    }" > $out
-  '';
-
-  debsStage3 = pkgs.runCommand "debs-stage3" { } ''
-    echo "${
-      toString (lib.intersperse "|" (builtins.elemAt debsClosure 3))
-    }" > $out
-  '';
+  debsStage0 = exportStage 0;
+  debsStage1 = exportStage 1;
+  debsStage2 = exportStage 2;
+  debsStage3 = exportStage 3;
 
   vmPrepareCommand = if buildSystem != "aarch64-linux" then ''
     echo "Mounting binfmt_misc"
