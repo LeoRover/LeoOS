@@ -1,0 +1,11 @@
+#!/bin/sh
+
+mount /boot/firmware
+mount / -o remount,rw
+
+run-parts -v /usr/lib/firstboot
+
+umount /boot/firmware
+mount / -o remount,ro
+
+exec /sbin/init

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sed -i 's| init=/sbin/init_firstboot||' /boot/firmware/cmdline.txt
