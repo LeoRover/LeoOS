@@ -1,5 +1,4 @@
 #!/bin/sh
 
-dd if=/dev/hwrng of=/dev/urandom count=1 bs=4096
 rm -f -v /etc/ssh/ssh_host_*_key*
 ssh-keygen -A -v
