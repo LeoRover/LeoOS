@@ -4,7 +4,7 @@ use Dpkg::Deps;
 use File::Basename;
 use Getopt::Long;
 
-use constant STAGE_SEPARATOR => "/";
+use constant STAGE_SEPARATOR => "---";
 
 my %args = ();
 GetOptions(\%args, "package-list=s@");

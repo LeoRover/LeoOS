@@ -105,7 +105,7 @@ let
       "debconf"
       "perl"
 
-      "\/"
+      "---"
 
       # STAGE 1 - base packages
       "grep"
@@ -158,14 +158,14 @@ let
       "nginx" # Web server
       "rtw88-dkms" # Realtek WiFi driver
 
-      "\/"
+      "---"
 
       # STAGE 2 - ROS base packages
       "ros-dev-tools"
       "python3-colcon-common-extensions"
       "ros-jazzy-ros-base"
 
-      "\/"
+      "---"
 
       # STAGE 3 - Leo-specific packages
       "python3-stm32loader"
