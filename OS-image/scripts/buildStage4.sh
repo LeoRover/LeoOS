@@ -30,11 +30,11 @@ rm -rf /mnt/etc/update-motd.d/*
 cp -vr --no-preserve=mode "${FILES_DIR}/"* /mnt/
 
 # Fix file permissions
-chmod +x /mnt/usr/lib/ros/*
-# chmod +x /mnt/etc/networkd-dispatcher/degraded.d/*
-# chmod +x /mnt/etc/networkd-dispatcher/off.d/*
-# chmod +x /mnt/etc/networkd-dispatcher/routable.d/*
-chmod +x /mnt/etc/update-motd.d/*
+chmod -v +x /mnt/usr/sbin/init_firstboot
+chmod -v +x /mnt/usr/lib/firstboot/*
+chmod -v +x /mnt/usr/lib/ros/*
+chmod -v +x /mnt/etc/update-motd.d/*
+chmod -v 600 /mnt/etc/netplan/* 
 
 # Symlink resolv.conf to systemd-resolved
 ln -vsnf /lib/systemd/resolv.conf /mnt/etc/resolv.conf
