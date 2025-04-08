@@ -72,7 +72,7 @@
       wrapProgram $out/build.sh \
       --set PATH "${
         with pkgs;
-        lib.makeBinPath [ coreutils systemd util-linux ]
+        lib.makeBinPath [ coreutils gnused systemd util-linux ]
       }" \
       --set FILES_DIR ${files} \
       --set UDEVD "${pkgs.systemd}/lib/systemd/systemd-udevd"
