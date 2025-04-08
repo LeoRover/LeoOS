@@ -131,7 +131,6 @@ let
       "fdisk"
       "git"
       "tmux" # terminal multiplexer
-      "rng-tools5" # daemon that feeds random data from hardware rng to kernel entropy pool
       "i2c-tools" # tools for working with I2C devices
       "zram-config" # kernel module and userspace tools for zram
       "usbutils" # tools for working with USB devices
@@ -163,10 +162,11 @@ let
       "wpasupplicant" # supplicant for managing Wi-Fi connections
       "hostapd" # Access Point daemon
       "dnsmasq" # DHCP and DNS servers
-      "netfilter-persistent" # persistent firewall rules
+      "nftables" # firewall (for masquerade NAT)
       "avahi-daemon" # mDNS support
       "openssh-server" # Remote login
       "nginx" # Web server
+      "bridge-utils" # bridge management utilities
       "rtw88-dkms" # Realtek WiFi driver
 
       "---"
