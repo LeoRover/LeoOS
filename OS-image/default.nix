@@ -167,7 +167,7 @@ let
       "openssh-server" # Remote login
       "nginx" # Web server
       "bridge-utils" # bridge management utilities
-      "rtw88-dkms" # Realtek WiFi driver
+      "rtl88xxau-dkms" # Realtek WiFi driver
 
       "---"
 
