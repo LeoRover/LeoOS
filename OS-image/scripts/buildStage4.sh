@@ -28,6 +28,7 @@ rm -rf /mnt/etc/update-motd.d/*
 
 # Install configuration files
 cp -vr --no-preserve=mode "${FILES_DIR}/"* /mnt/
+echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" > /mnt/etc/sudoers.d/010_${USER_NAME}-nopasswd
 
 # Fix file permissions
 chmod -v +x /mnt/usr/sbin/init_firstboot
@@ -35,6 +36,7 @@ chmod -v +x /mnt/usr/lib/firstboot/*
 chmod -v +x /mnt/usr/lib/ros/*
 chmod -v +x /mnt/etc/update-motd.d/*
 chmod -v 600 /mnt/etc/netplan/* 
+chmod -v 440 "/mnt/etc/sudoers.d/010_${USER_NAME}-nopasswd"
 
 # Symlink resolv.conf to systemd-resolved
 ln -vsnf /lib/systemd/resolv.conf /mnt/etc/resolv.conf
