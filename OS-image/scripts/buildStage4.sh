@@ -69,6 +69,10 @@ for GRP in adm dialout audio sudo video plugdev input i2c spi gpio; do
     adduser $USER_NAME "\${GRP}"
 done
 
+# Change file ownership
+chown ${USER_NAME}:${USER_NAME} -R "/etc/ros"
+chown root:root -R "/etc/ros/rosdep"
+
 # Enable user services
 systemctl --user enable ros-nodes
 systemctl --user enable uros-agent
