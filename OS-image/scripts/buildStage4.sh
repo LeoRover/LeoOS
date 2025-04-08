@@ -74,8 +74,9 @@ chown ${USER_NAME}:${USER_NAME} -R "/etc/ros"
 chown root:root -R "/etc/ros/rosdep"
 
 # Enable user services
-systemctl --user enable ros-nodes
-systemctl --user enable uros-agent
+su - ${USER_NAME} -c "systemctl --user enable ros-nodes"
+su - ${USER_NAME} -c "systemctl --user enable uros-agent"
+su - ${USER_NAME} -c "systemctl --user enable ros.target"
 CHROOT
 
 # Enable lingering for default user
