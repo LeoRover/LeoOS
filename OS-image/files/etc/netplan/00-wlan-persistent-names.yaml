@@ -10,5 +10,6 @@ network:
       match:
         driver:
           - rt2800usb
+          - rtl88XXau
           - rtw_8821au
       set-name: wlan_ext
