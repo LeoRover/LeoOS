@@ -1,0 +1,14 @@
+polkit.addRule(function (action, subject) {
+    if (subject.isInGroup("sudo")) {
+        // Allow reboot and power-off actions for users in the "sudo" group
+        if (action.id === "org.freedesktop.login1.reboot" ||
+            action.id === "org.freedesktop.login1.power-off") {
+            return polkit.Result.YES;
+        }
+
+        // Allow all NetworkManager actions for users in the "sudo" group
+        if (action.id.startsWith("org.freedesktop.NetworkManager.")) {
+            return polkit.Result.YES;
+        }
+    }
+});
