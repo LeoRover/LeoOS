@@ -1,7 +1,7 @@
 SUBSYSTEM=="input", GROUP="input", MODE="0660"
 SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0660"
 SUBSYSTEM=="spidev", GROUP="spi", MODE="0660"
-SUBSYSTEM=="gpiomem", GROUP="gpio", MODE="0660"
+SUBSYSTEM=="gpio*", GROUP="gpio", MODE="0660"
 
 KERNEL=="ttyAMA[01]", PROGRAM="/bin/sh -c '\
 	ALIASES=/proc/device-tree/aliases; \
