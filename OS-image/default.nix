@@ -124,7 +124,6 @@ let
       "nano"
       "vim"
       "sudo"
-      "dbus" # IPC used by various applications
       "ncurses-base" # terminfo to let applications talk to terminals better
       "bash-completion"
       "htop"
@@ -140,6 +139,8 @@ let
       "systemd" # init system
       "systemd-sysv" # provides systemd as /sbin/init
       "libpam-systemd" # makes systemd user sevices work
+      "dbus" # IPC used by various applications
+      "dbus-user-session" # to talk with systemd user services
       "policykit-1" # authorization manager for systemd
       "e2fsprogs" # initramfs hook wants fsck
       "zstd" # initramfs hook wants zstd (or gzip)
