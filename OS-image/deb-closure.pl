@@ -102,6 +102,7 @@ sub closePackage {
     if (defined $cdata->{Provides}) {
         foreach my $name (getDeps(Dpkg::Deps::deps_parse($cdata->{Provides}))) {
             $provides{$name} = $cdata->{Package};
+            $donePkgs{$name} = 1;
         }
     }
 
