@@ -36,7 +36,7 @@ for component in ${DEBS_STAGE3_FILES}; do
         debs="$debs /inst$i";
     done
 
-    my_chroot /mnt dpkg --install --force-conflicts --force-overwrite $debs < /dev/null
+    my_chroot /mnt dpkg --install $debs < /dev/null
 done
 
 # Unmount everything
