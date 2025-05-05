@@ -10,9 +10,9 @@ let
   scripts = pkgs.callPackage ./scripts { inherit files; };
 
   packageLists = let
-    noble-updates-stamp = "20250317T120000Z";
+    noble-updates-stamp = "20250505T120000Z";
     ros2-stamp = "2025-01-20";
-    fictionlab-stamp = "2025-04-08";
+    fictionlab-stamp = "2025-05-05";
   in [
     {
       name = "noble-main";
@@ -46,7 +46,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/main/binary-arm64/Packages.xz";
-        sha256 = "sha256-3JmF+P22Vez9jrH8kqBXgFGR46j9Ui9QBjYtYxTLYZU=";
+        sha256 = "sha256-7BmachKumj/7PpIJSb9jflDnTOube9AmwOx/D7Uj3g8=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -55,7 +55,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/universe/binary-arm64/Packages.xz";
-        sha256 = "sha256-B4TkhivRo+5Xr60cpWY2U/KXBDedjLrvNlh+UOVgqnc=";
+        sha256 = "sha256-69LUB5kDKdIgbq8HUimmwf50AjbadlBl/Rglsd+QJcs=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -64,7 +64,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/restricted/binary-arm64/Packages.xz";
-        sha256 = "sha256-/CFo3ikHgW7AGJwbaZvNZT3IHwFUBG8d1+1hzs/7eo0=";
+        sha256 = "sha256-6idifxl0liVm6Yvm34E5qNzKlDUOQqV07AF2uFwEod8=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -82,7 +82,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://files.fictionlab.pl/repo/dists/noble/snapshots/${fictionlab-stamp}/main/binary-arm64/Packages.gz";
-        sha256 = "sha256-Pw2JsKkSJukSodOPKUQFAlv6I4k3fQ+L+mmPdIub460=";
+        sha256 = "sha256-GhiOeIJcUDYAnUaEe1NBsc+bCoTN7qu2KQwRmMveyg8=";
       });
       urlPrefix = "http://files.fictionlab.pl/repo";
     }
