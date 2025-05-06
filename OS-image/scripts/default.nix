@@ -90,7 +90,10 @@
     '';
     postFixup = ''
       wrapProgram $out/build.sh \
-      --set PATH "${with pkgs; lib.makeBinPath [ coreutils gnused util-linux ]}"
+      --set PATH "${
+        with pkgs;
+        lib.makeBinPath [ coreutils findutils gnused util-linux zerofree ]
+      }"
     '';
   };
 }

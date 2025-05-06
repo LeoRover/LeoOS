@@ -25,3 +25,5 @@ rm -v -rf "/mnt/run/"*
 # Unmount everything
 umount /mnt/boot/firmware
 umount /mnt
+
+zerofree -v "$DISK"2
