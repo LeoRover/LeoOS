@@ -218,7 +218,7 @@ in rec {
     inherit OSName memSize debsStage0 debsStage1;
 
     pname = "${OSName}-stage1-image";
-    version = OSVersion;
+    version = "";
 
     preVM = ''
       mkdir -p $out
@@ -241,7 +241,7 @@ in rec {
     inherit OSName memSize debsStage2;
 
     pname = "${OSName}-stage2-image";
-    version = OSVersion;
+    version = "";
 
     preVM = ''
       mkdir -p $out
@@ -265,7 +265,7 @@ in rec {
     inherit OSName memSize debsStage3;
 
     pname = "${OSName}-stage3-image";
-    version = OSVersion;
+    version = "";
 
     preVM = ''
       mkdir -p $out
@@ -289,7 +289,7 @@ in rec {
     inherit OSName memSize;
 
     pname = "${OSName}-stage4-image";
-    version = OSVersion;
+    version = "";
 
     preVM = ''
       mkdir -p $out
