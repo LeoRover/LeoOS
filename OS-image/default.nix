@@ -5,7 +5,7 @@ let
 
   tools = import ./tools.nix { inherit lib pkgs; };
 
-  files = pkgs.callPackage ./files { inherit OSName OSVersion; };
+  files = pkgs.callPackage ./files { };
 
   scripts = pkgs.callPackage ./scripts { inherit files; };
 
@@ -308,7 +308,31 @@ in rec {
     '';
   });
 
-  OSLiteImage = stdenv.mkDerivation {
+  OSLiteImage = vmTools.runInLinuxVM (stdenv.mkDerivation rec {
+    inherit OSName OSVersion memSize;
+    OSVariant = "lite";
+
+    pname = "${OSName}-${OSVariant}-image";
+    version = "${OSVersion}";
+
+    preVM = ''
+      mkdir -p $out
+      diskImage=$out/OS.img
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
+        -o backing_file=${OSStage4Image}/OS.img,backing_fmt=qcow2 \
+        -f qcow2 $diskImage
+    '';
+
+    buildCommand = ''
+      ${vmPrepareCommand}
+      ${scripts.stageFinal}/build.sh
+
+      mkdir -p $out/nix-support
+      echo ${OSStage4Image}/OS.img > $out/nix-support/backing_image
+    '';
+  });
+
+  OSLiteCompressedImage = stdenv.mkDerivation {
     pname = "${OSName}-lite-image";
     version = OSVersion;
 
@@ -316,13 +340,13 @@ in rec {
       mkdir -p $out
       diskImage=$out/${OSName}-${OSVersion}-lite.img
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img convert -f qcow2 -O raw \
-        ${OSStage4Image}/OS.img $diskImage
+        ${OSLiteImage}/OS.img $diskImage
 
       echo "Compressing the image"
       ${pkgs.zstd}/bin/zstd -T0 --rm --ultra -20 $diskImage
 
       mkdir -p $out/nix-support
-      echo ${OSStage4Image}/OS.img > $out/nix-support/source_image
+      echo ${OSLiteImage}/OS.img > $out/nix-support/source_image
     '';
   };
 }

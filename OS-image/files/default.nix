@@ -1,6 +1,6 @@
 
 
-{ OSName, OSVersion, stdenv, fetchurl }:
+{ stdenv, fetchurl }:
 let
   ros-archive-keyring = (fetchurl {
     url = "https://raw.githubusercontent.com/ros/rosdistro/master/ros.key";
@@ -15,11 +15,6 @@ in stdenv.mkDerivation {
   name = "files";
   src = ./.;
   phases = [ "unpackPhase" "patchPhase" "installPhase" ];
-
-  patchPhase = ''
-    sed -i "s|@OS_NAME@|${OSName}|g" etc/custom-os-release
-    sed -i "s|@OS_VERSION@|${OSVersion}|g" etc/custom-os-release
-  '';
 
   installPhase = ''
     # Copy the keyrings

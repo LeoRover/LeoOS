@@ -22,7 +22,7 @@
 
       in {
         packages = OSImageDerivations // {
-          default = OSImageDerivations.OSLiteImage;
+          default = OSImageDerivations.OSLiteCompressedImage;
         };
 
         formatter = pkgs.nixfmt-classic;

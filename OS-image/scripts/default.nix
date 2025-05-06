@@ -78,4 +78,19 @@
       --set UDEVD "${pkgs.systemd}/lib/systemd/systemd-udevd"
     '';
   };
+
+  stageFinal = stdenv.mkDerivation {
+    name = "scripts-stageFinal";
+    src = ./buildStageFinal.sh;
+    nativeBuildInputs = [ makeWrapper ];
+    phases = [ "installPhase" "postFixup" ];
+    installPhase = ''
+      mkdir -p $out
+      cp -vr $src $out/build.sh
+    '';
+    postFixup = ''
+      wrapProgram $out/build.sh \
+      --set PATH "${with pkgs; lib.makeBinPath [ coreutils gnused util-linux ]}"
+    '';
+  };
 }
