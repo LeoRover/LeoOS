@@ -313,7 +313,7 @@ in rec {
     OSVariant = "lite";
 
     pname = "${OSName}-${OSVariant}-image";
-    version = "${OSVersion}";
+    version = OSVersion;
 
     preVM = ''
       mkdir -p $out
@@ -332,8 +332,10 @@ in rec {
     '';
   });
 
-  OSLiteCompressedImage = stdenv.mkDerivation {
-    pname = "${OSName}-lite-image";
+  OSLiteCompressedImage = stdenv.mkDerivation rec {
+    OSVariant = "lite";
+
+    pname = "${OSName}-${OSVariant}-compressed-image";
     version = OSVersion;
 
     buildCommand = ''
