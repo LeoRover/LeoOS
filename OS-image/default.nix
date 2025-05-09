@@ -351,7 +351,7 @@ in rec {
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img resize --shrink -f raw $diskImage $DISK_SIZE
 
       echo "Compressing the image"
-      ${pkgs.zstd}/bin/zstd -T0 --rm --ultra -20 $diskImage
+      ${pkgs.xz}/bin/xz -T0 --compress --extreme $diskImage
 
       mkdir -p $out/nix-support
       echo ${OSLiteImage}/OS.img > $out/nix-support/source_image
