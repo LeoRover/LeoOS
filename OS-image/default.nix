@@ -344,6 +344,12 @@ in rec {
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img convert -f qcow2 -O raw \
         ${OSLiteImage}/OS.img $diskImage
 
+      LAST_SECTOR=$(${pkgs.parted}/bin/parted $diskImage -ms unit s print | tail -n +3 | cut -d: -f3 | sed 's/s//' | sort -n | tail -1)
+      SECTOR_SIZE=512
+      DISK_SIZE=$(( (LAST_SECTOR + 1) * SECTOR_SIZE ))
+
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img resize --shrink -f raw $diskImage $DISK_SIZE
+
       echo "Compressing the image"
       ${pkgs.zstd}/bin/zstd -T0 --rm --ultra -20 $diskImage
 

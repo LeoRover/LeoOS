@@ -92,7 +92,17 @@
       wrapProgram $out/build.sh \
       --set PATH "${
         with pkgs;
-        lib.makeBinPath [ coreutils findutils gnused util-linux zerofree ]
+        lib.makeBinPath [
+          coreutils
+          e2fsprogs
+          findutils
+          gawk
+          gnugrep
+          gnused
+          parted
+          util-linux
+          zerofree
+        ]
       }"
     '';
   };
