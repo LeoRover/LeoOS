@@ -5,9 +5,11 @@ let
 
   tools = import ./tools.nix { inherit lib pkgs; };
 
-  files = pkgs.callPackage ./files { };
+  files-lite = pkgs.callPackage ./files-lite { };
 
-  scripts = pkgs.callPackage ./scripts { inherit files; };
+  files-full = pkgs.callPackage ./files-full { };
+
+  scripts = pkgs.callPackage ./scripts { inherit files-lite files-full; };
 
   packageLists = let
     noble-updates-stamp = "20250505T120000Z";
@@ -188,6 +190,16 @@ let
       "ros-jazzy-leo-camera" # hidden dependency of leo_robot
       "ros-jazzy-compressed-image-transport" # image transport plugin that provides compressed image streams
       "ros-jazzy-micro-ros-agent" # For talking with LeoCore
+
+      "---"
+
+      # STAGE 4 - Desktop packages
+      "ros-jazzy-desktop"
+      "ros-jazzy-leo-desktop"
+      "lxqt" # Desktop environment
+      "lightdm" # Display manager
+      "lightdm-mini-greeter" # Greeter for lightdm
+      "accountsservice" # User account management
     ];
   }) { inherit fetchurl; };
 
@@ -202,6 +214,7 @@ let
   debsStage1 = exportStage 1;
   debsStage2 = exportStage 2;
   debsStage3 = exportStage 3;
+  debsStage4 = exportStage 4;
 
   vmPrepareCommand = if buildSystem != "aarch64-linux" then ''
     echo "Mounting binfmt_misc"
@@ -306,6 +319,29 @@ in rec {
 
       mkdir -p $out/nix-support
       echo ${OSStage3Image}/OS.img > $out/nix-support/backing_image
+    '';
+  });
+
+  OSStage5Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
+    inherit OSName memSize debsStage4;
+
+    pname = "${OSName}-stage5-image";
+    version = "";
+
+    preVM = ''
+      mkdir -p $out
+      diskImage=$out/OS.img
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
+        -o backing_file=${OSStage4Image}/OS.img,backing_fmt=qcow2 \
+        -f qcow2 $diskImage
+    '';
+
+    buildCommand = ''
+      ${vmPrepareCommand}
+      ${scripts.stage5}/build.sh
+
+      mkdir -p $out/nix-support
+      echo ${OSStage4Image}/OS.img > $out/nix-support/backing_image
     '';
   });
 

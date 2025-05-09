@@ -1,4 +1,4 @@
-{ files, pkgs, stdenv, makeWrapper }: {
+{ files-lite, files-full, pkgs, stdenv, makeWrapper }: {
   stage1 = stdenv.mkDerivation {
     name = "scripts-stage1";
     src = ./buildStage1.sh;
@@ -74,8 +74,43 @@
         with pkgs;
         lib.makeBinPath [ coreutils gnused systemd util-linux ]
       }" \
-      --set FILES_DIR ${files} \
+      --set FILES_DIR ${files-lite} \
       --set UDEVD "${pkgs.systemd}/lib/systemd/systemd-udevd"
+    '';
+  };
+
+  stage5 = stdenv.mkDerivation {
+    name = "scripts-stage5";
+    src = ./buildStage5.sh;
+    nativeBuildInputs = [ makeWrapper ];
+    phases = [ "installPhase" "postFixup" ];
+    installPhase = ''
+      mkdir -p $out
+      cp -vr $src $out/build.sh
+    '';
+    postFixup = ''
+      wrapProgram $out/build.sh \
+      --set PATH "${with pkgs; lib.makeBinPath [ coreutils util-linux ]}" \
+      --set NIX_STORE_DIR ${builtins.storeDir}
+    '';
+  };
+
+  stage6 = stdenv.mkDerivation {
+    name = "scripts-stage6";
+    src = ./buildStage6.sh;
+    nativeBuildInputs = [ makeWrapper ];
+    phases = [ "installPhase" "postFixup" ];
+    installPhase = ''
+      mkdir -p $out
+      cp -vr $src $out/build.sh
+    '';
+    postFixup = ''
+      wrapProgram $out/build.sh \
+      --set PATH "${
+        with pkgs;
+        lib.makeBinPath [ coreutils gnused util-linux ]
+      }" \
+      --set FILES_DIR ${files-full}
     '';
   };
 
