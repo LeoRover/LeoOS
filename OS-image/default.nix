@@ -223,7 +223,7 @@ in rec {
     preVM = ''
       mkdir -p $out
       diskImage=$out/OS.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create -f raw $diskImage "${
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create -f qcow2 $diskImage "${
         toString imageSize
       }M"
     '';
@@ -247,7 +247,7 @@ in rec {
       mkdir -p $out
       diskImage=$out/OS.img
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
-        -o backing_file=${OSStage1Image}/OS.img,backing_fmt=raw \
+        -o backing_file=${OSStage1Image}/OS.img,backing_fmt=qcow2 \
         -f qcow2 $diskImage
     '';
 
