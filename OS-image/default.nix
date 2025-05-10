@@ -11,7 +11,7 @@ let
 
   packageLists = let
     noble-updates-stamp = "20250505T120000Z";
-    ros2-stamp = "2025-01-20";
+    ros2-stamp = "2025-04-30";
     fictionlab-stamp = "2025-05-05";
   in [
     {
@@ -73,7 +73,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu/dists/noble/main/binary-arm64/Packages.bz2";
-        sha256 = "sha256-Iay9j+u+96apUQRl3jmE4kBaXFk+1ubz2PUcI4YjZug=";
+        sha256 = "sha256-ptB10XQM+JgpAv/thF5JAzE04WTU1nMOd6QO04zHj9E=";
       });
       urlPrefix = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu";
     }
