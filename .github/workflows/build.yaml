@@ -15,5 +15,5 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build
       run: |
-        nix build -Lv .#OSStage4Image
+        nix build -Lv .#OSLiteImage
         nix fmt -- -c .
