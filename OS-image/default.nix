@@ -168,6 +168,7 @@ let
       "openssh-server" # Remote login
       "nginx" # Web server
       "bridge-utils" # bridge management utilities
+      "bluez" # Bluetooth stack
       "rtl88xxau-dkms" # Realtek WiFi driver
 
       "---"
