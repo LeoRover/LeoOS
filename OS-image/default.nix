@@ -351,6 +351,30 @@ in rec {
     '';
   });
 
+  OSStage6Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
+    inherit OSName memSize debsStage4;
+
+    pname = "${OSName}-stage6-image";
+    version = "";
+
+    preVM = ''
+      mkdir -p $out
+      diskImage=$out/OS.img
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
+        -o backing_file=${OSStage5Image}/OS.img,backing_fmt=qcow2 \
+        -f qcow2 $diskImage
+    '';
+
+    buildCommand = ''
+      ${vmPrepareCommand}
+      ${scripts.stage6}/build.sh
+
+      mkdir -p $out/nix-support
+      echo ${OSStage5Image}/OS.img > $out/nix-support/backing_image
+    '';
+  });
+
+
   OSLiteImage = vmTools.runInLinuxVM (stdenv.mkDerivation rec {
     inherit OSName OSVersion memSize;
     OSVariant = "lite";
@@ -398,6 +422,56 @@ in rec {
 
       mkdir -p $out/nix-support
       echo ${OSLiteImage}/OS.img > $out/nix-support/source_image
+    '';
+  };
+
+  OSFullImage = vmTools.runInLinuxVM (stdenv.mkDerivation rec {
+    inherit OSName OSVersion memSize;
+    OSVariant = "full";
+
+    pname = "${OSName}-${OSVariant}-image";
+    version = OSVersion;
+
+    preVM = ''
+      mkdir -p $out
+      diskImage=$out/OS.img
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
+        -o backing_file=${OSStage6Image}/OS.img,backing_fmt=qcow2 \
+        -f qcow2 $diskImage
+    '';
+
+    buildCommand = ''
+      ${vmPrepareCommand}
+      ${scripts.stageFinal}/build.sh
+
+      mkdir -p $out/nix-support
+      echo ${OSStage6Image}/OS.img > $out/nix-support/backing_image
+    '';
+  });
+
+  OSFullCompressedImage = stdenv.mkDerivation rec {
+    OSVariant = "full";
+
+    pname = "${OSName}-${OSVariant}-compressed-image";
+    version = OSVersion;
+
+    buildCommand = ''
+      mkdir -p $out
+      diskImage=$out/${OSName}-${OSVersion}-${OSVariant}.img
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img convert -f qcow2 -O raw \
+        ${OSFullImage}/OS.img $diskImage
+
+      LAST_SECTOR=$(${pkgs.parted}/bin/parted $diskImage -ms unit s print | tail -n +3 | cut -d: -f3 | sed 's/s//' | sort -n | tail -1)
+      SECTOR_SIZE=512
+      DISK_SIZE=$(( (LAST_SECTOR + 1) * SECTOR_SIZE ))
+
+      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img resize --shrink -f raw $diskImage $DISK_SIZE
+
+      echo "Compressing the image"
+      ${pkgs.xz}/bin/xz -T0 --compress --extreme $diskImage
+
+      mkdir -p $out/nix-support
+      echo ${OSFullImage}/OS.img > $out/nix-support/source_image
     '';
   };
 }
