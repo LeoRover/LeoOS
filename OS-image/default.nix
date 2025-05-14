@@ -176,9 +176,13 @@ let
       "---"
 
       # STAGE 2 - ROS base packages
-      "ros-dev-tools"
-      "python3-colcon-common-extensions"
-      "ros-jazzy-ros-base"
+
+      # Added here to fix a problem with deb closure generator which cannot properly
+      # resolve dependencies like "python3-distro (>= 1.4.0) | python3 (<< 3.8)"
+      "python3-distro"
+
+      "ros-dev-tools" # ROS development tools (rosdep, colcon, vcs etc.)
+      "ros-jazzy-ros-base" # ROS base packages
 
       "---"
 
@@ -194,12 +198,14 @@ let
       "---"
 
       # STAGE 4 - Desktop packages
-      "ros-jazzy-desktop"
-      "ros-jazzy-leo-desktop"
+      "xorg" # X11 server
+      "xserver-xorg-video-fbdev" # X11 framebuffer driver
       "lxqt" # Desktop environment
       "lightdm" # Display manager
       "lightdm-mini-greeter" # Greeter for lightdm
       "accountsservice" # User account management
+      "ros-jazzy-desktop"
+      "ros-jazzy-leo-desktop"
     ];
   }) { inherit fetchurl; };
 
