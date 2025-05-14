@@ -34,17 +34,23 @@ foreach my $list (@{$args{"package-list"}}) {
 
 # Flatten a Dpkg::Deps dependency value into a list of package names.
 sub getDeps {
-    my $deps = shift;
-    #print "$deps\n";
+    my ($deps, $donePkgs) = @_;
     if ($deps->isa('Dpkg::Deps::AND')) {
         my @res = ();
         foreach my $dep ($deps->get_deps()) {
-            push @res, getDeps($dep);
+            push @res, getDeps($dep, $donePkgs);
         }
         return @res;
     } elsif ($deps->isa('Dpkg::Deps::OR')) {
-        # Arbitrarily pick the first alternative.
-        return getDeps(($deps->get_deps())[0]);
+        # Prefer already installed/scheduled alternatives
+        foreach my $dep ($deps->get_deps()) {
+            my @names = getDeps($dep, $donePkgs);
+            foreach my $name (@names) {
+                return ($name) if exists $donePkgs->{$name};
+            }
+        }
+        # Otherwise, pick the first alternative
+        return getDeps(($deps->get_deps())[0], $donePkgs);
     } elsif ($deps->isa('Dpkg::Deps::Simple')) {
         return ($deps->{package});
     } else {
@@ -59,7 +65,7 @@ my %provides;
 foreach my $package (sort {$a->{cdata}->{Package} cmp $b->{cdata}->{Package}} (values %packages)) {
     my $cdata = $package->{cdata};
     if (defined $cdata->{Provides}) {
-        my @provides = getDeps(Dpkg::Deps::deps_parse($cdata->{Provides}));
+        my @provides = getDeps(Dpkg::Deps::deps_parse($cdata->{Provides}), {});
         foreach my $name (@provides) {
             #die "conflicting provide: $name\n" if defined $provides{$name};
             #warn "provide by $cdata->{Package} conflicts with package with the same name: $name\n";
@@ -69,7 +75,7 @@ foreach my $package (sort {$a->{cdata}->{Package} cmp $b->{cdata}->{Package}} (v
     }
     # Treat "Replaces" like "Provides".
     if (defined $cdata->{Replaces}) {
-        my @replaces = getDeps(Dpkg::Deps::deps_parse($cdata->{Replaces}));
+        my @replaces = getDeps(Dpkg::Deps::deps_parse($cdata->{Replaces}), {});
         foreach my $name (@replaces) {
             next if defined $packages{$name};
             $provides{$name} = $cdata->{Package};
@@ -100,7 +106,7 @@ sub closePackage {
     $donePkgs{$pkgName} = 1;
 
     if (defined $cdata->{Provides}) {
-        foreach my $name (getDeps(Dpkg::Deps::deps_parse($cdata->{Provides}))) {
+        foreach my $name (getDeps(Dpkg::Deps::deps_parse($cdata->{Provides}), \%donePkgs)) {
             $provides{$name} = $cdata->{Package};
             $donePkgs{$name} = 1;
         }
@@ -112,7 +118,7 @@ sub closePackage {
         print STDERR "    $pkgName: $cdata->{'Pre-Depends'}\n";
         my $deps = Dpkg::Deps::deps_parse($cdata->{'Pre-Depends'});
         die unless defined $deps;
-        push @preDepNames, getDeps($deps);
+        push @preDepNames, getDeps($deps, \%donePkgs);
     }
 
     foreach my $preDepName (@preDepNames) {
@@ -125,7 +131,7 @@ sub closePackage {
         print STDERR "    $pkgName: $cdata->{Depends}\n";
         my $deps = Dpkg::Deps::deps_parse($cdata->{Depends});
         die unless defined $deps;
-        push @depNames, getDeps($deps);
+        push @depNames, getDeps($deps, \%donePkgs);
     }
 
     foreach my $depName (@depNames) {
