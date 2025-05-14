@@ -3,6 +3,7 @@
 DISK=/dev/vda
 
 my_chroot() {
+    env -i \
     DEBIAN_FRONTEND=noninteractive \
     PATH=/usr/bin:/bin:/usr/sbin:/sbin \
     $(type -tP chroot) $@
