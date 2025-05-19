@@ -201,11 +201,21 @@ let
       "xorg" # X11 server
       "xserver-xorg-video-fbdev" # X11 framebuffer driver
       "lxqt" # Desktop environment
+      "openbox" # Window manager
       "lightdm" # Display manager
       "lightdm-mini-greeter" # Greeter for lightdm
       "accountsservice" # User account management
-      "ros-jazzy-desktop"
-      "ros-jazzy-leo-desktop"
+      "blueman" # Bluetooth manager
+      "pulseaudio-module-bluetooth" # Bluetooth audio support
+      "network-manager-gnome" # Network configuration editor
+      "nm-tray" # Network manager tray applet
+      "lubuntu-artwork" # LXQt theme
+      "papirus-icon-theme" # LXQt icon theme
+      "kde-style-breeze" # LXQt color scheme
+      "breeze-cursor-theme" # LXQt cursor theme
+      "firefox-esr" # Web browser
+      "ros-jazzy-desktop" # ROS desktop packages
+      "ros-jazzy-leo-desktop" # Leo-specific ROS desktop packages
     ];
   }) { inherit fetchurl; };
 
