@@ -8,6 +8,7 @@ stdenv.mkDerivation {
 
   installPhase = ''
     # Copy the files
-    cp -vr etc $out
+    mkdir -p $out
+    cp -vr etc usr $out
   '';
 }
