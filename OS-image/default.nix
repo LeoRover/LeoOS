@@ -171,6 +171,7 @@ let
       "nginx" # Web server
       "bridge-utils" # bridge management utilities
       "bluez" # Bluetooth stack
+      "hostname" # hostname management
       "rtl88xxau-dkms" # Realtek WiFi driver
 
       "---"
@@ -214,6 +215,7 @@ let
       "kde-style-breeze" # LXQt color scheme
       "breeze-cursor-theme" # LXQt cursor theme
       "firefox-esr" # Web browser
+      "tigervnc-scraping-server" # VNC server
       "ros-jazzy-desktop" # ROS desktop packages
       "ros-jazzy-leo-desktop" # Leo-specific ROS desktop packages
     ];

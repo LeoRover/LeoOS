@@ -33,6 +33,10 @@ sed -i "s|Clearlooks|Lubuntu Arc|g" /mnt/etc/xdg/openbox/rc.xml
 echo "Hidden=true" >> /mnt/etc/xdg/autostart/lxqt-powermanagement.desktop
 echo "Hidden=true" >> /mnt/etc/xdg/autostart/nm-applet.desktop
 
+echo -n " video=HDMI-A-1:1280x800@30D" >> /mnt/boot/firmware/cmdline.txt
+
+my_chroot /mnt systemctl enable x0vncserver
+
 # Unmount everything
 umount /mnt/boot/firmware
 umount /mnt/sys
