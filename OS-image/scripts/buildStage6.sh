@@ -29,6 +29,10 @@ cp -vr --no-preserve=mode "${FILES_DIR}/"* /mnt/
 sed -i "s|user = CHANGE_ME|user = ${USER_NAME}|" /mnt/etc/lightdm/lightdm-mini-greeter.conf
 sed -i "s|Clearlooks|Lubuntu Arc|g" /mnt/etc/xdg/openbox/rc.xml
 
+# Disable autostart applications
+echo "Hidden=true" >> /mnt/etc/xdg/autostart/lxqt-powermanagement.desktop
+echo "Hidden=true" >> /mnt/etc/xdg/autostart/nm-applet.desktop
+
 # Unmount everything
 umount /mnt/boot/firmware
 umount /mnt/sys
