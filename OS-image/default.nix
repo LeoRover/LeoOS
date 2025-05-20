@@ -387,7 +387,6 @@ in rec {
     '';
   });
 
-
   OSLiteImage = vmTools.runInLinuxVM (stdenv.mkDerivation rec {
     inherit OSName OSVersion memSize;
     OSVariant = "lite";
