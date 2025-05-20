@@ -16,4 +16,5 @@ jobs:
     - name: Build
       run: |
         nix build -Lv .#OSLiteImage
+        nix build -Lv .#OSFullImage
         nix fmt -- -c .
