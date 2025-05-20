@@ -52,7 +52,7 @@ To flash the compressed image to an SD card, you can use the following command. 
 xz -dc ./result/LeoOS-<version>-<variant>.img.xz | sudo dd of=/dev/sdX bs=4M status=progress
 ```
 
-Alternatively, you can programs like [balenaEtcher] to flash the image.
+Alternatively, you can use programs like [balenaEtcher] to flash the image.
 
 [Nix flake]: https://nixos.wiki/wiki/Flakes
 [Nix]: https://nixos.org/download.html
