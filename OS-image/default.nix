@@ -182,6 +182,7 @@ let
       # resolve dependencies like "python3-distro (>= 1.4.0) | python3 (<< 3.8)"
       "python3-distro"
 
+      "ros2-apt-source" # Configures sources for ROS 2 repo
       "ros-dev-tools" # ROS development tools (rosdep, colcon, vcs etc.)
       "ros-jazzy-ros-base" # ROS base packages
 
