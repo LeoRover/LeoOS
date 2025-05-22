@@ -211,6 +211,7 @@ let
       "pulseaudio-module-bluetooth" # Bluetooth audio support
       "network-manager-gnome" # Network configuration editor
       "nm-tray" # Network manager tray applet
+      "gvfs" # Trash support
       "lubuntu-artwork" # LXQt theme
       "papirus-icon-theme" # LXQt icon theme
       "kde-style-breeze" # LXQt color scheme
