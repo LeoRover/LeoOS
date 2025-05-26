@@ -37,5 +37,6 @@ dtoverlay=miniuart-bt
 
 [pi5]
 arm_boost=1
+usb_max_current_enable=1
 dtparam=uart0=on
 dtoverlay=imx477,cam0
