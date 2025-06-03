@@ -14,6 +14,8 @@ export MECANUM_WHEELS=false
 # Affects all node namespaces (except the firmware node) and URDF link names
 export ROBOT_NAMESPACE=""
 
+# Set to false to disable publishing of odom -> base_footprint TF transform
+export PUBLISH_ODOM_TF=true
 
 ### Start scripts variables
 

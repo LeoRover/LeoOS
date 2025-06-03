@@ -2,6 +2,7 @@
 
   <let name="mecanum_wheels" value="$(env MECANUM_WHEELS false)" />
   <let name="robot_ns" value="$(env ROBOT_NAMESPACE '')" />
+  <let name="publish_odom_tf" value="$(env PUBLISH_ODOM_TF true)" />
 
   <let name="tf_frame_prefix"
     value="$(eval '\'\' if \'$(var robot_ns)\' == \'\' else \'$(var robot_ns)\' + \'/\'')" />
@@ -19,6 +20,7 @@
     <arg name="spawn_state_publisher" value="false" />
     <arg name="mecanum_wheels" value="$(var mecanum_wheels)" />
     <arg name="tf_frame_prefix" value="$(var tf_frame_prefix)" />
+    <arg name="publish_odom_tf" value="$(var publish_odom_tf)" />
     <arg name="firmware_override_params_file" value="/etc/ros/firmware_overrides.yaml" />
   </include>
 
