@@ -412,15 +412,15 @@ in rec {
     '';
   });
 
-  OSLiteCompressedImage = stdenv.mkDerivation rec {
+  OSLiteRawImage = stdenv.mkDerivation rec {
     OSVariant = "lite";
 
-    pname = "${OSName}-${OSVariant}-compressed-image";
+    pname = "${OSName}-${OSVariant}-raw-image";
     version = OSVersion;
 
     buildCommand = ''
       mkdir -p $out
-      diskImage=$out/${OSName}-${OSVersion}-lite.img
+      diskImage=$out/${OSName}-${OSVersion}-${OSVariant}.img
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img convert -f qcow2 -O raw \
         ${OSLiteImage}/OS.img $diskImage
 
@@ -429,12 +429,21 @@ in rec {
       DISK_SIZE=$(( (LAST_SECTOR + 1) * SECTOR_SIZE ))
 
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img resize --shrink -f raw $diskImage $DISK_SIZE
+    '';
+  };
+
+  OSLiteCompressedImage = stdenv.mkDerivation rec {
+    OSVariant = "lite";
+
+    pname = "${OSName}-${OSVariant}-compressed-image";
+    version = OSVersion;
+
+    buildCommand = ''
+      mkdir -p $out
 
       echo "Compressing the image"
-      ${pkgs.xz}/bin/xz -T0 --compress --extreme $diskImage
-
-      mkdir -p $out/nix-support
-      echo ${OSLiteImage}/OS.img > $out/nix-support/source_image
+      ${pkgs.xz}/bin/xz -T0 --compress --extreme -c ${OSLiteRawImage}/${OSName}-${OSVersion}-${OSVariant}.img > \
+        $out/${OSName}-${OSVersion}-${OSVariant}.img.xz
     '';
   };
 
@@ -462,10 +471,10 @@ in rec {
     '';
   });
 
-  OSFullCompressedImage = stdenv.mkDerivation rec {
+  OSFullRawImage = stdenv.mkDerivation rec {
     OSVariant = "full";
 
-    pname = "${OSName}-${OSVariant}-compressed-image";
+    pname = "${OSName}-${OSVariant}-raw-image";
     version = OSVersion;
 
     buildCommand = ''
@@ -479,12 +488,21 @@ in rec {
       DISK_SIZE=$(( (LAST_SECTOR + 1) * SECTOR_SIZE ))
 
       ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img resize --shrink -f raw $diskImage $DISK_SIZE
+    '';
+  };
+
+  OSFullCompressedImage = stdenv.mkDerivation rec {
+    OSVariant = "full";
+
+    pname = "${OSName}-${OSVariant}-compressed-image";
+    version = OSVersion;
+
+    buildCommand = ''
+      mkdir -p $out
 
       echo "Compressing the image"
-      ${pkgs.xz}/bin/xz -T0 --compress --extreme $diskImage
-
-      mkdir -p $out/nix-support
-      echo ${OSFullImage}/OS.img > $out/nix-support/source_image
+      ${pkgs.xz}/bin/xz -T0 --compress --extreme -c ${OSFullRawImage}/${OSName}-${OSVersion}-${OSVariant}.img > \
+        $out/${OSName}-${OSVersion}-${OSVariant}.img.xz
     '';
   };
 }
