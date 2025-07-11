@@ -48,7 +48,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/main/binary-arm64/Packages.xz";
-        sha256 = "sha256-Fbmm56P+a0zrFJYZiXu8EghmBuPdyrEm8IH1xq6m+ls=";
+        sha256 = "sha256-hjH44+0EkAFWJAYo6rhKPZmD70UxlNJ50Ap/D4ZWak4=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -57,7 +57,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/universe/binary-arm64/Packages.xz";
-        sha256 = "sha256-Ef2rYm6FodeaV4lwPNZ6PBDMxBnwD2gHCjUdNEW5h3U=";
+        sha256 = "sha256-6PE1nTABxVJzjimX8puIIw6iIl0hHNbal2Qa8Y3k9t0=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
