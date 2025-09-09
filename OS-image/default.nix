@@ -1,6 +1,6 @@
 { OSName, OSVersion, buildSystem, lib, pkgs, fetchurl, stdenv, vmTools, ... }:
 let
-  imageSize = 8192;
+  imageSize = 12000;
   memSize = 4096;
 
   tools = import ./tools.nix { inherit lib pkgs; };
