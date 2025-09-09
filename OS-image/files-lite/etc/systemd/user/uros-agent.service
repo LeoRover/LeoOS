@@ -5,7 +5,18 @@ PartOf=ros.target
 [Service]
 Type=simple
 ExecStartPre=/usr/lib/systemd/systemd-networkd-wait-online
-ExecStart=/usr/lib/ros/uros-agent
+ExecStart=/usr/bin/podman run -it --rm \
+    --privileged \
+    --net=host \
+    --ipc=host \
+    --pid=host \
+    --security-opt label=disable \
+    -v /dev:/dev \
+    -v /usr/lib/ros:/usr/lib/ros \
+    -v /etc/ros:/etc/ros \
+    -v /home/pi/.ros:/root/.ros \
+    --group-add keep-groups \
+    ghcr.io/leorover/leo_humble_docker uros-agent
 Restart=on-failure
 RestartSec=5
 
