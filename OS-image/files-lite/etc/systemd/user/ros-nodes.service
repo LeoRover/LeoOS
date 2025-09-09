@@ -3,9 +3,9 @@ Description=ROS nodes
 PartOf=ros.target
 
 [Service]
-Type=simple
+Type=exec
 ExecStartPre=/usr/lib/systemd/systemd-networkd-wait-online
-ExecStart=/usr/bin/podman run -it --rm \
+ExecStart=/usr/bin/podman run --rm \
     --privileged \
     --net=host \
     --ipc=host \
@@ -14,10 +14,12 @@ ExecStart=/usr/bin/podman run -it --rm \
     -v /dev:/dev \
     -v /usr/lib/ros:/usr/lib/ros \
     -v /etc/ros:/etc/ros \
-    -v /home/pi/.ros:/root/.ros \
+    -v /home/%u/.ros:/root/.ros \
     --group-add keep-groups \
+    --cidfile=/%t/ros-nodes.cid \
     ghcr.io/leorover/leo_humble_docker ros-nodes
-KillSignal=SIGINT
+KillSignal=none
+ExecStop=/usr/bin/podman stop --cidfile=/%t/ros-nodes.cid
 
 [Install]
 WantedBy=ros.target
