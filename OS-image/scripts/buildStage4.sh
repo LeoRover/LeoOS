@@ -72,13 +72,38 @@ done
 
 # Change file ownership
 chown ${USER_NAME}:${USER_NAME} -R "/etc/ros"
-chown root:root -R "/etc/ros/rosdep"
 
 # Enable user services
 su - ${USER_NAME} -c "systemctl --user enable ros-nodes"
 su - ${USER_NAME} -c "systemctl --user enable uros-agent"
 su - ${USER_NAME} -c "systemctl --user enable ros.target"
 CHROOT
+
+# Install the container image archive
+mkdir -p /mnt/tmp
+cp -v "${LEO_HUMBLE_CONTAINER}" /mnt/tmp/leo_humble_container.tar
+
+# Load the Podman container image
+my_chroot /mnt podman load -i /tmp/leo_humble_container.tar
+
+# Remove the Podman container image archive
+rm -vf /mnt/tmp/leo_humble_container.tar
+
+# Move the Podman container storage to the user's home directory
+mkdir -vp "/mnt/home/${USER_NAME}/.local/share/containers"
+mv -v /mnt/var/lib/containers/storage "/mnt/home/${USER_NAME}/.local/share/containers/storage"
+
+# Remove the old Podman container storage database so it will be recreated
+rm /mnt/home/${USER_NAME}/.local/share/containers/storage/db.sql
+
+# Fix ownership of the Podman container storage
+my_chroot /mnt chown -R ${USER_NAME}:${USER_NAME} "/home/${USER_NAME}/.local/share/containers/storage"
+
+# Clear root podman cache
+rm -rf /mnt/var/lib/containers
+
+# Create needed directories in the user's home directory
+mkdir -vp "/mnt/home/${USER_NAME}/.ros"
 
 # Enable lingering for default user
 mkdir -p -m 755 "/mnt/var/lib/systemd/linger"
