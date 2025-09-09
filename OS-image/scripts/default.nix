@@ -1,4 +1,4 @@
-{ files-lite, files-full, pkgs, stdenv, makeWrapper }: {
+{ files-lite, files-full, leoHumbleContainer, pkgs, stdenv, makeWrapper }: {
   stage1 = stdenv.mkDerivation {
     name = "scripts-stage1";
     src = ./buildStage1.sh;
@@ -75,7 +75,8 @@
         lib.makeBinPath [ coreutils gnused systemd util-linux ]
       }" \
       --set FILES_DIR ${files-lite} \
-      --set UDEVD "${pkgs.systemd}/lib/systemd/systemd-udevd"
+      --set UDEVD "${pkgs.systemd}/lib/systemd/systemd-udevd" \
+      --set LEO_HUMBLE_CONTAINER ${leoHumbleContainer}
     '';
   };
 
