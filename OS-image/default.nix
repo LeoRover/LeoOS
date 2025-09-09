@@ -1,4 +1,5 @@
-{ OSName, OSVersion, buildSystem, lib, pkgs, fetchurl, stdenv, vmTools, ... }:
+{ OSName, OSVersion, buildSystem, lib, pkgs, fetchurl, stdenv, vmTools
+, dockerTools, ... }:
 let
   imageSize = 12000;
   memSize = 4096;
@@ -9,7 +10,17 @@ let
 
   files-full = pkgs.callPackage ./files-full { };
 
-  scripts = pkgs.callPackage ./scripts { inherit files-lite files-full; };
+  leoHumbleContainer = dockerTools.pullImage {
+    imageName = "ghcr.io/leorover/leo_humble_docker";
+    imageDigest =
+      "sha256:db93c83ef4c71b8de86b36774d75283930d53ad7aa01a9aed9d10b64966f6e2c";
+    sha256 = "sha256-rMHKoT6RjtIJUtRz6skNNqLYg/XxP6g4sJqATH5JbXY=";
+    arch = "arm64";
+  };
+
+  scripts = pkgs.callPackage ./scripts {
+    inherit files-lite files-full leoHumbleContainer;
+  };
 
   packageLists = let
     noble-updates-stamp = "20250609T120000Z";
