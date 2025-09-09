@@ -146,6 +146,7 @@ let
       "rpi-eeprom" # Raspberry Pi EEPROM utilities
 
       ## Networking stuff
+      "ca-certificates" # CA certificates for HTTPS
       "netplan.io" # network configuration utility
       "iproute2" # ip cli utilities
       "iputils-ping" # ping utility
@@ -163,6 +164,10 @@ let
       "bluez" # Bluetooth stack
       "hostname" # hostname management
       "rtl88xxau-dkms" # Realtek WiFi driver
+
+      ## Containers
+      "podman" # container management
+      "uidmap" # user namespace support for podman
 
       "---"
 
