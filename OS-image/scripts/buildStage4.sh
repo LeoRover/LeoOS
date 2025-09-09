@@ -97,13 +97,14 @@ mv -v /mnt/var/lib/containers/storage "/mnt/home/${USER_NAME}/.local/share/conta
 rm /mnt/home/${USER_NAME}/.local/share/containers/storage/db.sql
 
 # Fix ownership of the Podman container storage
-my_chroot /mnt chown -R ${USER_NAME}:${USER_NAME} "/home/${USER_NAME}/.local/share/containers/storage"
+my_chroot /mnt chown -R ${USER_NAME}:${USER_NAME} "/home/${USER_NAME}/.local"
 
 # Clear root podman cache
 rm -rf /mnt/var/lib/containers
 
 # Create needed directories in the user's home directory
 mkdir -vp "/mnt/home/${USER_NAME}/.ros"
+my_chroot /mnt chown ${USER_NAME}:${USER_NAME} "/home/${USER_NAME}/.ros"
 
 # Enable lingering for default user
 mkdir -p -m 755 "/mnt/var/lib/systemd/linger"
