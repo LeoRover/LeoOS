@@ -13,7 +13,6 @@ let
 
   packageLists = let
     noble-updates-stamp = "20250609T120000Z";
-    ros2-stamp = "2025-05-23";
     fictionlab-stamp = "2025-06-02";
   in [
     {
@@ -69,15 +68,6 @@ let
         sha256 = "sha256-2WriTlnezzHvQ8cKl2gx/ny89Ei3GBC116m1BA/b5is=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
-    }
-    {
-      name = "ros2";
-      packagesFile = (fetchurl {
-        url =
-          "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu/dists/noble/main/binary-arm64/Packages.bz2";
-        sha256 = "sha256-K/b2pAb4jzOZekDVU+2J43r178ZTL0BvkgoKkp6VuXg=";
-      });
-      urlPrefix = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu";
     }
     {
       name = "fictionlab";
@@ -176,26 +166,12 @@ let
 
       "---"
 
-      # STAGE 2 - ROS base packages
-
-      # Added here to fix a problem with deb closure generator which cannot properly
-      # resolve dependencies like "python3-distro (>= 1.4.0) | python3 (<< 3.8)"
-      "python3-distro"
-
-      "ros2-apt-source" # Configures sources for ROS 2 repo
-      "ros-dev-tools" # ROS development tools (rosdep, colcon, vcs etc.)
-      "ros-jazzy-ros-base" # ROS base packages
+      # STAGE 2 - ommitted
 
       "---"
 
       # STAGE 3 - Leo-specific packages
-      "python3-rpi-lgpio" # Replacement for RPi.GPIO which supports RPi 5
-      "python3-stm32loader" # Tool for flashing LeoCore
       "leo-ui" # Web UI for controlling Leo Rover
-      "ros-jazzy-leo-robot" # Leo Rover ROS packages
-      "ros-jazzy-leo-camera" # hidden dependency of leo_robot
-      "ros-jazzy-compressed-image-transport" # image transport plugin that provides compressed image streams
-      "ros-jazzy-micro-ros-agent" # For talking with LeoCore
 
       "---"
 
@@ -218,8 +194,6 @@ let
       "breeze-cursor-theme" # LXQt cursor theme
       "firefox-esr" # Web browser
       "tigervnc-scraping-server" # VNC server
-      "ros-jazzy-desktop" # ROS desktop packages
-      "ros-jazzy-leo-desktop" # Leo-specific ROS desktop packages
     ];
   }) { inherit fetchurl; };
 
