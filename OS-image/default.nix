@@ -205,7 +205,7 @@ let
       "lxqt" # Desktop environment
       "openbox" # Window manager
       "lightdm" # Display manager
-      "lightdm-mini-greeter" # Greeter for lightdm
+      "lightdm-gtk-greeter" # Greeter for lightdm
       "accountsservice" # User account management
       "blueman" # Bluetooth manager
       "pulseaudio-module-bluetooth" # Bluetooth audio support
