@@ -83,8 +83,8 @@ let
       name = "fictionlab";
       packagesFile = (fetchurl {
         url =
-          "https://archive.fictionlab.pl/dists/noble/snapshots/${fictionlab-stamp}/main/binary-arm64/Packages.gz";
-        sha256 = "sha256-ES7VzUuyyKWltj2rQuZ4FVnnvm2C5UGKm8KjRTfPO+4=";
+          "https://archive.fictionlab.pl/dists/noble/main/binary-arm64/Packages.gz";
+        sha256 = "sha256-6RtkYRiHKHFvp8hDeFidQjbJ7ZPMcqX8g+qxmULBUQs=";
       });
       urlPrefix = "https://archive.fictionlab.pl";
     }
