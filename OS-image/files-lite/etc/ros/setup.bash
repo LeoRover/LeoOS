@@ -28,9 +28,14 @@ LAUNCH_ARGS=""
 # Arguments passed to Micro-ROS agent
 UROS_AGENT_ARGS="serial -D /dev/serial0 -b 460800"
 
+# The ID and port of the discovery server. (only used if the discovery server is enabled)
+DISCOVERY_SERVER_ID=0
+DISCOVERY_SERVER_PORT=11811
 
 ### ROS Environment Variables
 
 #export ROS_DOMAIN_ID=10
 #export ROS_LOCALHOST_ONLY=1
 export RCUTILS_COLORIZED_OUTPUT=1
+# export ROS_DISCOVERY_SERVER="127.0.0.1:11811"
+# export ROS_SUPER_CLIENT=true
