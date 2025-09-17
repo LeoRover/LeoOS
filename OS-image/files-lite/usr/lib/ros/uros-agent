@@ -4,6 +4,13 @@ source /etc/ros/setup.bash
 
 UROS_AGENT_ARGS=${UROS_AGENT_ARGS:="serial -D /dev/serial0 -b 460800"}
 
+DEFAULT_UROS_AGENT_EXTRA_ARGS=""
+if [ -n "${ROBOT_NAMESPACE}" ]; then
+    DEFAULT_UROS_AGENT_EXTRA_ARGS+=" -n ${ROBOT_NAMESPACE}"
+fi
+
+UROS_AGENT_EXTRA_ARGS=${UROS_AGENT_EXTRA_ARGS:="${DEFAULT_UROS_AGENT_EXTRA_ARGS}"}
+
 export XRCE_DOMAIN_ID_OVERRIDE=${ROS_DOMAIN_ID:=0}
 
-exec ros2 run micro_ros_agent micro_ros_agent ${UROS_AGENT_ARGS}
+exec ros2 run micro_ros_agent micro_ros_agent ${UROS_AGENT_ARGS} ${UROS_AGENT_EXTRA_ARGS}
