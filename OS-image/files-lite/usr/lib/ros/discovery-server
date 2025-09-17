@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source /etc/ros/setup.bash
+
+DISCOVERY_SERVER_ID=${DISCOVERY_SERVER_ID:=0}
+DISCOVERY_SERVER_PORT=${DISCOVERY_SERVER_PORT:=11811}
+
+exec fastdds discovery -i ${DISCOVERY_SERVER_ID} -p ${DISCOVERY_SERVER_PORT}
