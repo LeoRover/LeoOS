@@ -11,7 +11,7 @@ source /etc/ros/aliases
 export MECANUM_WHEELS=false
 
 # Namespace of the robot
-# Affects all node namespaces (except the firmware node) and URDF link names
+# Affects all node namespaces and URDF link names
 export ROBOT_NAMESPACE=""
 
 # Set to false to disable publishing of odom -> base_footprint TF transform
