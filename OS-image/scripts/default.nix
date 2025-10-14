@@ -75,7 +75,8 @@
         lib.makeBinPath [ coreutils gnused systemd util-linux ]
       }" \
       --set FILES_DIR ${files-lite} \
-      --set UDEVD "${pkgs.systemd}/lib/systemd/systemd-udevd"
+      --set UDEVD "${pkgs.systemd}/lib/systemd/systemd-udevd" \
+      --set NIX_STORE_DIR ${builtins.storeDir}
     '';
   };
 

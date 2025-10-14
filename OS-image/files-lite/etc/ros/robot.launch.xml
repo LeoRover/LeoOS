@@ -22,6 +22,7 @@
     <arg name="tf_frame_prefix" value="$(var tf_frame_prefix)" />
     <arg name="publish_odom_tf" value="$(var publish_odom_tf)" />
     <arg name="firmware_override_params_file" value="/etc/ros/firmware_overrides.yaml" />
+    <arg name="bldc_override_params_file" value="/etc/ros/bldc_manager_overrides.yaml" />
   </include>
 
 </launch>
