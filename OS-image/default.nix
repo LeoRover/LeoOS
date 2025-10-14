@@ -11,6 +11,12 @@ let
 
   scripts = pkgs.callPackage ./scripts { inherit files-lite files-full; };
 
+  leo_robot_dlp_ros2_src = builtins.fetchGit {
+    url = "git@github.com:fictionlab/leo_robot_dlp-ros2.git";
+    rev = "f116c9892adecdb33561dd19c5ff8f9748ab314a";
+    submodules = true;
+  };
+
   packageLists = let
     noble-updates-stamp = "20250930T120000Z";
     ros2-stamp = "2025-08-20";
@@ -192,7 +198,21 @@ let
       "python3-rpi-lgpio" # Replacement for RPi.GPIO which supports RPi 5
       "python3-stm32loader" # Tool for flashing LeoCore
       "leo-ui" # Web UI for controlling Leo Rover
-      "ros-jazzy-leo-robot" # Leo Rover ROS packages
+      # "ros-jazzy-leo-robot" # Leo Rover ROS packages
+      "ros-jazzy-generate-parameter-library" # dependency of leo_bldc and leo_filters
+      "setserial" # needed by candletool / CANdle-SDK
+      "libusb-1.0-0-dev" # dependency of CANdle-SDK
+      "ros-jazzy-leo-msgs" # dependency of leo_fw
+      "python3-dbus" # dependency of leo_fw
+      "python3-whichcraft" # dependency of leo_fw
+      "python3-yaml" # dependency of leo_fw
+      "ros-jazzy-image-proc" # dependency of leo_bringup
+      "ros-jazzy-robot-state-publisher" # dependency of leo_bringup
+      "ros-jazzy-rosbridge-server" # dependency of leo_bringup
+      "ros-jazzy-web-video-server" # dependency of leo_bringup
+      "ros-jazzy-xacro" # dependency of leo_bringup
+      "ros-jazzy-ament-index-python" # dependency of leo_bringup
+      "ros-jazzy-leo-description" # dependency of multiple packages in leo_robot
       "ros-jazzy-leo-camera" # hidden dependency of leo_robot
       "ros-jazzy-compressed-image-transport" # image transport plugin that provides compressed image streams
       "ros-jazzy-micro-ros-agent" # For talking with LeoCore
@@ -320,7 +340,7 @@ in rec {
   });
 
   OSStage4Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
-    inherit OSName memSize;
+    inherit OSName memSize leo_robot_dlp_ros2_src;
 
     pname = "${OSName}-stage4-image";
     version = "";

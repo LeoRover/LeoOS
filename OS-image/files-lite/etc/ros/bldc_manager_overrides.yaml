@@ -3,31 +3,31 @@
 
 /**:
   ros__parameters:
-#     # Node params
-#     max_linear_velocity: 5.0
-#     max_angular_velocity: 4.8
-#     robot_frame_id: "base_footprint"
-#     odom_frame_id: "odom"
-#     wheel_joint_names: ["wheel_RL_joint", "wheel_RR_joint", "wheel_FL_joint", "wheel_FR_joint"]
-#     wheel_odom_twist_covariance_diagonal: [0.0001, 0.0, 0.0, 0.0, 0.0, 0.001]
-#     wheel_odom_mecanum_twist_covariance_diagonal: [0.0001, 0.0001, 0.0, 0.0, 0.0, 0.001]
-#     # Wheel controller params
-#     max_torque: 1.5
-#     pid_constants: [0.1, 0.5, 0.0]
-#     pid_integral_max: 3.0
-#     profile_velocity: 6.0
-#     profile_acceleration: 6.0
-#     motion_mode: 0 # 0 - VELOCITY PID, 1 - VELOCITY PROFILE, 2 - IDLE
-#     min_velocity: 0.5
-#     # Robot controller params
-#     input_timeout: 500
-#     effort_timeout: 500
-#     diff_drive:
-#       wheel_radius: 0.0625
-#       wheel_separation: 0.358
-#       angular_velocity_multiplier: 1.76
-#     mecanum:
-#       wheel_radius: 0.0635
-#       wheel_separation: 0.354
-#       wheel_base: 0.3052
-#       angular_velocity_multiplier: 1.0  
+    # Node params
+    max_linear_velocity: 5.0
+    max_angular_velocity: 4.8
+    robot_frame_id: "base_footprint"
+    odom_frame_id: "odom"
+    wheel_joint_names: ["wheel_RL_joint", "wheel_RR_joint", "wheel_FL_joint", "wheel_FR_joint"]
+    wheel_odom_twist_covariance_diagonal: [0.0001, 0.0, 0.0, 0.0, 0.0, 0.001]
+    wheel_odom_mecanum_twist_covariance_diagonal: [0.0001, 0.0001, 0.0, 0.0, 0.0, 0.001]
+    # Wheel controller params
+    max_torque: 3.0
+    pid_constants: [0.1, 0.5, 0.0]
+    pid_integral_max: 3.0
+    profile_velocity: 6.0
+    profile_acceleration: 6.0
+    motion_mode: 0 # 0 - VELOCITY PID, 1 - VELOCITY PROFILE, 2 - IDLE
+    min_velocity: 0.5
+    # Robot controller params
+    input_timeout: 500
+    effort_timeout: 500
+    diff_drive:
+      wheel_radius: 0.0625
+      wheel_separation: 0.358
+      angular_velocity_multiplier: 1.76
+    mecanum:
+      wheel_radius: 0.0635
+      wheel_separation: 0.354
+      wheel_base: 0.3052
+      angular_velocity_multiplier: 1.0  

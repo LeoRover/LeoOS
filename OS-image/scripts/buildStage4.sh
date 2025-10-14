@@ -24,6 +24,10 @@ mount -o bind /dev /mnt/dev
 mount -o bind /dev/pts /mnt/dev/pts
 mount -t sysfs sysfs /mnt/sys
 
+# Make the Nix store available in /mnt, because that's where the .debs live.
+mkdir -p /mnt/inst${NIX_STORE_DIR}
+mount -o bind ${NIX_STORE_DIR} /mnt/inst${NIX_STORE_DIR}
+
 # Remove redundant files
 rm -rf /mnt/etc/update-motd.d/*
 
@@ -74,10 +78,25 @@ done
 chown ${USER_NAME}:${USER_NAME} -R "/etc/ros"
 chown root:root -R "/etc/ros/rosdep"
 
+# Do the rest of the commands as the default user
+su - ${USER_NAME} -c '
+set -ex
+
+# Build leo_robot-dlp packages
+cd /home/${USER_NAME}
+mkdir -p ros_ws/src
+cp -vr /inst${leo_robot_dlp_ros2_src}/. ros_ws/src/leo_robot_dlp-ros2
+chmod -R u+w ros_ws/src/leo_robot_dlp-ros2
+cd ros_ws
+source /opt/ros/jazzy/setup.bash
+colcon build --event-handlers desktop_notification- status- terminal_title- console_cohesion+ \
+  --cmake-args -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
+
 # Enable user services
-su - ${USER_NAME} -c "systemctl --user enable ros-nodes"
-su - ${USER_NAME} -c "systemctl --user enable uros-agent"
-su - ${USER_NAME} -c "systemctl --user enable ros.target"
+systemctl --user enable ros-nodes
+systemctl --user enable uros-agent
+systemctl --user enable ros.target
+'
 CHROOT
 
 # Enable lingering for default user
@@ -105,6 +124,7 @@ systemctl enable nftables
 CHROOT
 
 # Unmount everything
+umount /mnt/inst${NIX_STORE_DIR}
 umount /mnt/boot/firmware
 umount /mnt/sys
 umount /mnt/proc
