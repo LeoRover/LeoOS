@@ -12,7 +12,7 @@ let
   scripts = pkgs.callPackage ./scripts { inherit files-lite files-full; };
 
   packageLists = let
-    noble-updates-stamp = "20250930T120000Z";
+    noble-updates-stamp = "20251119T120000Z";
     ros2-stamp = "2025-08-20";
     fictionlab-stamp = "2025-09-30";
   in [
@@ -48,7 +48,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/main/binary-arm64/Packages.xz";
-        sha256 = "sha256-3mgOw8m0UaT6zUMRDoWAQpxlyBE0f1alo2Y900LtXZc=";
+        sha256 = "sha256-A6D3BkIkPec40YaJVZU3/Z1nHepHlHhuKFGHTXecp6E=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -57,7 +57,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/universe/binary-arm64/Packages.xz";
-        sha256 = "sha256-QiJTxL5qwhE+kqKM21p8D9oI1JhqVqZstCOIcK++J8I=";
+        sha256 = "sha256-ntPtczoUj5g9OEGxNfquvgY4vGuz438jC7eoO+/PToA=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -66,7 +66,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/restricted/binary-arm64/Packages.xz";
-        sha256 = "sha256-EuX/zkKBcSGAKIQNUYrfq+ZB/9EMWlloFMqy97KGI00=";
+        sha256 = "sha256-wSKZ12y4G0B1nAQy9D77Csqpht69wqHEvYUORoD1AkY=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
