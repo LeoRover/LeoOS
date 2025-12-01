@@ -93,16 +93,19 @@ export FK_IGNORE_EFI="yes"
 export FK_FORCE="yes"
 flash-kernel
 
-# Disable and mask system Networkd
+# Disable and mask system Networkd and Hostapd
 systemctl disable systemd-networkd
+systemctl disable systemd-networkd-wait-online
+systemctl disable hostapd
 systemctl mask systemd-networkd
+systemctl mask systemd-networkd-wait-online
+systemctl mask hostapd
 
 # Enable custom Networkd
 systemctl enable custom-systemd-networkd
 
-# Enable Hostapd
-systemctl unmask hostapd
-systemctl enable hostapd
+# Enable custom Hostapd
+systemctl enable custom-hostapd
 
 # Enable nftables
 systemctl enable nftables
