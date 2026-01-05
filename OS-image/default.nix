@@ -12,9 +12,9 @@ let
   scripts = pkgs.callPackage ./scripts { inherit files-lite files-full; };
 
   packageLists = let
-    noble-updates-stamp = "20251119T120000Z";
+    noble-updates-stamp = "20260105T120000Z";
     ros2-stamp = "2025-08-20";
-    fictionlab-stamp = "2025-09-30";
+    fictionlab-stamp = "2026-01-05";
   in [
     {
       name = "noble-main";
@@ -48,7 +48,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/main/binary-arm64/Packages.xz";
-        sha256 = "sha256-A6D3BkIkPec40YaJVZU3/Z1nHepHlHhuKFGHTXecp6E=";
+        sha256 = "sha256-LR+hweEjPcNoGjeqUJvF/+/aRn6XedT2q6uDFXKI5UQ=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -57,7 +57,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/universe/binary-arm64/Packages.xz";
-        sha256 = "sha256-ntPtczoUj5g9OEGxNfquvgY4vGuz438jC7eoO+/PToA=";
+        sha256 = "sha256-IGC2GixRQ1BWFBDHSoZGlfdIs0r7TmTMMsCnqdvAej8=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -66,7 +66,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/restricted/binary-arm64/Packages.xz";
-        sha256 = "sha256-wSKZ12y4G0B1nAQy9D77Csqpht69wqHEvYUORoD1AkY=";
+        sha256 = "sha256-KGAqpOiH9vLRDxc55bTvvMPR/fT7eijmmW0BROJ0M1E=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -84,7 +84,7 @@ let
       packagesFile = (fetchurl {
         url =
           "https://archive.fictionlab.pl/dists/noble/snapshots/${fictionlab-stamp}/main/binary-arm64/Packages.gz";
-        sha256 = "sha256-6rZf8zf1Ljgos/yixV5TJC6vtQ7QeCu8UhluyqH0YqA=";
+        sha256 = "sha256-fQz7KsJYzvQ7AOLiQj1lGbzbqlkHYaT8iWaCHdQ8cOs=";
       });
       urlPrefix = "https://archive.fictionlab.pl";
     }
