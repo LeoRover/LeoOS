@@ -17,18 +17,21 @@ The major version (the first part in the three-part version number) is tied to t
 * (optional) ARM64 machine for faster builds. Otherwise, the image will be built in QEMU emulation mode, which is slower.
 
 ### Prepare the environment
-Make sure `/dev/kvm` is available and the user has read/write access to it. \
+First, check if your system supports KVM (Kernel-based Virtual Machine). \
 You can check if KVM is available by running:
 ```bash
 ls /dev/kvm
 ```
 If it is not available, you may need to enable virtualization in the BIOS/UEFI settings.
 
-You might also need to add your user to the `kvm` group to allow access to the KVM device:
+You also need to ensure Nix is able to use KVM. To check this, run:
 ```bash
-sudo usermod -aG kvm $USER
+nix shell nixpkgs#qemu_kvm --command qemu-system-x86_64 -machine accel=kvm -cpu host -nographic -nodefaults -S
 ```
-Then, log out and log back in for the changes to take effect.
+If you see a permission denied error, you need to allow access to `/dev/kvm`:
+```bash
+sudo chmod o+rw /dev/kvm
+```
 
 Also, make sure you have sufficient disk space available for the build. \
 The compressed image is around 1.5 GB, but the build process requires more space for intermediate [Nix derivations] outputs. \
