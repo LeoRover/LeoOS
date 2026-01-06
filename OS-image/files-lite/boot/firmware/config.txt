@@ -40,3 +40,4 @@ arm_boost=1
 usb_max_current_enable=1
 dtparam=uart0=on
 dtoverlay=imx477,cam0
+dtoverlay=i2c1-pi5,pins_10_11

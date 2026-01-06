@@ -17,6 +17,9 @@ export ROBOT_NAMESPACE=""
 # Set to false to disable publishing of odom -> base_footprint TF transform
 export PUBLISH_ODOM_TF=true
 
+# Set to true if you installed the charging monitor addon
+export START_CHARGING_MONITOR=false
+
 ### Start scripts variables
 
 # Path to the launch file to start.
