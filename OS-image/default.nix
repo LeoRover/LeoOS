@@ -183,7 +183,17 @@ let
       "python3-distro"
 
       "ros2-apt-source" # Configures sources for ROS 2 repo
-      "ros-dev-tools" # ROS development tools (rosdep, colcon, vcs etc.)
+      # "ros-dev-tools" # ROS development tools (rosdep, colcon, vcs etc.)
+      # The newest ROS snapshot is missing ros-dev-tools, so we install its dependencies instead
+      "cmake"
+      "python3-setuptools"
+      "python3-bloom"
+      "python3-colcon-common-extensions"
+      "python3-colcon-mixin"
+      "python3-rosdep"
+      "python3-vcstool"
+      "wget"
+
       "ros-jazzy-ros-base" # ROS base packages
 
       "---"
