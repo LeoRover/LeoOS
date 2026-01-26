@@ -12,9 +12,9 @@ let
   scripts = pkgs.callPackage ./scripts { inherit files-lite files-full; };
 
   packageLists = let
-    noble-updates-stamp = "20260105T120000Z";
-    ros2-stamp = "2025-08-20";
-    fictionlab-stamp = "2026-01-05";
+    noble-updates-stamp = "20260126T120000Z";
+    ros2-stamp = "2025-11-19";
+    fictionlab-stamp = "2026-01-26";
   in [
     {
       name = "noble-main";
@@ -48,7 +48,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/main/binary-arm64/Packages.xz";
-        sha256 = "sha256-LR+hweEjPcNoGjeqUJvF/+/aRn6XedT2q6uDFXKI5UQ=";
+        sha256 = "sha256-ueMXJ5UCP5o1vXN0gIvhOQMFWK0lC2Hb1gWiZhtcWkE=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -57,7 +57,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/universe/binary-arm64/Packages.xz";
-        sha256 = "sha256-IGC2GixRQ1BWFBDHSoZGlfdIs0r7TmTMMsCnqdvAej8=";
+        sha256 = "sha256-+7KyZwcgMYioEwbfl70ehs2DjQtb//DJgHxscl4nX1E=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -66,7 +66,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/restricted/binary-arm64/Packages.xz";
-        sha256 = "sha256-KGAqpOiH9vLRDxc55bTvvMPR/fT7eijmmW0BROJ0M1E=";
+        sha256 = "sha256-Y4rWBsy6vhRIlh5+qRr36mLFJUAHyYJqpj4wSDxTTC8=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -75,7 +75,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu/dists/noble/main/binary-arm64/Packages.bz2";
-        sha256 = "sha256-32TlSnKKQ8AguwjFItC6V4DawkOOtdw0AzeTq/sstRA=";
+        sha256 = "sha256-vPGyfs43Eo7xR5YnrOj8mSdzwZ8jLA6y0/D18N0WSTg=";
       });
       urlPrefix = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu";
     }
@@ -84,7 +84,7 @@ let
       packagesFile = (fetchurl {
         url =
           "https://archive.fictionlab.pl/dists/noble/snapshots/${fictionlab-stamp}/main/binary-arm64/Packages.gz";
-        sha256 = "sha256-fQz7KsJYzvQ7AOLiQj1lGbzbqlkHYaT8iWaCHdQ8cOs=";
+        sha256 = "sha256-3liq9AhgYbfiIR3ICikCajWGZ/URtofuAm4OVEenPD0=";
       });
       urlPrefix = "https://archive.fictionlab.pl";
     }
