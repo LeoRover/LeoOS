@@ -13,7 +13,7 @@
         pkgs = (import nixpkgs) { inherit system; };
 
         OSName = "LeoOS";
-        OSVersion = "2.3.0";
+        OSVersion = "2.4.0";
 
         OSImageDerivations = pkgs.callPackage ./OS-image {
           inherit OSName OSVersion;
