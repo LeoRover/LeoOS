@@ -3,10 +3,10 @@ name: Build
 on:
   push:
     branches:
-      - main
+      - humble-docker
   pull_request:
     branches:
-      - main
+      - humble-docker
 
 jobs:
   build:
@@ -16,5 +16,4 @@ jobs:
     - name: Build
       run: |
         nix build -Lv .#OSLiteImage
-        nix build -Lv .#OSFullImage
         nix fmt -- -c .
