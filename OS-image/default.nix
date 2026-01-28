@@ -13,8 +13,8 @@ let
   leoHumbleContainer = dockerTools.pullImage {
     imageName = "ghcr.io/leorover/leo_humble_docker";
     imageDigest =
-      "sha256:096e9dd76d40bb3c837038b8b108633e113a4853521454f8942f9d955693aaa4";
-    sha256 = "sha256-hykTWT7SsDOWkjC/lCAIZvLvOmmGfIT2i46tTRhtCzQ=";
+      "sha256:6ab7c65dfe520980162f097b6f908b885d9def4097892a0257dc161ac9db6d5e"; # v2
+    sha256 = "sha256-fag5ASEvV/LpZlr4G13EuqWB0bTmgg/C2OLmqVBa4Q4=";
     arch = "arm64";
   };
 
