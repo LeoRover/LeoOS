@@ -52,7 +52,7 @@ To flash the compressed image to an SD card, you can use the following command. 
 **WARNING: This will erase all data on the SD card!**
 
 ```bash
-xz -dc ./result/LeoOS-<version>-<variant>.img.xz | sudo dd of=/dev/sdX bs=4M status=progress
+xz -dc ./result/LeoOS-<version>-<variant>.img.xz | sudo dd of=/dev/sdX bs=4M status=progress && sync
 ```
 
 Alternatively, you can use programs like [balenaEtcher] to flash the image.
