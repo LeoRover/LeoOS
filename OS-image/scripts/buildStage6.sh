@@ -26,7 +26,6 @@ mount -t sysfs sysfs /mnt/sys
 cp -vr --no-preserve=mode "${FILES_DIR}/"* /mnt/
 
 # Patch configuration files
-sed -i "s|user = CHANGE_ME|user = ${USER_NAME}|" /mnt/etc/lightdm/lightdm-mini-greeter.conf
 sed -i "s|Clearlooks|Lubuntu Arc|g" /mnt/etc/xdg/openbox/rc.xml
 
 # Disable autostart applications
