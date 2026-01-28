@@ -3,9 +3,22 @@ Description=Micro-ROS agent
 PartOf=ros.target
 
 [Service]
-Type=simple
+Type=exec
 ExecStartPre=/usr/lib/systemd/systemd-networkd-wait-online
-ExecStart=/usr/lib/ros/uros-agent
+ExecStart=/usr/bin/podman run --rm \
+    --privileged \
+    --net=host \
+    --ipc=host \
+    --pid=host \
+    --security-opt label=disable \
+    -v /dev:/dev \
+    -v /usr/lib/ros:/usr/lib/ros:ro \
+    -v /etc/ros:/etc/ros:ro \
+    --group-add keep-groups \
+    --cidfile=/%t/uros-agent.cid \
+    ghcr.io/leorover/leo_humble_docker uros-agent
+KillSignal=none
+ExecStop=/usr/bin/podman stop --cidfile=/%t/ros-nodes.cid
 Restart=on-failure
 RestartSec=5
 

@@ -1,6 +1,7 @@
-{ OSName, OSVersion, buildSystem, lib, pkgs, fetchurl, stdenv, vmTools, ... }:
+{ OSName, OSVersion, buildSystem, lib, pkgs, fetchurl, stdenv, vmTools
+, dockerTools, ... }:
 let
-  imageSize = 8192;
+  imageSize = 12000;
   memSize = 4096;
 
   tools = import ./tools.nix { inherit lib pkgs; };
@@ -9,11 +10,20 @@ let
 
   files-full = pkgs.callPackage ./files-full { };
 
-  scripts = pkgs.callPackage ./scripts { inherit files-lite files-full; };
+  leoHumbleContainer = dockerTools.pullImage {
+    imageName = "ghcr.io/leorover/leo_humble_docker";
+    imageDigest =
+      "sha256:096e9dd76d40bb3c837038b8b108633e113a4853521454f8942f9d955693aaa4";
+    sha256 = "sha256-hykTWT7SsDOWkjC/lCAIZvLvOmmGfIT2i46tTRhtCzQ=";
+    arch = "arm64";
+  };
+
+  scripts = pkgs.callPackage ./scripts {
+    inherit files-lite files-full leoHumbleContainer;
+  };
 
   packageLists = let
     noble-updates-stamp = "20260126T120000Z";
-    ros2-stamp = "2025-11-19";
     fictionlab-stamp = "2026-01-26";
   in [
     {
@@ -69,15 +79,6 @@ let
         sha256 = "sha256-Y4rWBsy6vhRIlh5+qRr36mLFJUAHyYJqpj4wSDxTTC8=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
-    }
-    {
-      name = "ros2";
-      packagesFile = (fetchurl {
-        url =
-          "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu/dists/noble/main/binary-arm64/Packages.bz2";
-        sha256 = "sha256-vPGyfs43Eo7xR5YnrOj8mSdzwZ8jLA6y0/D18N0WSTg=";
-      });
-      urlPrefix = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu";
     }
     {
       name = "fictionlab";
@@ -156,6 +157,7 @@ let
       "rpi-eeprom" # Raspberry Pi EEPROM utilities
 
       ## Networking stuff
+      "ca-certificates" # CA certificates for HTTPS
       "netplan.io" # network configuration utility
       "iproute2" # ip cli utilities
       "iputils-ping" # ping utility
@@ -174,38 +176,18 @@ let
       "hostname" # hostname management
       "rtl88xxau-dkms" # Realtek WiFi driver
 
+      ## Containers
+      "podman" # container management
+      "uidmap" # user namespace support for podman
+
       "---"
 
-      # STAGE 2 - ROS base packages
-
-      # Added here to fix a problem with deb closure generator which cannot properly
-      # resolve dependencies like "python3-distro (>= 1.4.0) | python3 (<< 3.8)"
-      "python3-distro"
-
-      "ros2-apt-source" # Configures sources for ROS 2 repo
-      # "ros-dev-tools" # ROS development tools (rosdep, colcon, vcs etc.)
-      # The newest ROS snapshot is missing ros-dev-tools, so we install its dependencies instead
-      "cmake"
-      "python3-setuptools"
-      "python3-bloom"
-      "python3-colcon-common-extensions"
-      "python3-colcon-mixin"
-      "python3-rosdep"
-      "python3-vcstool"
-      "wget"
-
-      "ros-jazzy-ros-base" # ROS base packages
+      # STAGE 2 - ommitted
 
       "---"
 
       # STAGE 3 - Leo-specific packages
-      "python3-rpi-lgpio" # Replacement for RPi.GPIO which supports RPi 5
-      "python3-stm32loader" # Tool for flashing LeoCore
       "leo-ui" # Web UI for controlling Leo Rover
-      "ros-jazzy-leo-robot" # Leo Rover ROS packages
-      "ros-jazzy-leo-camera" # hidden dependency of leo_robot
-      "ros-jazzy-compressed-image-transport" # image transport plugin that provides compressed image streams
-      "ros-jazzy-micro-ros-agent" # For talking with LeoCore
 
       "---"
 
@@ -228,8 +210,6 @@ let
       "breeze-cursor-theme" # LXQt cursor theme
       "firefox-esr" # Web browser
       "tigervnc-scraping-server" # VNC server
-      "ros-jazzy-desktop" # ROS desktop packages
-      "ros-jazzy-leo-desktop" # Leo-specific ROS desktop packages
     ];
   }) { inherit fetchurl; };
 

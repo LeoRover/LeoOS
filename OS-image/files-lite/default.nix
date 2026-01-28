@@ -3,7 +3,7 @@
 { stdenv, fetchurl }:
 let
   fictionlab-archive-keyring = (fetchurl {
-    url = "https://files.fictionlab.pl/repo/fictionlab.gpg";
+    url = "https://archive.fictionlab.pl/fictionlab.gpg";
     sha256 = "sha256-noqi5NcMDrnwMp9JFVUrLJkH65WH9/EDISQIVT8Hnf8=";
   });
 
