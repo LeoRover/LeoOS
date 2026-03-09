@@ -12,8 +12,8 @@ let
   scripts = pkgs.callPackage ./scripts { inherit files-lite files-full; };
 
   packageLists = let
-    noble-updates-stamp = "20260126T120000Z";
-    ros2-stamp = "2025-11-19";
+    noble-updates-stamp = "20260309T120000Z";
+    ros2-stamp = "2026-01-28";
     fictionlab-stamp = "2026-01-26";
   in [
     {
@@ -48,7 +48,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/main/binary-arm64/Packages.xz";
-        sha256 = "sha256-ueMXJ5UCP5o1vXN0gIvhOQMFWK0lC2Hb1gWiZhtcWkE=";
+        sha256 = "sha256-/JAUGZsjhtKebivSlflKDK90ELkUtjHEFCVWeHulY60=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -57,7 +57,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/universe/binary-arm64/Packages.xz";
-        sha256 = "sha256-+7KyZwcgMYioEwbfl70ehs2DjQtb//DJgHxscl4nX1E=";
+        sha256 = "sha256-JnnFmq3LtULRRBLP+Nx/RD42JKuozNGmnhVqDEX3AaE=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -66,7 +66,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/restricted/binary-arm64/Packages.xz";
-        sha256 = "sha256-Y4rWBsy6vhRIlh5+qRr36mLFJUAHyYJqpj4wSDxTTC8=";
+        sha256 = "sha256-2jKWE1gLWnIStOzByKQcG1cSwe6x0YmW1alo1/J3wYo=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -75,7 +75,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu/dists/noble/main/binary-arm64/Packages.bz2";
-        sha256 = "sha256-vPGyfs43Eo7xR5YnrOj8mSdzwZ8jLA6y0/D18N0WSTg=";
+        sha256 = "sha256-+Na8ayT4+OLs5coTt70g0WyPUj8LHm+0DxiTzBIfxlQ=";
       });
       urlPrefix = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu";
     }
