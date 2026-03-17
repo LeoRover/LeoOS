@@ -14,7 +14,7 @@ let
   packageLists = let
     noble-updates-stamp = "20260309T120000Z";
     ros2-stamp = "2026-01-28";
-    fictionlab-stamp = "2026-01-26";
+    fictionlab-stamp = "2026-03-17";
   in [
     {
       name = "noble-main";
@@ -84,7 +84,7 @@ let
       packagesFile = (fetchurl {
         url =
           "https://archive.fictionlab.pl/dists/noble/snapshots/${fictionlab-stamp}/main/binary-arm64/Packages.gz";
-        sha256 = "sha256-3liq9AhgYbfiIR3ICikCajWGZ/URtofuAm4OVEenPD0=";
+        sha256 = "sha256-MUqoTEZHWbCN6cWBu7cZMafIuUMNjim8VQ7WpmluBdg=";
       });
       urlPrefix = "https://archive.fictionlab.pl";
     }
@@ -172,7 +172,7 @@ let
       "bridge-utils" # bridge management utilities
       "bluez" # Bluetooth stack
       "hostname" # hostname management
-      "rtl88xxau-dkms" # Realtek WiFi driver
+      "rtw88-dkms" # Realtek WiFi driver
 
       "---"
 
