@@ -21,7 +21,7 @@ ExecStart=/usr/bin/podman run --rm \
     --cidfile=/%t/uros-agent.cid \
     ghcr.io/leorover/leo_humble_docker uros-agent
 KillSignal=none
-ExecStop=/usr/bin/podman stop --cidfile=/%t/ros-nodes.cid
+ExecStop=/usr/bin/podman stop --cidfile=/%t/uros-agent.cid
 Restart=on-failure
 RestartSec=5
 
