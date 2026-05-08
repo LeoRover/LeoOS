@@ -5,12 +5,15 @@ PartOf=ros.target
 [Service]
 Type=exec
 ExecStartPre=/usr/lib/systemd/systemd-networkd-wait-online
+ExecStartPre=-/usr/bin/podman rm -f ros-nodes
+ExecStartPre=-/bin/rm -f /%t/ros-nodes.cid
 ExecStart=/usr/bin/podman run --rm \
     --privileged \
     --net=host \
     --ipc=host \
     --pid=host \
     --security-opt label=disable \
+    --name ros-nodes \
     -v /dev:/dev \
     -v /usr/lib/ros:/usr/lib/ros \
     -v /etc/ros:/etc/ros \

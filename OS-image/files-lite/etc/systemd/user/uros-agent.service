@@ -5,12 +5,15 @@ PartOf=ros.target
 [Service]
 Type=exec
 ExecStartPre=/usr/lib/systemd/systemd-networkd-wait-online
+ExecStartPre=-/usr/bin/podman rm -f uros-agent
+ExecStartPre=-/bin/rm -f /%t/uros-agent.cid
 ExecStart=/usr/bin/podman run --rm \
     --privileged \
     --net=host \
     --ipc=host \
     --pid=host \
     --security-opt label=disable \
+    --name uros-agent \
     -v /dev:/dev \
     -v /usr/lib/ros:/usr/lib/ros:ro \
     -v /etc/ros:/etc/ros:ro \
