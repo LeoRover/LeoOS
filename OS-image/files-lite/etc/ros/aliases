@@ -1,3 +1,4 @@
+alias ros-container-bash="podman exec -ti ros-nodes /bin/bash -ic 'source install/setup.bash; exec /bin/bash -i'"
 alias ros-nodes-logs="journalctl -b --no-pager --no-hostname -all -n 1000 --user-unit ros-nodes"
 alias ros-nodes-start="systemctl --user start ros-nodes"
 alias ros-nodes-restart="systemctl --user restart ros-nodes"
