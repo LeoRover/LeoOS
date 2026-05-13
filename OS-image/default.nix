@@ -185,6 +185,7 @@ let
       "ros2-apt-source" # Configures sources for ROS 2 repo
       # "ros-dev-tools" # ROS development tools (rosdep, colcon, vcs etc.)
       # The newest ROS snapshot is missing ros-dev-tools, so we install its dependencies instead
+      "build-essential"
       "cmake"
       "python3-setuptools"
       "python3-bloom"
