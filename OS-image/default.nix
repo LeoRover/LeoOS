@@ -13,7 +13,7 @@ let
 
   packageLists = let
     noble-updates-stamp = "20260309T120000Z";
-    ros2-stamp = "2026-01-28";
+    ros2-stamp = "2026-04-13";
     fictionlab-stamp = "2026-03-17";
   in [
     {
@@ -75,7 +75,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu/dists/noble/main/binary-arm64/Packages.bz2";
-        sha256 = "sha256-+Na8ayT4+OLs5coTt70g0WyPUj8LHm+0DxiTzBIfxlQ=";
+        sha256 = "sha256-Yw5+pMwfp+dH3zGvwmBSTf8AkxDBDrrRAguf4kY/dUE=";
       });
       urlPrefix = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu";
     }
@@ -185,6 +185,7 @@ let
       "ros2-apt-source" # Configures sources for ROS 2 repo
       # "ros-dev-tools" # ROS development tools (rosdep, colcon, vcs etc.)
       # The newest ROS snapshot is missing ros-dev-tools, so we install its dependencies instead
+      "build-essential"
       "cmake"
       "python3-setuptools"
       "python3-bloom"
