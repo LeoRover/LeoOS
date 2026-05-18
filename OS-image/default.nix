@@ -207,7 +207,6 @@ let
       "ros-jazzy-leo-camera" # hidden dependency of leo_robot
       "ros-jazzy-compressed-image-transport" # image transport plugin that provides compressed image streams
       "ros-jazzy-micro-ros-agent" # For talking with LeoCore
-      "ros-jazzy-aruco-opencv-msgs" # ROS messages for aruco tracking
       "ros-jazzy-aruco-opencv" # For aruco tracking
 
       "---"
