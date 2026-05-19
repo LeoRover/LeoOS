@@ -5,6 +5,7 @@
 # To change the parameters of the controller firmware, apply overrides for the `firmware_parameter_bridge` node.
 
 /**: # Apply to all namespaces
+  _: {} # placeholder to prevent empty file error
   # Examples:
 
   # 1. Increase controller linear acceleration and deceleration:
