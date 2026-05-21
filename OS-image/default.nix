@@ -24,6 +24,7 @@ let
 
   packageLists = let
     noble-updates-stamp = "20260126T120000Z";
+    ros2-stamp = "2026-01-28";
     fictionlab-stamp = "2026-01-26";
   in [
     {
@@ -79,6 +80,15 @@ let
         sha256 = "sha256-Y4rWBsy6vhRIlh5+qRr36mLFJUAHyYJqpj4wSDxTTC8=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
+    }
+    {
+      name = "ros2";
+      packagesFile = (fetchurl {
+        url =
+          "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu/dists/noble/main/binary-arm64/Packages.bz2";
+        sha256 = "sha256-+Na8ayT4+OLs5coTt70g0WyPUj8LHm+0DxiTzBIfxlQ=";
+      });
+      urlPrefix = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu";
     }
     {
       name = "fictionlab";
@@ -183,10 +193,17 @@ let
       "---"
 
       # STAGE 2 - ommitted
+      # Added here to fix a problem with deb closure generator which cannot properly
+      # resolve dependencies like "python3-distro (>= 1.4.0) | python3 (<< 3.8)"
+      "python3-distro"
+
+      "ros2-apt-source" # Configures sources for ROS 2 repo
 
       "---"
 
       # STAGE 3 - Leo-specific packages
+      "python3-rpi-lgpio" # Replacement for RPi.GPIO which supports RPi 5
+      "python3-stm32loader" # Tool for flashing LeoCore
       "leo-ui" # Web UI for controlling Leo Rover
 
       "---"
