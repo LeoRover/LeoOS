@@ -4,6 +4,7 @@
   <let name="robot_ns" value="$(env ROBOT_NAMESPACE '')" />
   <let name="publish_odom_tf" value="$(env PUBLISH_ODOM_TF true)" />
   <let name="start_charging_monitor" value="$(env START_CHARGING_MONITOR false)" />
+  <let name="start_aruco_tracking" value="$(env START_ARUCO_TRACKING false)" />
 
   <let name="tf_frame_prefix"
     value="$(eval '\'\' if \'$(var robot_ns)\' == \'\' else \'$(var robot_ns)\' + \'/\'')" />
@@ -15,6 +16,10 @@
       value="$(command 'xacro /etc/ros/urdf/robot.urdf.xacro
       link_prefix:=$(var tf_frame_prefix)
       mecanum_wheels:=$(var mecanum_wheels)')" />
+  </node>
+ 
+  <node pkg="aruco_opencv" exec="aruco_tracker_autostart" if="$(var start_aruco_tracking)">
+    <param from="/etc/ros/aruco_tracker.yaml" />
   </node>
 
   <include file="$(find-pkg-share leo_bringup)/launch/leo_bringup.launch.xml">
