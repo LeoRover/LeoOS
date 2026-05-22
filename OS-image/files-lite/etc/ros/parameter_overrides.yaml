@@ -1,0 +1,33 @@
+# You can use this file to override parameters for ROS nodes
+# After editing this file you can apply the new parameters by running `ros-nodes-restart`
+#
+# For a list of available parameters and their default values, see: https://docs.fictionlab.pl/leo-rover/documentation/ros-api#parameters
+# To change the parameters of the controller firmware, apply overrides for the `firmware_parameter_bridge` node.
+
+/**: # Apply to all namespaces
+  _: {} # placeholder to prevent empty file error
+  # Examples:
+
+  # 1. Increase controller linear acceleration and deceleration:
+  #firmware_parameter_bridge:
+  #  ros__parameters:
+  #    controller:
+  #      linear_acceleration: 1.0
+  #      linear_deceleration: 4.0
+
+  # 2. Reduce camera resolution to 640x480:
+  #camera:
+  #  ros__parameters:
+  #    width: 640
+  #    height: 480
+
+  # 3. Increase IMU angular velocity covariance:
+  #firmware_message_converter:
+  #  ros__parameters:
+  #    imu_angular_velocity_covariance_diagonal: [0.01, 0.01, 0.01]
+
+  # 4. Reduce the jpeg compression quality of the camera images:
+  #camera:
+  #  debayer:
+  #    ros__parameters:
+  #      .image_color.compressed.jpeg_quality: 20
