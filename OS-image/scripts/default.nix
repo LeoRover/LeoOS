@@ -7,6 +7,7 @@
     installPhase = ''
       mkdir -p $out
       cp -vr $src $out/build.sh
+      patchShebangs $out/build.sh
     '';
     postFixup = ''
       wrapProgram $out/build.sh \
@@ -35,6 +36,7 @@
     installPhase = ''
       mkdir -p $out
       cp -vr $src $out/build.sh
+      patchShebangs $out/build.sh
     '';
     postFixup = ''
       wrapProgram $out/build.sh \
@@ -51,6 +53,7 @@
     installPhase = ''
       mkdir -p $out
       cp -vr $src $out/build.sh
+      patchShebangs $out/build.sh
     '';
     postFixup = ''
       wrapProgram $out/build.sh \
@@ -67,6 +70,7 @@
     installPhase = ''
       mkdir -p $out
       cp -vr $src $out/build.sh
+      patchShebangs $out/build.sh
     '';
     postFixup = ''
       wrapProgram $out/build.sh \
@@ -88,6 +92,7 @@
     installPhase = ''
       mkdir -p $out
       cp -vr $src $out/build.sh
+      patchShebangs $out/build.sh
     '';
     postFixup = ''
       wrapProgram $out/build.sh \
@@ -104,6 +109,7 @@
     installPhase = ''
       mkdir -p $out
       cp -vr $src $out/build.sh
+      patchShebangs $out/build.sh
     '';
     postFixup = ''
       wrapProgram $out/build.sh \
@@ -123,6 +129,7 @@
     installPhase = ''
       mkdir -p $out
       cp -vr $src $out/build.sh
+      patchShebangs $out/build.sh
     '';
     postFixup = ''
       wrapProgram $out/build.sh \
