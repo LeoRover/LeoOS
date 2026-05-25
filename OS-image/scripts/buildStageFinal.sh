@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/usr/bin/env bash -e
+
+source $NIX_ATTRS_SH_FILE
 
 DISK=/dev/vda
 

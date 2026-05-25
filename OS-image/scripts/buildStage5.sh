@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/usr/bin/env bash -e
+
+source $NIX_ATTRS_SH_FILE
 
 DISK=/dev/vda
 
@@ -23,18 +25,14 @@ mount -t sysfs sysfs /mnt/sys
 mkdir -p /mnt/inst${NIX_STORE_DIR}
 mount -o bind ${NIX_STORE_DIR} /mnt/inst${NIX_STORE_DIR}
 
-DEBS_STAGE3_FILES=$(cat ${debsStage4})
 echo "Installing Debs..."
 
-oldIFS="$IFS"
-IFS="|"
-for component in ${DEBS_STAGE3_FILES}; do
-    IFS="$oldIFS"
+for component in "${debsStage4[@]}"; do
     echo
     echo ">>> INSTALLING COMPONENT: $component"
     debs=
     for i in $component; do
-        debs="$debs /inst$i";
+        debs="$debs /inst$i"
     done
 
     my_chroot /mnt dpkg --install $debs < /dev/null
