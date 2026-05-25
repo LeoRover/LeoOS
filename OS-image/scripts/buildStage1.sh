@@ -1,4 +1,6 @@
-#!/bin/sh -e
+#!/usr/bin/env bash -e
+
+source $NIX_ATTRS_SH_FILE
 
 DISK=/dev/vda
 
@@ -42,28 +44,23 @@ ln -s /usr/sbin /mnt/sbin
 ln -s /usr/lib /mnt/lib
 ln -s /usr/lib64 /mnt/lib64
 
-DEBS_STAGE0_FILES=$(cat ${debsStage0})
-DEBS_STAGE1_FILES=$(cat ${debsStage1})
-
 echo "Unpacking predependencies..."
 
-for deb in ${DEBS_STAGE0_FILES}; do
-    [ "$deb" = "|" ] && continue
-    echo "$deb..."
-    dpkg-deb --extract "$deb" /mnt
+for component in "${debsStage0[@]}"; do
+    for deb in $component; do
+        echo "$deb..."
+        dpkg-deb --extract "$deb" /mnt
+    done
 done
 
 echo "Installing Debs..."
 
-oldIFS="$IFS"
-IFS="|"
-for component in ${DEBS_STAGE0_FILES} ${DEBS_STAGE1_FILES}; do
-    IFS="$oldIFS"
+for component in "${debsStage0[@]}" "${debsStage1[@]}"; do
     echo
     echo ">>> INSTALLING COMPONENT: $component"
     debs=
     for i in $component; do
-        debs="$debs /inst$i";
+        debs="$debs /inst$i"
     done
 
     my_chroot /mnt dpkg --install $debs < /dev/null
