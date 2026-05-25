@@ -235,12 +235,7 @@ let
     ];
   }) { inherit fetchurl; };
 
-  exportStage = stageNr:
-    pkgs.runCommand "debs-stage${toString stageNr}" { } ''
-      echo "${
-        toString (lib.intersperse "|" (builtins.elemAt debsClosure stageNr))
-      }" > $out
-    '';
+  exportStage = stageNr: map toString (builtins.elemAt debsClosure stageNr);
 
   debsStage0 = exportStage 0;
   debsStage1 = exportStage 1;
@@ -303,7 +298,7 @@ in rec {
 
       mkdir -p $out/nix-support
       echo ${OSStage1Image}/OS.img > $out/nix-support/backing_image
-      echo ${debsStage2} > $out/nix-support/deb-inputs
+      echo ${toString debsStage2} > $out/nix-support/deb-inputs
     '';
   });
 
@@ -327,7 +322,7 @@ in rec {
 
       mkdir -p $out/nix-support
       echo ${OSStage2Image}/OS.img > $out/nix-support/backing_image
-      echo ${debsStage3} > $out/nix-support/deb-inputs
+      echo ${toString debsStage3} > $out/nix-support/deb-inputs
     '';
   });
 
@@ -374,6 +369,7 @@ in rec {
 
       mkdir -p $out/nix-support
       echo ${OSStage4Image}/OS.img > $out/nix-support/backing_image
+      echo ${toString debsStage4} > $out/nix-support/deb-inputs
     '';
   });
 
