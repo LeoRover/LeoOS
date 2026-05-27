@@ -39,6 +39,7 @@ sed -i "s|#DNSMASQ_EXCEPT=\"lo\"|DNSMASQ_EXCEPT=\"lo\"|" /mnt/etc/default/dnsmas
 
 # Fix file permissions
 chmod -v +x /mnt/usr/sbin/init_firstboot
+chmod -v +x /mnt/usr/sbin/leo-config
 chmod -v +x /mnt/usr/lib/firstboot/*
 chmod -v +x /mnt/usr/lib/ros/*
 chmod -v +x /mnt/etc/update-motd.d/*
