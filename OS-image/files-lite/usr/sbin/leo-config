@@ -1,0 +1,227 @@
+#!/bin/sh
+
+set -e
+
+HOSTAPD_CONF=/etc/hostapd/hostapd.conf
+NETPLAN_AP=/etc/netplan/20-ap-wlan.yaml
+NETPLAN_ETH=/etc/netplan/10-eth-bridge.yaml
+HOSTAPD_DROP_IN=/etc/systemd/system/leo-hostapd.service.d/after-wlan-interface.conf
+NM_UNMANAGED_CONF=/etc/NetworkManager/conf.d/leo-ap-unmanaged.conf
+
+usage() {
+    echo "Usage:"
+    echo "  $0"
+    echo "  $0 ap wlan_int|wlan_ext|disable"
+    echo "  $0 eth bridge|dhcp_client"
+    echo
+    echo "Run without arguments for an interactive menu."
+    echo
+    echo "Access Point modes:"
+    echo "  ap wlan_int     - Use internal wlan interface"
+    echo "  ap wlan_ext     - Use external wlan interface (USB dongle)"
+    echo "  ap disable      - Disable the Access Point"
+    echo
+    echo "Wired connection modes:"
+    echo "  eth bridge      - Bridge eth0 into br0 (LAN, DHCP server on 10.0.0.1/24)"
+    echo "  eth dhcp_client - Connect eth0 as DHCP client to upstream network"
+}
+
+configure_ap() {
+    AP_MODE=$1
+    case "$AP_MODE" in
+        wlan_int|wlan_ext)
+            echo "Configuring Access Point on ${AP_MODE}..."
+
+            sed -i "s/^interface=.*/interface=${AP_MODE}/" "$HOSTAPD_CONF"
+
+            cat > "$NETPLAN_AP" << EOF
+# Sets the renderer of AP Wlan interface to networkd
+network:
+  version: 2
+  ethernets:
+    ${AP_MODE}:
+      renderer: networkd
+      link-local: []
+EOF
+
+            cat > "$HOSTAPD_DROP_IN" << EOF
+[Unit]
+BindsTo=sys-subsystem-net-devices-${AP_MODE}.device
+After=sys-subsystem-net-devices-${AP_MODE}.device
+EOF
+
+            # Tell NetworkManager not to manage the AP interface so it cannot
+            # override the networkd renderer in /etc/netplan/.
+            mkdir -p "$(dirname "$NM_UNMANAGED_CONF")"
+            printf '[keyfile]\nunmanaged-devices=interface-name:%s\n' "$AP_MODE" > "$NM_UNMANAGED_CONF"
+
+            systemctl enable leo-hostapd
+
+            echo "Configuration saved. Please reboot to apply changes."
+            ;;
+
+        disable)
+            if [ -t 0 ] && command -v whiptail > /dev/null 2>&1; then
+                whiptail --title "Warning" --yesno \
+"Disabling the Access Point will cut off WiFi access to the robot.
+
+Make sure you have another way to connect before rebooting:
+  - Wired (eth0) in bridge or DHCP client mode
+  - The robot is connected to an external WiFi network
+
+Continue?" 14 65 || return 0
+            fi
+            echo "Disabling Access Point..."
+
+            cat > "$NETPLAN_AP" << EOF
+# AP Wlan disabled
+network:
+  version: 2
+EOF
+
+            cat > "$HOSTAPD_DROP_IN" << EOF
+[Unit]
+EOF
+
+            # Restore NM management of wlan interfaces so WiFi client works.
+            rm -f "$NM_UNMANAGED_CONF"
+
+            systemctl disable leo-hostapd
+
+            echo "Configuration saved. Please reboot to apply changes."
+            ;;
+    esac
+}
+
+show_current_config() {
+    # Detect AP mode
+    if grep -q 'interface=wlan_int' "$HOSTAPD_CONF" 2>/dev/null && \
+       grep -q 'BindsTo=.*wlan_int' "$HOSTAPD_DROP_IN" 2>/dev/null; then
+        AP_STATUS="wlan_int (internal wlan interface)"
+    elif grep -q 'interface=wlan_ext' "$HOSTAPD_CONF" 2>/dev/null && \
+         grep -q 'BindsTo=.*wlan_ext' "$HOSTAPD_DROP_IN" 2>/dev/null; then
+        AP_STATUS="wlan_ext (external wlan interface)"
+    else
+        AP_STATUS="disabled"
+    fi
+
+    # Detect eth mode
+    if grep -q 'interfaces: \[ eth0 \]' "$NETPLAN_ETH" 2>/dev/null; then
+        ETH_STATUS="bridge (LAN, DHCP server on 10.0.0.1/24)"
+    elif grep -q 'dhcp4: true' "$NETPLAN_ETH" 2>/dev/null; then
+        ETH_STATUS="dhcp_client (upstream DHCP client)"
+    else
+        ETH_STATUS="unknown"
+    fi
+
+    whiptail --title "Current Configuration" \
+        --msgbox "Access Point : $AP_STATUS\nWired (eth0) : $ETH_STATUS" 10 65
+}
+
+configure_eth() {
+    ETH_MODE=$1
+    case "$ETH_MODE" in
+        bridge)
+            echo "Configuring eth0 as LAN bridge (10.0.0.1/24)..."
+
+            cat > "$NETPLAN_ETH" << 'EOF'
+# Creates a bridge interface and adds ethernet interface to it.
+network:
+  version: 2
+  ethernets:
+    eth0:
+      renderer: networkd
+      optional: true
+  bridges:
+    br0:
+      renderer: networkd
+      interfaces: [ eth0 ]
+      addresses: [ 10.0.0.1/24 ]
+      link-local: []
+EOF
+
+            echo "Configuration saved. Please reboot to apply changes."
+            ;;
+
+        dhcp_client)
+            echo "Configuring eth0 as DHCP client..."
+
+            cat > "$NETPLAN_ETH" << 'EOF'
+# eth0 as DHCP client; br0 kept for AP (wlan interface added by hostapd).
+network:
+  version: 2
+  ethernets:
+    eth0:
+      renderer: networkd
+      dhcp4: true
+      optional: true
+  bridges:
+    br0:
+      renderer: networkd
+      interfaces: []
+      addresses: [ 10.0.0.1/24 ]
+      link-local: []
+EOF
+
+            echo "Configuration saved. Please reboot to apply changes."
+            ;;
+    esac
+}
+
+if [ "$(id -u)" -ne 0 ]; then
+    echo "This script must be run as root" >&2
+    exit 1
+fi
+
+if [ $# -eq 0 ]; then
+    SECTION=$(whiptail --title "Network Configuration" \
+        --menu "Select what to configure:" 13 60 3 \
+        "ap"     "Access Point (wlan_int / wlan_ext / disable)" \
+        "eth"    "Wired Connection (bridge / dhcp_client)" \
+        "status" "Show current configuration" \
+        3>&1 1>&2 2>&3) || exit 0
+
+    if [ "$SECTION" = "status" ]; then
+        show_current_config
+        exit 0
+    elif [ "$SECTION" = "ap" ]; then
+        AP_MODE=$(whiptail --title "Configure Access Point" \
+            --menu "Select Access Point mode:" 15 60 3 \
+            "wlan_int" "Internal wlan interface" \
+            "wlan_ext" "External wlan interface (USB dongle)" \
+            "disable"  "Disable the Access Point" \
+            3>&1 1>&2 2>&3) || exit 0
+        configure_ap "$AP_MODE"
+    else
+        ETH_MODE=$(whiptail --title "Configure Wired Connection" \
+            --menu "Select wired connection mode:" 13 65 2 \
+            "bridge"      "Bridge (LAN, DHCP server on 10.0.0.1/24)" \
+            "dhcp_client" "DHCP client (connect to upstream network)" \
+            3>&1 1>&2 2>&3) || exit 0
+        configure_eth "$ETH_MODE"
+    fi
+elif [ $# -eq 2 ]; then
+    case "$1" in
+        ap)
+            case "$2" in
+                wlan_int|wlan_ext|disable) configure_ap "$2" ;;
+                *) echo "Invalid AP mode: $2" >&2; usage >&2; exit 1 ;;
+            esac
+            ;;
+        eth)
+            case "$2" in
+                bridge|dhcp_client) configure_eth "$2" ;;
+                *) echo "Invalid eth mode: $2" >&2; usage >&2; exit 1 ;;
+            esac
+            ;;
+        *) echo "Invalid command: $1" >&2; usage >&2; exit 1 ;;
+    esac
+elif [ $# -eq 1 ]; then
+    case "$1" in
+        -h|--help) usage; exit 0 ;;
+        *) echo "Invalid argument: $1" >&2; usage >&2; exit 1 ;;
+    esac
+else
+    usage >&2
+    exit 1
+fi

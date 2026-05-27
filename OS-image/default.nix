@@ -206,6 +206,7 @@ let
       "python3-rpi-lgpio" # Replacement for RPi.GPIO which supports RPi 5
       "python3-stm32loader" # Tool for flashing LeoCore
       "leo-ui" # Web UI for controlling Leo Rover
+      "whiptail" # For leo-config TUI
 
       "---"
 
