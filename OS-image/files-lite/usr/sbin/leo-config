@@ -41,27 +41,11 @@ network:
       link-local: []
 EOF
 
-            if [ "$AP_MODE" = "wlan_int" ]; then
-                # brcmfmac fires COUNTRY_UPDATE after hostapd sets country_code,
-                # causing hostapd to exit. Pre-set the regulatory domain to prevent
-                # this and restart automatically if it happens anyway.
-                cat > "$HOSTAPD_DROP_IN" << EOF
-[Unit]
-BindsTo=sys-subsystem-net-devices-${AP_MODE}.device
-After=sys-subsystem-net-devices-${AP_MODE}.device
-
-[Service]
-ExecStartPre=/bin/sh -c 'iw reg set \$(sed -n "s/^country_code=//p" ${HOSTAPD_CONF})'
-Restart=on-failure
-RestartSec=2
-EOF
-            else
-                cat > "$HOSTAPD_DROP_IN" << EOF
+            cat > "$HOSTAPD_DROP_IN" << EOF
 [Unit]
 BindsTo=sys-subsystem-net-devices-${AP_MODE}.device
 After=sys-subsystem-net-devices-${AP_MODE}.device
 EOF
-            fi
 
             # Tell NetworkManager not to manage the AP interface so it cannot
             # override the networkd renderer in /etc/netplan/.
