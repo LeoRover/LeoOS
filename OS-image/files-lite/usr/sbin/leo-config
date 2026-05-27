@@ -213,7 +213,6 @@ elif [ $# -eq 2 ]; then
         *) echo "Invalid command: $1" >&2; usage >&2; exit 1 ;;
     esac
 elif [ $# -eq 1 ]; then
-    # backward-compatible: single argument treated as AP mode
     case "$1" in
         -h|--help) usage; exit 0 ;;
         *) echo "Invalid argument: $1" >&2; usage >&2; exit 1 ;;
