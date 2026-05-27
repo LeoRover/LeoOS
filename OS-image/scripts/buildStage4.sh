@@ -33,11 +33,6 @@ rm -rf /mnt/etc/update-motd.d/*
 cp -vr --no-preserve=mode "${FILES_DIR}/"* /mnt/
 echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" > /mnt/etc/sudoers.d/010_${USER_NAME}-nopasswd
 
-# Remove static custom service files (replaced by dynamically generated leo- services below)
-rm -f /mnt/usr/lib/systemd/system/custom-hostapd.service
-rm -f /mnt/usr/lib/systemd/system/custom-systemd-networkd.service
-rm -f /mnt/usr/lib/systemd/system/custom-systemd-networkd-wait-online.service
-
 # Patch configuration files
 sed -i "s|#IGNORE_RESOLVCONF=yes|IGNORE_RESOLVCONF=yes|" /mnt/etc/default/dnsmasq
 sed -i "s|#DNSMASQ_EXCEPT=\"lo\"|DNSMASQ_EXCEPT=\"lo\"|" /mnt/etc/default/dnsmasq
