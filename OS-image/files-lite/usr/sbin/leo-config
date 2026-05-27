@@ -9,7 +9,10 @@ HOSTAPD_DROP_IN=/etc/systemd/system/leo-hostapd.service.d/after-wlan-interface.c
 NM_UNMANAGED_CONF=/etc/NetworkManager/conf.d/leo-ap-unmanaged.conf
 
 usage() {
-    echo "Usage: $0 [ap wlan_int|wlan_ext|disable] [eth bridge|dhcp_client]"
+    echo "Usage:"
+    echo "  $0"
+    echo "  $0 ap wlan_int|wlan_ext|disable"
+    echo "  $0 eth bridge|dhcp_client"
     echo
     echo "Run without arguments for an interactive menu."
     echo
