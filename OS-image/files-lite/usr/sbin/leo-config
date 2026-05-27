@@ -55,6 +55,8 @@ EOF
             mkdir -p "$(dirname "$NM_UNMANAGED_CONF")"
             printf '[keyfile]\nunmanaged-devices=interface-name:%s\n' "$AP_MODE" > "$NM_UNMANAGED_CONF"
 
+            systemctl enable leo-hostapd
+
             echo "Configuration saved. Please reboot to apply changes."
             ;;
 
@@ -83,6 +85,8 @@ EOF
 
             # Restore NM management of wlan interfaces so WiFi client works.
             rm -f "$NM_UNMANAGED_CONF"
+
+            systemctl disable leo-hostapd
 
             echo "Configuration saved. Please reboot to apply changes."
             ;;
