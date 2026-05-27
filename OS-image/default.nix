@@ -12,9 +12,9 @@ let
   scripts = pkgs.callPackage ./scripts { inherit files-lite files-full; };
 
   packageLists = let
-    noble-updates-stamp = "20250930T120000Z";
-    ros2-stamp = "2025-08-20";
-    fictionlab-stamp = "2025-09-30";
+    noble-updates-stamp = "20260522T120000Z";
+    ros2-stamp = "2026-04-13";
+    fictionlab-stamp = "2026-05-23";
   in [
     {
       name = "noble-main";
@@ -48,7 +48,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/main/binary-arm64/Packages.xz";
-        sha256 = "sha256-3mgOw8m0UaT6zUMRDoWAQpxlyBE0f1alo2Y900LtXZc=";
+        sha256 = "sha256-E4h2sfOt/O6hcCrh9TRJmVKQWYxP3AY9nUSe4eiLITs=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -57,7 +57,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/universe/binary-arm64/Packages.xz";
-        sha256 = "sha256-QiJTxL5qwhE+kqKM21p8D9oI1JhqVqZstCOIcK++J8I=";
+        sha256 = "sha256-4T4ifnZFWdpYotDEbjpkQLOkm8eZ/y1YYZmHTUw4Ek8=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -66,7 +66,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/restricted/binary-arm64/Packages.xz";
-        sha256 = "sha256-EuX/zkKBcSGAKIQNUYrfq+ZB/9EMWlloFMqy97KGI00=";
+        sha256 = "sha256-p3vkH2/ZbqlbTdrlLu8TcIbbDb61+zFHiV7T9ra6MbQ=";
       });
       urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
     }
@@ -75,7 +75,7 @@ let
       packagesFile = (fetchurl {
         url =
           "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu/dists/noble/main/binary-arm64/Packages.bz2";
-        sha256 = "sha256-32TlSnKKQ8AguwjFItC6V4DawkOOtdw0AzeTq/sstRA=";
+        sha256 = "sha256-Yw5+pMwfp+dH3zGvwmBSTf8AkxDBDrrRAguf4kY/dUE=";
       });
       urlPrefix = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu";
     }
@@ -84,7 +84,7 @@ let
       packagesFile = (fetchurl {
         url =
           "https://archive.fictionlab.pl/dists/noble/snapshots/${fictionlab-stamp}/main/binary-arm64/Packages.gz";
-        sha256 = "sha256-6rZf8zf1Ljgos/yixV5TJC6vtQ7QeCu8UhluyqH0YqA=";
+        sha256 = "sha256-WN2ppWV0Um32deMlV9yAPA8SvbCmhDejqFbtZ9WNUhM=";
       });
       urlPrefix = "https://archive.fictionlab.pl";
     }
@@ -173,7 +173,7 @@ let
       "bridge-utils" # bridge management utilities
       "bluez" # Bluetooth stack
       "hostname" # hostname management
-      "rtl88xxau-dkms" # Realtek WiFi driver
+      "rtw88-dkms" # Realtek WiFi driver
 
       "---"
 
@@ -184,7 +184,18 @@ let
       "python3-distro"
 
       "ros2-apt-source" # Configures sources for ROS 2 repo
-      "ros-dev-tools" # ROS development tools (rosdep, colcon, vcs etc.)
+      # "ros-dev-tools" # ROS development tools (rosdep, colcon, vcs etc.)
+      # The newest ROS snapshot is missing ros-dev-tools, so we install its dependencies instead
+      "build-essential"
+      "cmake"
+      "python3-setuptools"
+      "python3-bloom"
+      "python3-colcon-common-extensions"
+      "python3-colcon-mixin"
+      "python3-rosdep"
+      "python3-vcstool"
+      "wget"
+
       "ros-jazzy-ros-base" # ROS base packages
 
       "---"
@@ -197,6 +208,7 @@ let
       "ros-jazzy-leo-camera" # hidden dependency of leo_robot
       "ros-jazzy-compressed-image-transport" # image transport plugin that provides compressed image streams
       "ros-jazzy-micro-ros-agent" # For talking with LeoCore
+      "ros-jazzy-aruco-opencv" # For aruco tracking
 
       "---"
 
@@ -224,12 +236,7 @@ let
     ];
   }) { inherit fetchurl; };
 
-  exportStage = stageNr:
-    pkgs.runCommand "debs-stage${toString stageNr}" { } ''
-      echo "${
-        toString (lib.intersperse "|" (builtins.elemAt debsClosure stageNr))
-      }" > $out
-    '';
+  exportStage = stageNr: map toString (builtins.elemAt debsClosure stageNr);
 
   debsStage0 = exportStage 0;
   debsStage1 = exportStage 1;
@@ -292,7 +299,7 @@ in rec {
 
       mkdir -p $out/nix-support
       echo ${OSStage1Image}/OS.img > $out/nix-support/backing_image
-      echo ${debsStage2} > $out/nix-support/deb-inputs
+      echo ${toString debsStage2} > $out/nix-support/deb-inputs
     '';
   });
 
@@ -316,7 +323,7 @@ in rec {
 
       mkdir -p $out/nix-support
       echo ${OSStage2Image}/OS.img > $out/nix-support/backing_image
-      echo ${debsStage3} > $out/nix-support/deb-inputs
+      echo ${toString debsStage3} > $out/nix-support/deb-inputs
     '';
   });
 
@@ -363,6 +370,7 @@ in rec {
 
       mkdir -p $out/nix-support
       echo ${OSStage4Image}/OS.img > $out/nix-support/backing_image
+      echo ${toString debsStage4} > $out/nix-support/deb-inputs
     '';
   });
 

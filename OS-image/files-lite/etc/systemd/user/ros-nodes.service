@@ -7,7 +7,8 @@ Type=simple
 ExecStartPre=/usr/lib/systemd/systemd-networkd-wait-online
 ExecStart=/usr/lib/ros/ros-nodes
 KillSignal=SIGINT
-KillMode=complex
+KillMode=process
+TimeoutStopSec=30
 
 [Install]
 WantedBy=ros.target
