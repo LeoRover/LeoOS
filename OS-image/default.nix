@@ -165,6 +165,7 @@ let
       "libraspberrypi-bin" # Raspberry Pi utilities
       "libraspberrypi-dev" # headers for Raspberry Pi VideoCore IV libraries
       "rpi-eeprom" # Raspberry Pi EEPROM utilities
+      "needrestart" # block automatic restart of services
 
       ## Networking stuff
       "ca-certificates" # CA certificates for HTTPS

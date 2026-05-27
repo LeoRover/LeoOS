@@ -121,12 +121,34 @@ export FK_IGNORE_EFI="yes"
 export FK_FORCE="yes"
 flash-kernel
 
-# Enable Networkd
-systemctl enable systemd-networkd
+# Disable and mask system Networkd and Hostapd
+systemctl disable systemd-networkd
+systemctl disable systemd-networkd-wait-online
+systemctl disable hostapd
+systemctl mask systemd-networkd
+systemctl mask systemd-networkd-wait-online
+systemctl mask hostapd
 
-# Enable Hostapd
-systemctl unmask hostapd
-systemctl enable hostapd
+# Generate leo-networkd service from the installed system unit
+# This avoids version drift: the unit always matches the installed systemd package
+mkdir -p /etc/systemd/system
+cp /lib/systemd/system/systemd-networkd.service /etc/systemd/system/leo-networkd.service
+sed -i 's/Alias=dbus-org\.freedesktop\.network1\.service/Alias=leo-dbus-org.freedesktop.network1.service/' /etc/systemd/system/leo-networkd.service
+sed -i 's/Also=systemd-networkd-wait-online\.service/Also=leo-networkd-wait-online.service/' /etc/systemd/system/leo-networkd.service
+
+# Generate leo-networkd-wait-online service from the installed system unit
+cp /lib/systemd/system/systemd-networkd-wait-online.service /etc/systemd/system/leo-networkd-wait-online.service
+sed -i 's/BindsTo=systemd-networkd\.service/BindsTo=leo-networkd.service/' /etc/systemd/system/leo-networkd-wait-online.service
+sed -i 's/After=systemd-networkd\.service/After=leo-networkd.service/' /etc/systemd/system/leo-networkd-wait-online.service
+
+# Generate leo-hostapd service from the installed system unit
+cp /lib/systemd/system/hostapd.service /etc/systemd/system/leo-hostapd.service
+
+# Enable leo-networkd (also enables leo-networkd-wait-online via Also=)
+systemctl enable leo-networkd
+
+# Enable leo-hostapd
+systemctl enable leo-hostapd
 
 # Enable nftables
 systemctl enable nftables
