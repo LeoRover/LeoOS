@@ -33,6 +33,11 @@ rm -rf /mnt/etc/update-motd.d/*
 cp -vr --no-preserve=mode "${FILES_DIR}/"* /mnt/
 echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" > /mnt/etc/sudoers.d/010_${USER_NAME}-nopasswd
 
+# Remove static custom service files (replaced by dynamically generated leo- services below)
+rm -f /mnt/usr/lib/systemd/system/custom-hostapd.service
+rm -f /mnt/usr/lib/systemd/system/custom-systemd-networkd.service
+rm -f /mnt/usr/lib/systemd/system/custom-systemd-networkd-wait-online.service
+
 # Patch configuration files
 sed -i "s|#IGNORE_RESOLVCONF=yes|IGNORE_RESOLVCONF=yes|" /mnt/etc/default/dnsmasq
 sed -i "s|#DNSMASQ_EXCEPT=\"lo\"|DNSMASQ_EXCEPT=\"lo\"|" /mnt/etc/default/dnsmasq
@@ -103,11 +108,26 @@ systemctl mask systemd-networkd
 systemctl mask systemd-networkd-wait-online
 systemctl mask hostapd
 
-# Enable custom Networkd
-systemctl enable custom-systemd-networkd
+# Generate leo-networkd service from the installed system unit
+# This avoids version drift: the unit always matches the installed systemd package
+mkdir -p /etc/systemd/system
+cp /lib/systemd/system/systemd-networkd.service /etc/systemd/system/leo-networkd.service
+sed -i 's/Alias=dbus-org\.freedesktop\.network1\.service/Alias=leo-dbus-org.freedesktop.network1.service/' /etc/systemd/system/leo-networkd.service
+sed -i 's/Also=systemd-networkd-wait-online\.service/Also=leo-networkd-wait-online.service/' /etc/systemd/system/leo-networkd.service
 
-# Enable custom Hostapd
-systemctl enable custom-hostapd
+# Generate leo-networkd-wait-online service from the installed system unit
+cp /lib/systemd/system/systemd-networkd-wait-online.service /etc/systemd/system/leo-networkd-wait-online.service
+sed -i 's/BindsTo=systemd-networkd\.service/BindsTo=leo-networkd.service/' /etc/systemd/system/leo-networkd-wait-online.service
+sed -i 's/After=systemd-networkd\.service/After=leo-networkd.service/' /etc/systemd/system/leo-networkd-wait-online.service
+
+# Generate leo-hostapd service from the installed system unit
+cp /lib/systemd/system/hostapd.service /etc/systemd/system/leo-hostapd.service
+
+# Enable leo-networkd (also enables leo-networkd-wait-online via Also=)
+systemctl enable leo-networkd
+
+# Enable leo-hostapd
+systemctl enable leo-hostapd
 
 # Enable nftables
 systemctl enable nftables
