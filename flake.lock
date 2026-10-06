@@ -23,11 +23,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1791298214,
-        "narHash": "sha256-IVLv6jKXwNx6s8YCUkhYee5T0mg3CO2cZf3rgJFy/UU=",
+        "lastModified": 1791299383,
+        "narHash": "sha256-dJxYXreKqf4z5INCP14hEHLEeULKHZM/E140l0ou+lg=",
         "owner": "fictionlab",
         "repo": "nix-debian-image-builder",
-        "rev": "a756f78a92669ca3a2732aaf9c796576489f8587",
+        "rev": "cf9d6ff5624c0e2fe3769e4d5caf91824fb267ce",
         "type": "github"
       },
       "original": {
