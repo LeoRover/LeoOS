@@ -18,26 +18,48 @@
         "type": "github"
       }
     },
+    "nix-debian-image-builder": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1791298214,
+        "narHash": "sha256-IVLv6jKXwNx6s8YCUkhYee5T0mg3CO2cZf3rgJFy/UU=",
+        "owner": "fictionlab",
+        "repo": "nix-debian-image-builder",
+        "rev": "a756f78a92669ca3a2732aaf9c796576489f8587",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fictionlab",
+        "repo": "nix-debian-image-builder",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1779536132,
-        "narHash": "sha256-q+fF42iv/geEbHfgSzy3tS0FF/EyD6XTZ98E6yxiBO8=",
+        "lastModified": 1788372231,
+        "narHash": "sha256-7aqErvrAEz/5OcPA5p3M+tVOqeYc4oJXkNIPXfCqxAw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "3d8f0f3f72a6cd4d93d0ad13203f2ea1cb7e1456",
+        "rev": "9387b3fcc0c23c86661636da63faabad4235a0a6",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
+        "rev": "9387b3fcc0c23c86661636da63faabad4235a0a6",
         "type": "github"
       }
     },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nix-debian-image-builder": "nix-debian-image-builder",
+        "nixpkgs": [
+          "nix-debian-image-builder",
+          "nixpkgs"
+        ]
       }
     },
     "systems": {
