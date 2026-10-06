@@ -2,11 +2,12 @@
   description = "A flake to build a basic NixOS iso";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    nix-debian-image-builder.url = "github:fictionlab/nix-debian-image-builder";
+    nixpkgs.follows = "nix-debian-image-builder/nixpkgs";
   };
 
-  outputs = { nixpkgs, flake-utils, ... }:
+  outputs = { nixpkgs, flake-utils, nix-debian-image-builder, ... }:
     let systems = [ "x86_64-linux" "aarch64-linux" ];
     in flake-utils.lib.eachSystem systems (system:
       let
@@ -17,6 +18,7 @@
 
         OSImageDerivations = pkgs.callPackage ./OS-image {
           inherit OSName OSVersion;
+          imageBuilder = nix-debian-image-builder.lib system;
           buildSystem = system;
         };
 

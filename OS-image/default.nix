@@ -1,96 +1,114 @@
-{ OSName, OSVersion, buildSystem, lib, pkgs, fetchurl, stdenv, vmTools, ... }:
+{
+  OSName,
+  OSVersion,
+  buildSystem,
+  imageBuilder,
+  pkgs,
+  fetchurl,
+  ...
+}:
 let
   imageSize = 8192;
   memSize = 4096;
-
-  tools = import ./tools.nix { inherit lib pkgs; };
 
   files-lite = pkgs.callPackage ./files-lite { };
 
   files-full = pkgs.callPackage ./files-full { };
 
-  scripts = pkgs.callPackage ./scripts { inherit files-lite files-full; };
+  scripts = pkgs.callPackage ./scripts { inherit files-lite files-full imageBuilder; };
 
-  packageLists = let
-    noble-updates-stamp = "20260522T120000Z";
-    ros2-stamp = "2026-04-13";
-    fictionlab-stamp = "2026-05-23";
-  in [
-    {
-      name = "noble-main";
-      packagesFile = (fetchurl {
-        url =
-          "https://ports.ubuntu.com/dists/noble/main/binary-arm64/Packages.xz";
-        sha256 = "sha256-ShkB5hJPsKER9d/8j1wUR09Eni7Ppx8urwspkX7bU/k=";
-      });
-      urlPrefix = "https://ports.ubuntu.com";
-    }
-    {
-      name = "noble-universe";
-      packagesFile = (fetchurl {
-        url =
-          "https://ports.ubuntu.com/dists/noble/universe/binary-arm64/Packages.xz";
-        sha256 = "sha256-bfIwz1z+vL1Z5OJxO47tB9wKrtZvtHHr8EbLcMywcnU=";
-      });
-      urlPrefix = "https://ports.ubuntu.com";
-    }
-    {
-      name = "noble-restricted";
-      packagesFile = (fetchurl {
-        url =
-          "https://ports.ubuntu.com/dists/noble/restricted/binary-arm64/Packages.xz";
-        sha256 = "sha256-Hf5OUUcjmkVHNty7zJKjdw3iRpA9O1ZnWWAjRejBp5c=";
-      });
-      urlPrefix = "https://ports.ubuntu.com";
-    }
-    {
-      name = "noble-updates-main";
-      packagesFile = (fetchurl {
-        url =
-          "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/main/binary-arm64/Packages.xz";
-        sha256 = "sha256-E4h2sfOt/O6hcCrh9TRJmVKQWYxP3AY9nUSe4eiLITs=";
-      });
-      urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
-    }
-    {
-      name = "noble-updates-universe";
-      packagesFile = (fetchurl {
-        url =
-          "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/universe/binary-arm64/Packages.xz";
-        sha256 = "sha256-4T4ifnZFWdpYotDEbjpkQLOkm8eZ/y1YYZmHTUw4Ek8=";
-      });
-      urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
-    }
-    {
-      name = "noble-updates-restricted";
-      packagesFile = (fetchurl {
-        url =
-          "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/restricted/binary-arm64/Packages.xz";
-        sha256 = "sha256-p3vkH2/ZbqlbTdrlLu8TcIbbDb61+zFHiV7T9ra6MbQ=";
-      });
-      urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
-    }
-    {
-      name = "ros2";
-      packagesFile = (fetchurl {
-        url =
-          "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu/dists/noble/main/binary-arm64/Packages.bz2";
-        sha256 = "sha256-Yw5+pMwfp+dH3zGvwmBSTf8AkxDBDrrRAguf4kY/dUE=";
-      });
-      urlPrefix = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu";
-    }
-    {
-      name = "fictionlab";
-      packagesFile = (fetchurl {
-        url =
-          "https://archive.fictionlab.pl/dists/noble/snapshots/${fictionlab-stamp}/main/binary-arm64/Packages.gz";
-        sha256 = "sha256-WN2ppWV0Um32deMlV9yAPA8SvbCmhDejqFbtZ9WNUhM=";
-      });
-      urlPrefix = "https://archive.fictionlab.pl";
-    }
-  ];
+  debClosureGenerator = imageBuilder.mkDebClosureGenerator;
 
-  debsClosure = import (tools.debClosureGenerator {
+  packageLists =
+    let
+      noble-updates-stamp = "20260522T120000Z";
+      ros2-stamp = "2026-04-13";
+      fictionlab-stamp = "2026-05-23";
+    in
+    [
+      {
+        name = "noble-main";
+        packagesFile = (
+          fetchurl {
+            url = "https://ports.ubuntu.com/dists/noble/main/binary-arm64/Packages.xz";
+            sha256 = "sha256-ShkB5hJPsKER9d/8j1wUR09Eni7Ppx8urwspkX7bU/k=";
+          }
+        );
+        urlPrefix = "https://ports.ubuntu.com";
+      }
+      {
+        name = "noble-universe";
+        packagesFile = (
+          fetchurl {
+            url = "https://ports.ubuntu.com/dists/noble/universe/binary-arm64/Packages.xz";
+            sha256 = "sha256-bfIwz1z+vL1Z5OJxO47tB9wKrtZvtHHr8EbLcMywcnU=";
+          }
+        );
+        urlPrefix = "https://ports.ubuntu.com";
+      }
+      {
+        name = "noble-restricted";
+        packagesFile = (
+          fetchurl {
+            url = "https://ports.ubuntu.com/dists/noble/restricted/binary-arm64/Packages.xz";
+            sha256 = "sha256-Hf5OUUcjmkVHNty7zJKjdw3iRpA9O1ZnWWAjRejBp5c=";
+          }
+        );
+        urlPrefix = "https://ports.ubuntu.com";
+      }
+      {
+        name = "noble-updates-main";
+        packagesFile = (
+          fetchurl {
+            url = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/main/binary-arm64/Packages.xz";
+            sha256 = "sha256-E4h2sfOt/O6hcCrh9TRJmVKQWYxP3AY9nUSe4eiLITs=";
+          }
+        );
+        urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
+      }
+      {
+        name = "noble-updates-universe";
+        packagesFile = (
+          fetchurl {
+            url = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/universe/binary-arm64/Packages.xz";
+            sha256 = "sha256-4T4ifnZFWdpYotDEbjpkQLOkm8eZ/y1YYZmHTUw4Ek8=";
+          }
+        );
+        urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
+      }
+      {
+        name = "noble-updates-restricted";
+        packagesFile = (
+          fetchurl {
+            url = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}/dists/noble-updates/restricted/binary-arm64/Packages.xz";
+            sha256 = "sha256-p3vkH2/ZbqlbTdrlLu8TcIbbDb61+zFHiV7T9ra6MbQ=";
+          }
+        );
+        urlPrefix = "http://snapshot.ubuntu.com/ubuntu/${noble-updates-stamp}";
+      }
+      {
+        name = "ros2";
+        packagesFile = (
+          fetchurl {
+            url = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu/dists/noble/main/binary-arm64/Packages.bz2";
+            sha256 = "sha256-Yw5+pMwfp+dH3zGvwmBSTf8AkxDBDrrRAguf4kY/dUE=";
+          }
+        );
+        urlPrefix = "http://snapshots.ros.org/jazzy/${ros2-stamp}/ubuntu";
+      }
+      {
+        name = "fictionlab";
+        packagesFile = (
+          fetchurl {
+            url = "https://archive.fictionlab.pl/dists/noble/snapshots/${fictionlab-stamp}/main/binary-arm64/Packages.gz";
+            sha256 = "sha256-WN2ppWV0Um32deMlV9yAPA8SvbCmhDejqFbtZ9WNUhM=";
+          }
+        );
+        urlPrefix = "https://archive.fictionlab.pl";
+      }
+    ];
+
+  debsClosure = import (debClosureGenerator {
     name = "debs-closure";
     inherit packageLists;
     packages = [
@@ -237,7 +255,7 @@ let
     ];
   }) { inherit fetchurl; };
 
-  exportStage = stageNr: map toString (builtins.elemAt debsClosure stageNr);
+  exportStage = stageNr: builtins.elemAt debsClosure stageNr;
 
   debsStage0 = exportStage 0;
   debsStage1 = exportStage 1;
@@ -245,274 +263,133 @@ let
   debsStage3 = exportStage 3;
   debsStage4 = exportStage 4;
 
-  vmPrepareCommand = if buildSystem != "aarch64-linux" then ''
-    echo "Mounting binfmt_misc"
-    ${pkgs.util-linux}/bin/mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
+  vmPrepareCommand =
+    if buildSystem != "aarch64-linux" then
+      ''
+        echo "Mounting binfmt_misc"
+        ${pkgs.util-linux}/bin/mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
 
-    echo "Registering aarch64 binfmt"
-    magic="\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\xb7\x00"
-    mask="\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\x00\xff\xfe\xff\xff\xff"
-    echo ":aarch64:M::$magic:$mask:${pkgs.pkgsStatic.qemu-user}/bin/qemu-aarch64:PF" \
-      > /proc/sys/fs/binfmt_misc/register
-  '' else
-    "";
-in rec {
-  OSStage1Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
-    inherit OSName memSize debsStage0 debsStage1;
+        echo "Registering aarch64 binfmt"
+        magic="\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\xb7\x00"
+        mask="\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\x00\xff\xfe\xff\xff\xff"
+        echo ":aarch64:M::$magic:$mask:${pkgs.pkgsStatic.qemu-user}/bin/qemu-aarch64:PF" \
+          > /proc/sys/fs/binfmt_misc/register
+      ''
+    else
+      "";
 
-    pname = "${OSName}-stage1-image";
-    version = "";
+  imageStages = imageBuilder.mkImageStageChain {
+    name = OSName;
+    inherit imageSize memSize;
+    vmSetup = vmPrepareCommand;
+    stages = [
+      {
+        name = "stage1";
+        outputName = "OSStage1Image";
+        script = scripts.stage1;
+        env = { inherit debsStage0 debsStage1; };
+        debInputs = [
+          debsStage0
+          debsStage1
+        ];
+      }
+      {
+        name = "stage2";
+        outputName = "OSStage2Image";
+        script = scripts.stage2;
+        env = {
+          debsStage = debsStage2;
+        };
+        debInputs = [ debsStage2 ];
+      }
+      {
+        name = "stage3";
+        outputName = "OSStage3Image";
+        script = scripts.stage3;
+        env = {
+          debsStage = debsStage3;
+        };
+        debInputs = [ debsStage3 ];
+      }
+      {
+        name = "stage4";
+        outputName = "OSStage4Image";
+        script = scripts.stage4;
+      }
+      {
+        name = "stage5";
+        outputName = "OSStage5Image";
+        script = scripts.stage5;
+        env = { debsStage = debsStage4; };
+        debInputs = [ debsStage4 ];
+      }
+      {
+        name = "stage6";
+        outputName = "OSStage6Image";
+        script = scripts.stage6;
+      }
+    ];
+  };
+in
+rec {
+  OSStage1Image = imageStages.OSStage1Image;
+  OSStage2Image = imageStages.OSStage2Image;
+  OSStage3Image = imageStages.OSStage3Image;
+  OSStage4Image = imageStages.OSStage4Image;
+  OSStage5Image = imageStages.OSStage5Image;
+  OSStage6Image = imageStages.OSStage6Image;
 
-    preVM = ''
-      mkdir -p $out
-      diskImage=$out/OS.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create -f qcow2 $diskImage "${
-        toString imageSize
-      }M"
-    '';
-
-    buildCommand = ''
-      ${vmPrepareCommand}
-      ${scripts.stage1}/build.sh
-
-      mkdir -p "$out/nix-support"
-      echo ${toString [ debsStage0 debsStage1 ]} > $out/nix-support/deb-inputs
-    '';
-  });
-
-  OSStage2Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
-    inherit OSName memSize debsStage2;
-
-    pname = "${OSName}-stage2-image";
-    version = "";
-
-    preVM = ''
-      mkdir -p $out
-      diskImage=$out/OS.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
-        -o backing_file=${OSStage1Image}/OS.img,backing_fmt=qcow2 \
-        -f qcow2 $diskImage
-    '';
-
-    buildCommand = ''
-      ${vmPrepareCommand}
-      ${scripts.stage2}/build.sh
-
-      mkdir -p $out/nix-support
-      echo ${OSStage1Image}/OS.img > $out/nix-support/backing_image
-      echo ${toString debsStage2} > $out/nix-support/deb-inputs
-    '';
-  });
-
-  OSStage3Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
-    inherit OSName memSize debsStage3;
-
-    pname = "${OSName}-stage3-image";
-    version = "";
-
-    preVM = ''
-      mkdir -p $out
-      diskImage=$out/OS.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
-        -o backing_file=${OSStage2Image}/OS.img,backing_fmt=qcow2 \
-        -f qcow2 $diskImage
-    '';
-
-    buildCommand = ''
-      ${vmPrepareCommand}
-      ${scripts.stage3}/build.sh
-
-      mkdir -p $out/nix-support
-      echo ${OSStage2Image}/OS.img > $out/nix-support/backing_image
-      echo ${toString debsStage3} > $out/nix-support/deb-inputs
-    '';
-  });
-
-  OSStage4Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
-    inherit OSName memSize;
-
-    pname = "${OSName}-stage4-image";
-    version = "";
-
-    preVM = ''
-      mkdir -p $out
-      diskImage=$out/OS.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
-        -o backing_file=${OSStage3Image}/OS.img,backing_fmt=qcow2 \
-        -f qcow2 $diskImage
-    '';
-
-    buildCommand = ''
-      ${vmPrepareCommand}
-      ${scripts.stage4}/build.sh
-
-      mkdir -p $out/nix-support
-      echo ${OSStage3Image}/OS.img > $out/nix-support/backing_image
-    '';
-  });
-
-  OSStage5Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
-    inherit OSName memSize debsStage4;
-
-    pname = "${OSName}-stage5-image";
-    version = "";
-
-    preVM = ''
-      mkdir -p $out
-      diskImage=$out/OS.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
-        -o backing_file=${OSStage4Image}/OS.img,backing_fmt=qcow2 \
-        -f qcow2 $diskImage
-    '';
-
-    buildCommand = ''
-      ${vmPrepareCommand}
-      ${scripts.stage5}/build.sh
-
-      mkdir -p $out/nix-support
-      echo ${OSStage4Image}/OS.img > $out/nix-support/backing_image
-      echo ${toString debsStage4} > $out/nix-support/deb-inputs
-    '';
-  });
-
-  OSStage6Image = vmTools.runInLinuxVM (stdenv.mkDerivation {
-    inherit OSName memSize debsStage4;
-
-    pname = "${OSName}-stage6-image";
-    version = "";
-
-    preVM = ''
-      mkdir -p $out
-      diskImage=$out/OS.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
-        -o backing_file=${OSStage5Image}/OS.img,backing_fmt=qcow2 \
-        -f qcow2 $diskImage
-    '';
-
-    buildCommand = ''
-      ${vmPrepareCommand}
-      ${scripts.stage6}/build.sh
-
-      mkdir -p $out/nix-support
-      echo ${OSStage5Image}/OS.img > $out/nix-support/backing_image
-    '';
-  });
-
-  OSLiteImage = vmTools.runInLinuxVM (stdenv.mkDerivation rec {
-    inherit OSName OSVersion memSize;
-    OSVariant = "lite";
-
-    pname = "${OSName}-${OSVariant}-image";
+  OSLiteImage = imageBuilder.mkQcow2ImageStage {
+    pname = "${OSName}-lite-image";
     version = OSVersion;
-
-    preVM = ''
-      mkdir -p $out
-      diskImage=$out/OS.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
-        -o backing_file=${OSStage4Image}/OS.img,backing_fmt=qcow2 \
-        -f qcow2 $diskImage
-    '';
-
-    buildCommand = ''
-      ${vmPrepareCommand}
-      ${scripts.stageFinal}/build.sh
-
-      mkdir -p $out/nix-support
-      echo ${OSStage4Image}/OS.img > $out/nix-support/backing_image
-    '';
-  });
-
-  OSLiteRawImage = stdenv.mkDerivation rec {
-    OSVariant = "lite";
-
-    pname = "${OSName}-${OSVariant}-raw-image";
-    version = OSVersion;
-
-    buildCommand = ''
-      mkdir -p $out
-      diskImage=$out/${OSName}-${OSVersion}-${OSVariant}.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img convert -f qcow2 -O raw \
-        ${OSLiteImage}/OS.img $diskImage
-
-      LAST_SECTOR=$(${pkgs.parted}/bin/parted $diskImage -ms unit s print | tail -n +3 | cut -d: -f3 | sed 's/s//' | sort -n | tail -1)
-      SECTOR_SIZE=512
-      DISK_SIZE=$(( (LAST_SECTOR + 1) * SECTOR_SIZE ))
-
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img resize --shrink -f raw $diskImage $DISK_SIZE
-    '';
+    inherit memSize;
+    previousImage = OSStage4Image;
+    script = scripts.stageFinal;
+    vmSetup = vmPrepareCommand;
+    env = {
+      inherit OSName OSVersion;
+      OSVariant = "lite";
+    };
   };
 
-  OSLiteCompressedImage = stdenv.mkDerivation rec {
-    OSVariant = "lite";
-
-    pname = "${OSName}-${OSVariant}-compressed-image";
-    version = OSVersion;
-
-    buildCommand = ''
-      mkdir -p $out
-
-      echo "Compressing the image"
-      ${pkgs.xz}/bin/xz -T0 --compress --extreme -c ${OSLiteRawImage}/${OSName}-${OSVersion}-${OSVariant}.img > \
-        $out/${OSName}-${OSVersion}-${OSVariant}.img.xz
-    '';
+  OSLiteRawImage = imageBuilder.mkRawImage {
+    image = OSLiteImage;
+    osName = OSName;
+    osVersion = OSVersion;
+    variant = "lite";
   };
 
-  OSFullImage = vmTools.runInLinuxVM (stdenv.mkDerivation rec {
-    inherit OSName OSVersion memSize;
-    OSVariant = "full";
-
-    pname = "${OSName}-${OSVariant}-image";
-    version = OSVersion;
-
-    preVM = ''
-      mkdir -p $out
-      diskImage=$out/OS.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img create \
-        -o backing_file=${OSStage6Image}/OS.img,backing_fmt=qcow2 \
-        -f qcow2 $diskImage
-    '';
-
-    buildCommand = ''
-      ${vmPrepareCommand}
-      ${scripts.stageFinal}/build.sh
-
-      mkdir -p $out/nix-support
-      echo ${OSStage6Image}/OS.img > $out/nix-support/backing_image
-    '';
-  });
-
-  OSFullRawImage = stdenv.mkDerivation rec {
-    OSVariant = "full";
-
-    pname = "${OSName}-${OSVariant}-raw-image";
-    version = OSVersion;
-
-    buildCommand = ''
-      mkdir -p $out
-      diskImage=$out/${OSName}-${OSVersion}-${OSVariant}.img
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img convert -f qcow2 -O raw \
-        ${OSFullImage}/OS.img $diskImage
-
-      LAST_SECTOR=$(${pkgs.parted}/bin/parted $diskImage -ms unit s print | tail -n +3 | cut -d: -f3 | sed 's/s//' | sort -n | tail -1)
-      SECTOR_SIZE=512
-      DISK_SIZE=$(( (LAST_SECTOR + 1) * SECTOR_SIZE ))
-
-      ${pkgs.buildPackages.qemu_kvm}/bin/qemu-img resize --shrink -f raw $diskImage $DISK_SIZE
-    '';
+  OSLiteCompressedImage = imageBuilder.mkCompressedImage {
+    image = OSLiteRawImage;
+    osName = OSName;
+    osVersion = OSVersion;
+    variant = "lite";
   };
 
-  OSFullCompressedImage = stdenv.mkDerivation rec {
-    OSVariant = "full";
-
-    pname = "${OSName}-${OSVariant}-compressed-image";
+  OSFullImage = imageBuilder.mkQcow2ImageStage {
+    pname = "${OSName}-full-image";
     version = OSVersion;
+    inherit memSize;
+    previousImage = OSStage6Image;
+    script = scripts.stageFinal;
+    vmSetup = vmPrepareCommand;
+    env = {
+      inherit OSName OSVersion;
+      OSVariant = "full";
+    };
+  };
 
-    buildCommand = ''
-      mkdir -p $out
+  OSFullRawImage = imageBuilder.mkRawImage {
+    image = OSFullImage;
+    osName = OSName;
+    osVersion = OSVersion;
+    variant = "full";
+  };
 
-      echo "Compressing the image"
-      ${pkgs.xz}/bin/xz -T0 --compress --extreme -c ${OSFullRawImage}/${OSName}-${OSVersion}-${OSVariant}.img > \
-        $out/${OSName}-${OSVersion}-${OSVariant}.img.xz
-    '';
+  OSFullCompressedImage = imageBuilder.mkCompressedImage {
+    image = OSFullRawImage;
+    osName = OSName;
+    osVersion = OSVersion;
+    variant = "full";
   };
 }
